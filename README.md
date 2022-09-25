@@ -3,7 +3,7 @@
 
 
 # Tech Stack
-React Native 
+ 
 
 
 # How to contribute
