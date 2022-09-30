@@ -40,4 +40,4 @@ This Is the Table That Manage The Branches
 | Email_verify | Boolean - Require - True |
 | Ready_to_interveiw | Boolean - Require - True |
 | Password | 64bit(Hash)- Require - True  |
-|Friend | Array[Obejct]|
+|Friends | Array[Obejct]|
