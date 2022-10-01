@@ -38,6 +38,8 @@ This Is the Table That Manage The Branches
 | Education | Array[Object] - Require - True |
  |<!--User Deatil-->|
 | Email_verify | Boolean - Require - True |
+| Setting | Object - Require - True |
+| Hide_Detail | Boolean - Require - True |
 | Ready_to_interveiw | Boolean - Require - True |
 | Password | 64bit(Hash)- Require - True  |
 |Friends | Array[Obejct]|
