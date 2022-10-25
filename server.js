@@ -2,11 +2,12 @@ var createError = require('http-errors');
 var express = require('express');
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const { connectDB } = require("./config/db");
 var path = require('path');
 var logger = require('morgan');
 const cors = require("cors")
 const helmet = require("helmet")
+const { connectDB } = require("./config/database");
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -33,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get("/", (req, res) => res.send("Hello from Afrisplash"));
 app.use('/api/v1', indexRouter);
 app.use('/api/v1/user', usersRouter);
 
