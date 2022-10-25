@@ -26,7 +26,7 @@ To Make the query faster its contain only the `Authenications Data`
 | Talent_Type     | String/URL - Require |
 | Email | String - Require - True |
 | Email_verify | Boolean - Require - True |
-| Password | 64bit(Hash)- Require - True  |
+| Password | 64bit(Hash)- Require - False  | <!-- GOOGLE OAUTh -->
 <!-- I Am Speed -->
 
 ### 2. user_detail (recuiter friendly)
@@ -70,7 +70,7 @@ its contain a the `Foreign key` Pointing to the `users table`
 | Work_History |  Array[Object] - Require - False |
 
 
-### 2. Companies
+### 3. Companies
 
 This Table Manages The Companies Registered  
 
