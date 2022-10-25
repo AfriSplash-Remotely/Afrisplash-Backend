@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", (req, res) => res.send("Hello from Afrisplash"));
 app.use('/api/v1', indexRouter);
-app.use('/api/v1/user', usersRouter);
+app.use('/api/v1/auth', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
