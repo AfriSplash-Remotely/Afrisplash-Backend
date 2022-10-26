@@ -7,6 +7,7 @@ const joi = require("joi")
 const Auth = require("../model/auth")   
 const User = require("../model/user")   
 const google_auth_library = require("google-auth-library")
+
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
  * @description Registeration using Form Input For `All Account Type`
@@ -118,10 +119,72 @@ exports.register = asyncHandler(async (req, res, next) => {
 
 
 
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Forgot Password 
+ * @route `/api/v1/auth/forgot-password`
+ * @access Public
+ * @type POST
+ */
+ exports.forgotPassword = asyncHandler(async (req, res, next) => {
+  const { generateOTP } = require("../utils/otpGen")
+  const user = await Auth.findOne({ email: req.body.email.toLowerCase() });
+
+  if (!user) {
+    return next(new ErrorResponse("There is no user with that email", 404));
+  }
+
+  // Get reset token
+  const resetToken = generateOTP(6);
+  user.resetPasswordToken = resetToken;
+  await user.save({ validateBeforeSave: false });
+
+  console.log(resetToken);
+
+  try {
+  //TODO Send email
+
+    res.status(200).json({ success: true, data: "Email sent successfully" });
+  } catch (err) {
+    console.log(`email error `, err);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    return next(new ErrorResponse("Email could not be sent", 500));
+  }
+});
 
 
 
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Reset Password 
+ * @route `/api/v1/auth/reset-password`
+ * @access Public
+ * @type POST
+ */
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  const { email, new_password } = req.body;
+  const user = await User.findOne({
+    email: email,
+  });
 
+  if (!user) {
+    return next(
+      new ErrorResponse(`User with this email ${email} does not exist`, 400)
+    );
+  }
+
+  // Set new password
+  user.password = new_password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+
+  sendTokenResponse(user, 200, res);
+});
 
 
 
