@@ -7,10 +7,11 @@ var logger = require('morgan');
 const cors = require("cors")
 const helmet = require("helmet")
 const { connectDB } = require("./config/database");
+const errorHandler = require("./middleware/error");
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
 
 dotenv.config({ path: "./config/config.env" });
 var app = express();
@@ -36,11 +37,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/", (req, res) => res.send("Hello from Afrisplash"));
 app.use('/api/v1', indexRouter);
-app.use('/api/v1/auth', usersRouter);
+app.use('/api/v1/auth', authRouter);
+
+app.use(errorHandler);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  res.status(404).json({
+    success: false,
+    status: "Resource Not Found",
+    error: "404 Content Do Not Exist Or Has Been Deleted",
+  });
 });
 
 // error handler
