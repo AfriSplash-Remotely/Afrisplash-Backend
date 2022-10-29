@@ -99,3 +99,18 @@ This Table Manages The Companies Registered
 | Socials | Array[Object] |
 | Verify | Boolean - Require - True |
 | Hide_Detail | Boolean - Require - True |
+
+### 4. Sponsor
+
+This Table Manages The Sponsor Post  
+<!-- Add a Expire system with a cron job o manage  b  -->
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| Name     | String - Require - True|
+| Url    | String/URL - Require - True|
+| Image     | String/URL - Require - True|
+| Theme Colour     | String - Require - True|
+| Description     | String - Require - True|
+| Action     | String - Require - True|
+| Disable | Boolean - Require - True |
