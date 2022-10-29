@@ -10,8 +10,9 @@ const { connectDB } = require("./config/database");
 const errorHandler = require("./middleware/error");
 
 
-var indexRouter = require('./routes/index');
-var authRouter = require('./routes/auth');
+const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
+const sponsorRouter = require('./routes/sponsor');
 
 dotenv.config({ path: "./config/config.env" });
 var app = express();
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get("/", (req, res) => res.send("Hello from Afrisplash"));
 app.use('/api/v1', indexRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/sponsor', sponsorRouter);
 
 app.use(errorHandler);
 
