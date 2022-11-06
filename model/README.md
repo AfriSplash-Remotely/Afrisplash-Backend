@@ -53,6 +53,7 @@ its contain a the `Foreign key` Pointing to the `auth table`
 | Bio     | String - Require - False|
 |<!--Files-->|
 | Profile Picture     | String/URL - Require - True|
+| Smaller Profile Picture     | String/URL - Require - false|
 | Cover Letter     | String/URL - Require - False|
 | CV     | String/URL - Require - False|
 | Langauge | Array[Object] - Require - True |
@@ -114,3 +115,20 @@ This Table Manages The Sponsor Post
 | Description     | String - Require - True|
 | Action     | String - Require - True|
 | Disable | Boolean - Require - True |
+
+
+### 4. Notificaion
+
+This Table Manages The Sponsor Post  
+<!-- Add a Expire system with a cron job o manage  b  -->
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| Title     | String - Require - True|
+| Message     | String - Require - True|
+| Action    | String/URL - Require - True|
+| To     |  FOREIGN_KEY table (`User`)|
+| From     |  FOREIGN_KEY table (`User`)|
+| created_at     | Date|
+| Seen | Boolean - Require - True |
+| Theme | String - Require - Colour |
