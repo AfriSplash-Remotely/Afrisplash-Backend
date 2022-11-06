@@ -3,7 +3,7 @@ const asyncHandler = require("./async");
 const ErrorResponse = require("../utils/errorResponse");
 const User = require("../model/user");
 
-// Protect routes for Candidate 
+/**Route Graud For `Candidate` -- *MIDDLEWARE* */
 exports.C_protect = asyncHandler(async (req, res, next) => {
   let token;
 
@@ -41,7 +41,7 @@ exports.C_protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Protect routes for Recuiter 
+/**Route Graud For `Recuiter` -- *MIDDLEWARE* */ 
 exports.R_protect = asyncHandler(async (req, res, next) => {
   let token;
 
