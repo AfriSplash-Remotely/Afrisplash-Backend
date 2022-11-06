@@ -24,7 +24,6 @@ To Make the query faster its contain only the `Authenications Data`
 | ------------- |:-------------:| 
 | _ID | PRIMARY_KEY table(SELF)|
 | User | FOREIGN_KEY table(users)|
-| User_Type | String - Require |
 | Email | String - Require - True |
 | Account_Setup_Completed | Boolean - Require - True |
 | Email_verify | Boolean - Require - True |
@@ -47,6 +46,7 @@ its contain a the `Foreign key` Pointing to the `auth table`
 | ------------- |:-------------:| 
 | _ID | PRIMARY_KEY table(SELF)|
 | User | FOREIGN_KEY table(auth)|
+| User_Type | String - Require |
 | First Name     | String - Require - True|
 | Last Name     | String - Require - True|
 | Email | String - Require - True |

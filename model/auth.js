@@ -18,12 +18,6 @@ const authSchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  user_type: {
-    type: String,
-    required: true,
-    enum: ["recuiter", "candidate"],
-    default: "candidate",
-  },
   account_verify: {
     type: Boolean,
     required: true,

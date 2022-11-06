@@ -9,7 +9,12 @@ const userSchema = new mongoose.Schema({
     required: [true, "a User cant be created without an authication handler"],
     ref: "auth",
   },
-
+  user_type: {
+    type: String,
+    required: true,
+    enum: ["recuiter", "candidate"],
+    default: "candidate",
+  },
   first_name: {
     type: String,
     required: [true, "Please enter your First name"],

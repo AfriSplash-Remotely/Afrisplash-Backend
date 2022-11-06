@@ -34,7 +34,6 @@ exports.register = asyncHandler(async (req, res, next) => {
       // Create an Authication Profile
       const authProfile = await Auth.create([{
             email: email,
-            user_type:req.body.user_type,
             password:req.body.password
       }], opts);
   
@@ -45,9 +44,19 @@ exports.register = asyncHandler(async (req, res, next) => {
             email: email,
             auth_id:authProfile[0]._id,
             first_name:req.body.first_name,
-            last_name:req.body.last_name
+            last_name:req.body.last_name,
+            user_type:req.body.user_type
       }], opts);
-        
+
+      // update Auth With Th User Data 
+      await Auth.findOneAndUpdate(
+        { _id: authProfile[0]._id },
+        {
+          userID: user[0]._id,
+        },
+        { new: true, runValidators: true, session: session }
+      );
+  
       // TODO Send Verification Mail  -- Maybe
       // TODO Send Welcome Mail
       await session.commitTransaction();
