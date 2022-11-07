@@ -46,6 +46,7 @@ its contain a the `Foreign key` Pointing to the `auth table`
 | ------------- |:-------------:| 
 | _ID | PRIMARY_KEY table(SELF)|
 | User | FOREIGN_KEY table(auth)|
+| Account_Setup_Completed | Boolean - Require - True |
 | User_Type | String - Require |
 | First Name     | String - Require - True|
 | Last Name     | String - Require - True|
@@ -65,6 +66,7 @@ its contain a the `Foreign key` Pointing to the `auth table`
 | Skill | Array[String] - Require - False|
 | Experience | Array[Object] - Require - True |
 | Education | Array[Object] - Require - True |
+| Jobs | Array[Object] - Require - True |
  |<!--User Deatil-->|
 | Setting | Object - Require - True |
 | Hide_Detail | Boolean - Require - True |

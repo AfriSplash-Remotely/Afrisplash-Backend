@@ -48,6 +48,11 @@ const userSchema = new mongoose.Schema({
     required: false,
   },
 
+  thumbnail: {
+    type: String,
+    required: false,
+  },
+
   cover_letter: {
     type: String,
     required: false,
@@ -59,7 +64,13 @@ const userSchema = new mongoose.Schema({
   },
   
   langauge: {
-    type: Object, //FIXME
+    type: Array,
+  },
+
+  account_setup_completed: {
+    type: Boolean,
+    required: true,
+    default: false
   },
 
   location : {
@@ -84,11 +95,7 @@ const userSchema = new mongoose.Schema({
     required: [true],
     max:5,
     min:0,
-    default: 0 //FIXME
-  },
-
-  role: {
-    type: Object, //FIXME
+    default: 0 
   },
 
   phone_number: {
@@ -110,6 +117,10 @@ const userSchema = new mongoose.Schema({
   education: {
     type: Array,
     default: [],
+  },
+
+  jobs: {
+    type: Array,
   },
 
   settings: {
