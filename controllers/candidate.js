@@ -116,4 +116,107 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
  })
 
 
- 
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Update User `Candidate Account Only`
+ * @route `/api/v1/candidate/edit`
+ * @access Private
+ * @type PUT
+ */
+   exports.updateUser = asyncHandler(async (req, res, next) => {
+    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+  
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: user,
+    });
+  });
+
+  
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Add a new Experience `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/add/experience/`
+ * @access Private
+ * @type PUT
+ */
+  exports.addExperience = asyncHandler(async (req, res, next) => {
+    const newExp = await User.findByIdAndUpdate(req.user._id, {$push: {experience: req.body}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: newExp
+    });
+  });
+  
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Add a new Education `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/add/education/`
+ * @access Private
+ * @type PUT
+ */
+  exports.addEducation = asyncHandler(async (req, res, next) => {
+    const newEdu = await User.findByIdAndUpdate(req.user._id, {$push: {education: req.body}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: newEdu
+    });
+  });
+
+    
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Add a new Skills `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/add/skill/`
+ * @access Private
+ * @type PUT
+ */
+  exports.addSkill = asyncHandler(async (req, res, next) => {
+    const skill = await User.findByIdAndUpdate(req.user._id, {$push: {skills: req.body.skill}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: skill
+    });
+  });
+  
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Add a new Langauge `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/add/langauge/`
+ * @access Private
+ * @type PUT
+ */
+ exports.addLangauge = asyncHandler(async (req, res, next) => {
+  console.log(req.body)
+  const newLang = await User.findByIdAndUpdate(req.user._id, {$push: {langauge: req.body}}, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    status: "success",
+    data: newLang
+  });
+});
