@@ -13,7 +13,7 @@ const {
 router.post("/onboarding", protect, onboarding);
 router.get("/", protect, profile);
 router.put("/edit", protect, updateUser);
-router.get("/notification", protect, getNotifications);
+router.get("/notifications", protect, getNotifications);
 // router.post("/gift", protect, onboarding);
 // router.get("/jobs", protect, onboarding);
 // router.get("/job/save/:id", protect, onboarding);

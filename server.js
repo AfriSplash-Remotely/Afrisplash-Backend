@@ -13,6 +13,7 @@ const errorHandler = require("./middleware/error");
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const sponsorRouter = require('./routes/sponsor');
+const candidateRouter = require('./routes/candidate');
 
 dotenv.config({ path: "./config/config.env" });
 var app = express();
@@ -40,6 +41,7 @@ app.get("/", (req, res) => res.send("Hello from Afrisplash"));
 app.use('/api/v1', indexRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/sponsor', sponsorRouter);
+app.use('/api/v1/candidate', candidateRouter);
 
 app.use(errorHandler);
 
