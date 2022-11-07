@@ -14,48 +14,52 @@ const notification = require("../model/notification");
  * @type POST
  */
 exports.onboarding = asyncHandler(async (req, res, next) => {
-    const session = await mongoose.startSession();
-    const { image, bio, companyName, positionHeld, location, jobType, startDay, endDay, currentlyWork, description, institutionName, degree, fieldOfStudy } = req.body
-    session.startTransaction();
-    try {
-      if(!req.body.email){
-        return next(new ErrorResponse("Email Address Is Required", 403));
-      }
-      const email = req.body.email.toLowerCase() ? req.body.email.toLowerCase() : ""
-      const opts = { session, new: true };
-      const checkAccount = await Auth.findOne({
-        email: email,
-      });
+  // Since this routes is hitted once after since up I would use create a check on this route
+  // using the account_Setup_ Completed attribute in auth  Model any 
+  // Review Should Hit me up 
+
+  if(req.user.account_setup_completed){
+    return next(new ErrorResponse("Account Has Been Onboarded Already \n Cant Post", 400))
+  }
+
+    const data = req.body
+    delete data.auth_id
+    delete data.first_name
+    delete data.last_name
+    delete data.user_type
+    delete data._id
+    delete data.email
+    delete data.badge
+    delete data.company_id
+    delete data.company_role
+    delete data.work_history
+    delete data.created_at
+    delete data.__v
+    delete data.notifications
+    delete data.settings
+    delete data.jobs
+    delete data.friend
+    data.account_setup_completed = true
+
+
+    const user = await User.findByIdAndUpdate(req.user._id, data, {
+      new: true,
+      runValidators: true,
+    });
+
+    await Auth.findOneAndUpdate({
+      _userID:req.user._id
+    },{
+      account_setup_completed: true
+    },{
+      new: false, runValidators: true
+    })
   
-      if (!_.isEmpty(checkAccount)) {
-        return next(new ErrorResponse("Email Address already exist", 400));
-      }
-      // Create an Authication Profile
-      const authProfile = await Auth.create([{
-            email: email,
-            user_type:req.body.user_type,
-            password:req.body.password
-      }], opts);
-  
-      await authProfile[0].save();
-    
-      // Create an Authication Profile
-      const user = await User.create([{
-            email: email,
-            auth_id:authProfile[0]._id,
-            first_name:req.body.first_name,
-            last_name:req.body.last_name
-      }], opts);
-        
-      // TODO Send Verification Mail  -- Maybe
-      // TODO Send Welcome Mail
-      await session.commitTransaction();
-      session.endSession();
-      sendTokenResponse(user, 200, res);
-    } catch (error) {
-      session.endSession();
-      next(error);
-    }
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: user,
+    });
   });
 
 /**
