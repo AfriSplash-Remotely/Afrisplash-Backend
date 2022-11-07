@@ -187,7 +187,7 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
  * @type PUT
  */
   exports.addSkill = asyncHandler(async (req, res, next) => {
-    const skill = await User.findByIdAndUpdate(req.user._id, {$push: {skills: req.body.skill}}, {
+    const skill = await User.findByIdAndUpdate(req.user._id, {$addToSet: {skills: req.body.skill}}, {
       new: true,
       runValidators: true,
     });
@@ -220,3 +220,87 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
     data: newLang
   });
 });
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Remove an Experience `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/remove/experience/`
+ * @access Private
+ * @type DELETE
+ */
+  exports.delExperience = asyncHandler(async (req, res, next) => {
+    const data = await User.findByIdAndUpdate(req.user._id, {$pull: {experience: {_id: req.params.id}}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: data
+    });
+  });
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Remove an Education `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/remove/education/`
+ * @access Private
+ * @type DELETE
+ */
+  exports.delEducation = asyncHandler(async (req, res, next) => {
+    const data = await User.findByIdAndUpdate(req.user._id, {$pull: {education: {_id: req.params.id}}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: data
+    });
+  });
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Remove a Langauge `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/remove/langauge/`
+ * @access Private
+ * @type DELETE
+ */
+  exports.delLangauge = asyncHandler(async (req, res, next) => {
+    const data = await User.findByIdAndUpdate(req.user._id, {$pull: {langauge: {_id: req.params.id}}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: data
+    });
+  });
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Remove a Skill `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/remove/skill/`
+ * @access Private
+ * @type DELETE
+ */
+  exports.delSkill = asyncHandler(async (req, res, next) => {
+    const data = await User.findByIdAndUpdate(req.user._id, {$pop: {skill: req.params.id}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: data
+    });
+  });

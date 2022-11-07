@@ -11,6 +11,10 @@ const {
     addEducation,
     addSkill,
     addLangauge,
+    delLangauge,
+    delExperience,
+    delEducation,
+    delSkill,
 } = require("../controllers/candidate")
 
 
@@ -18,8 +22,12 @@ router.post("/onboarding", protect, onboarding);
 router.get("/", protect, profile);
 router.put("/edit/add/experience/", protect, addExperience);
 router.put("/edit/add/education/", protect, addEducation);
-router.put("/edit/add/skill", protect, addSkill);
-router.put("/edit/add/langauge", protect, addLangauge);
+router.put("/edit/add/skill/", protect, addSkill);
+router.put("/edit/add/langauge/", protect, addLangauge);
+router.delete("/edit/remove/experience/:id", protect, delExperience);
+router.delete("/edit/remove/education/:id", protect, delEducation);
+router.delete("/edit/remove/skill/:id", protect, delSkill);
+router.delete("/edit/remove/langauge/:id", protect, delLangauge);
 router.put("/edit/user", protect, updateUser);
 router.get("/notifications", protect, getNotifications);
 // router.post("/gift", protect, onboarding);
