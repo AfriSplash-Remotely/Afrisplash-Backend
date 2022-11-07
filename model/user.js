@@ -63,9 +63,10 @@ const userSchema = new mongoose.Schema({
     required: false,
   },
   
-  langauge: {
-    type: Array,
-  },
+  langauge: [{
+    name:String,
+    level:String
+  }],
 
   account_setup_completed: {
     type: Boolean,
@@ -109,15 +110,24 @@ const userSchema = new mongoose.Schema({
     default: [],
   },
 
-  experience: {
-    type: Array,
-    default: [],
-  },
+  experience: [{
+    company_name : String,
+    position_held : String,
+    location : String,
+    job_type : String,
+    date_start : String,
+    date_end : String,
+    description : String
+}],
 
-  education: {
-    type: Array,
-    default: [],
-  },
+  education: [{
+    institution_name: String,
+    degree : String,
+    field_of_study  : String,
+    date_start : String,
+    date_end : String,
+    description : String 
+  }],
 
   jobs: {
     type: Array,
