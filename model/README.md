@@ -119,9 +119,9 @@ This Table Manages The Sponsor Post
 | Disable | Boolean - Require - True |
 
 
-### 4. Notificaion
+### 5. Notificaion (recuiter friendly)
 
-This Table Manages The Sponsor Post  
+This Table Manages The Nofitications For A User  
 <!-- Add a Expire system with a cron job o manage  b  -->
 
 | Attribute       | Type        
@@ -131,6 +131,21 @@ This Table Manages The Sponsor Post
 | Action    | String/URL - Require - True|
 | To     |  FOREIGN_KEY table (`User`)|
 | From     |  FOREIGN_KEY table (`User`)|
+| From_Des     |  String - Not Require|
 | created_at     | Date|
 | Seen | Boolean - Require - True |
 | Theme | String - Require - Colour |
+
+### 6. Gifts (recuiter friendly)
+
+This Table Manages The Gift Avaliable For A USer Or Company  
+<!-- So How I feel To HAndle this is by creating a uniqe page for each product and a guildlin on how to follow up with them  -->
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| Title     | String - Require - True|
+| Message     | String - Require - True|
+| Action    | String/URL - Require - True|
+| To     |  FOREIGN_KEY table (`User`)|
+| Theme | String - Require - Colour |
+| Date | Date  |
