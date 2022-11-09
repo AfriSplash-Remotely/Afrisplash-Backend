@@ -76,6 +76,8 @@ its contain a the `Foreign key` Pointing to the `auth table`
 | Company_ID | FOREIGN_KEY table(company) |
 | Company_ROLE | Array[String] |
 | Extra_Email | String - Require - False |
+| Notifications | [FOREIGN_KEY table(notifications)]|
+| Gifts | [FOREIGN_KEY table(gift)]|
 | Work_History |  Array[Object] - Require - False |
 
 
@@ -119,9 +121,9 @@ This Table Manages The Sponsor Post
 | Disable | Boolean - Require - True |
 
 
-### 5. Notificaion (recuiter friendly)
+### 5. Notification (recuiter friendly)
 
-This Table Manages The Nofitications For A User  
+This Table Manages The Notifications For A User  
 <!-- Add a Expire system with a cron job o manage  b  -->
 
 | Attribute       | Type        
@@ -138,14 +140,16 @@ This Table Manages The Nofitications For A User
 
 ### 6. Gifts (recuiter friendly)
 
-This Table Manages The Gift Avaliable For A USer Or Company  
-<!-- So How I feel To HAndle this is by creating a uniqe page for each product and a guildlin on how to follow up with them  -->
+This Table Manages The Gift Avaliable For A User Or Company  
+<!-- Add To A Particular Group  -->
 
 | Attribute       | Type        
 | ------------- |:-------------:| 
 | Title     | String - Require - True|
 | Message     | String - Require - True|
-| Action    | String/URL - Require - True|
-| To     |  FOREIGN_KEY table (`User`)|
+| Image     | String/URL - Require - True|
+| Action / Url To Explains    | String/URL - Require - True|
 | Theme | String - Require - Colour |
-| Date | Date  |
+| Created | Date  |
+| Expire | Date  |
+| For | schema {Object}  |

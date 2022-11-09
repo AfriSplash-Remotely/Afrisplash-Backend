@@ -179,7 +179,14 @@ const userSchema = new mongoose.Schema({
   notifications: [
     {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "Notification", //TODO
+      ref: "Notification",
+    },
+  ],
+
+  gifts: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Gifts",
     },
   ],
 

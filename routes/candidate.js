@@ -15,6 +15,7 @@ const {
     delExperience,
     delEducation,
     delSkill,
+    getGifts,
 } = require("../controllers/candidate")
 
 
@@ -30,7 +31,7 @@ router.delete("/edit/remove/skill/:id", protect, delSkill);
 router.delete("/edit/remove/langauge/:id", protect, delLangauge);
 router.put("/edit/user", protect, updateUser);
 router.get("/notifications", protect, getNotifications);
-// router.post("/gift", protect, onboarding);
+router.post("/gifts", protect, getGifts);
 // router.get("/jobs", protect, onboarding);
 // router.get("/job/save/:id", protect, onboarding);
 // router.get("/job/unsave/:id", protect, onboarding);

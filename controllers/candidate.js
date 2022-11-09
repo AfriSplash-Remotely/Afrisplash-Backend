@@ -5,6 +5,7 @@ const _ = require("lodash");
 const Auth = require("../model/auth")   
 const User = require("../model/user")
 const notification = require("../model/notification");
+const gifts = require("../model/gifts");
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -304,3 +305,19 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
       data: data
     });
   });
+
+
+  /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Get User Gitfs `Candidate Account Only`
+ * @route `/api/v1/candidate/gifts`
+ * @access Private
+ * @type GET
+ */
+ exports.getGifts = asyncHandler(async (req, res, next) => { 
+  const data = await gifts.find({ _id: { $in: req.user.gifts } });
+  res.status(200).json({
+    success: true, 
+    data: data
+  })
+ })
