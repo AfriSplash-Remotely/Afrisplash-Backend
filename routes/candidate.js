@@ -16,11 +16,13 @@ const {
     delEducation,
     delSkill,
     getGifts,
+    updateReadyToInterview,
 } = require("../controllers/candidate")
 
 
 router.post("/onboarding", protect, onboarding);
 router.get("/", protect, profile);
+router.put("/readytointerview", protect, updateReadyToInterview);
 router.put("/edit/add/experience/", protect, addExperience);
 router.put("/edit/add/education/", protect, addEducation);
 router.put("/edit/add/skill/", protect, addSkill);

@@ -321,3 +321,26 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
     data: data
   })
  })
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Update User Choich For Interview Readiness `Candidate Account Only`
+ * @route `/api/v1/candidate/readytointerview`
+ * @access Private
+ * @type PUT
+ */
+  exports.updateReadyToInterview = asyncHandler(async (req, res, next) => {
+    const userState = req.user.Ready_to_interveiw
+
+    const user = await User.findByIdAndUpdate(req.user._id, {Ready_to_interveiw : !userState}, {
+      new: true,
+      runValidators: true,
+    });
+  
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: user,
+    });
+  });
