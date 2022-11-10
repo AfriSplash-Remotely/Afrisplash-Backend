@@ -31,6 +31,7 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
     delete data._id
     delete data.email
     delete data.badge
+    delete data.password
     delete data.company_id
     delete data.company_role
     delete data.work_history
@@ -84,7 +85,7 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
  * @description Update User `Candidate Account Only`
  * @route `/api/v1/candidate/edit`
  * @access Private
- * @type PUT
+ * @type Depercated
  */
  exports.updateUser = asyncHandler(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.user._id, req.body, {
@@ -344,3 +345,106 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
       data: user,
     });
   });
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Update User Contact infomation `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/user/contact`
+ * @access Private
+ * @type PUT
+ */
+ exports.updateUserContact = asyncHandler(async (req, res, next) => {
+  const { phone, email, location} =  req.body
+  const user = await User.findByIdAndUpdate(req.user._id, {
+    phone_number:phone,
+    email:email,
+    location:location
+  }, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    status: "success",
+    data: user,
+  });
+});
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Update User Bio infomation `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/user/bio`
+ * @access Private
+ * @type PUT
+ */
+  exports.updateUserBio = asyncHandler(async (req, res, next) => {
+    const { bio } =  req.body
+    const user = await User.findByIdAndUpdate(req.user._id, {
+      bio:bio,
+    }, {
+      new: true,
+      runValidators: true,
+    });
+  
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: user,
+    });
+  });
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Update User Personal Infomation `Candidate Account Only`
+ * @route `/api/v1/candidate/edit/user/`
+ * @access Private
+ * @type PUT
+ */
+  exports.updateUserPI = asyncHandler(async (req, res, next) => {
+    const data =  req.body
+
+    delete data.auth_id
+    delete data.user_type
+    delete data._id
+    delete data.email
+    delete data.badge
+    delete data.company_id
+    delete data.company_role
+    delete data.work_history
+    delete data.created_at
+    delete data.__v
+    delete data.notifications
+    delete data.settings
+    delete data.jobs
+    delete data.friend
+    delete data.bio
+    delete data.cover_letter
+    delete data.cv
+    delete data.langauge
+    delete data.account_setup_completed
+    delete data.location
+    delete data.phone_number
+    delete data.skills
+    delete data.experience
+    delete data.education
+    delete data.jobs
+    delete data.hide_detail
+    delete data.ready_to_interview
+
+
+    const user = await User.findByIdAndUpdate(req.user._id, data, {
+      new: true,
+      runValidators: true,
+    });
+  
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: user,
+    });
+  });
+  

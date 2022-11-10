@@ -5,7 +5,7 @@ const protect = C_protect;
 const {
     onboarding, 
     profile,
-    updateUser,
+    updateUser, //Depercate 
     getNotifications,
     addExperience,
     addEducation,
@@ -17,6 +17,9 @@ const {
     delSkill,
     getGifts,
     updateReadyToInterview,
+    updateUserPI,
+    updateUserBio,
+    updateUserContact,
 } = require("../controllers/candidate")
 
 
@@ -31,7 +34,9 @@ router.delete("/edit/remove/experience/:id", protect, delExperience);
 router.delete("/edit/remove/education/:id", protect, delEducation);
 router.delete("/edit/remove/skill/:id", protect, delSkill);
 router.delete("/edit/remove/langauge/:id", protect, delLangauge);
-router.put("/edit/user", protect, updateUser);
+router.put("/edit/user/contact", protect, updateUserContact);
+router.put("/edit/user/bio", protect, updateUserBio);
+router.put("/edit/user/", protect, updateUserPI);
 router.get("/notifications", protect, getNotifications);
 router.post("/gifts", protect, getGifts);
 // router.get("/jobs", protect, onboarding);
