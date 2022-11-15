@@ -3,8 +3,23 @@
 
 
 # Tech Stack
+`Node` - Server Environment, `ExpressJS` - Framework, `Mongod` - Database, `Jest` - Testing 
  
+Please run the following after cloning:
 
+*Set the Env file*
+
+To install dependencies;
+
+`npm install`
+
+To run project;
+
+`npm run dev`
+
+Server Runs At Port ;
+
+`3000`
 
 # How to contribute
 
