@@ -153,3 +153,29 @@ This Table Manages The Gift Avaliable For A User Or Company
 | Created | Date  |
 | Expire | Date  |
 | For | schema {Object}  |
+
+
+### 7. Jobs
+<!-- I am tempeted to host this data on a different server -->
+This Table Manages The Jobs Created Registered  
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| Name     | String - Require - True|
+| Website    | String/URL - Require - True|
+| Logo     | String/URL - Require - True|
+| Level     | String - Require - True|
+| Location     | String - Require - True|
+| Type     | String - Require - True|
+| Salary | String - Require - True |
+| Market     | Array[String] - Require - True|
+| Number_Of_Employee     | Number - Require - True|
+| One_Line_Pitch    | String - Require - True|
+| Salary     | Array[Object] - Require - True |
+| Phone | String/Number - Require - True|
+| About     | String - Require - False|
+| Socials | Array[Object] |
+| Private | Boolean - Require - True |
+| Verify | Boolean - Require - True |
+| _Author | PRIMARY_KEY table(user)|
+| _comapny | FOREIGN_KEY table(company)|
