@@ -15,7 +15,7 @@ const authRouter = require('./routes/auth');
 const sponsorRouter = require('./routes/sponsor');
 const candidateRouter = require('./routes/candidate');
 
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./.env/config.env" });
 var app = express();
 //Db Connector
 connectDB();
