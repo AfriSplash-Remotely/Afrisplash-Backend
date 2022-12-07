@@ -167,9 +167,9 @@ This Table Manages The Jobs Created Registered
 | Level     | String - Require - True|
 | Location     | String - Require - True|
 | Type     | String - Require - True|
-| Salary | String - Require - True |
+| Salary | String - Require - True |//
 | Market     | Array[String] - Require - True|
-| Number_Of_Employee     | Number - Require - True|
+| Number_Of_Employee     | Number - Require - True|//
 | One_Line_Pitch    | String - Require - True|
 | Salary     | Array[Object] - Require - True |
 | Phone | String/Number - Require - True|
