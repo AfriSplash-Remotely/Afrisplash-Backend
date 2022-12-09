@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const asyncHandler = require("./async");
 const ErrorResponse = require("../utils/errorResponse");
 const User = require("../model/user");
+const _ = require("lodash");
 
 //TODO: Review This
 /**Route Graud For `All User` -- *MIDDLEWARE* */
@@ -120,6 +121,24 @@ exports.R_protect = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Not authorized to access this route", 401));
   }
 });
+
+// To Check If User is the Author of a Blog
+exports.isAuthor = (model) => async (req, res, next) =>{
+  const doc = await model.findOne({
+    _id:req.params.id
+  })
+  if (_.isEmpty(doc)) {
+    return next(new ErrorResponse("404 Content Do Not Exist Or Has Been Deleted", 404));
+  }
+
+  if(req.user._id.toString() == doc._author.toString() ){
+    next()
+  }else if(req.user.admin){
+    next()
+  }else{
+    return next(new ErrorResponse("Not authorized to modify this Document", 401));
+  }
+}
 
 // Grant access to specific roles
 exports.authorize = (...roles) => {
