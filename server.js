@@ -6,12 +6,17 @@ var path = require('path');
 var logger = require('morgan');
 const cors = require("cors")
 const helmet = require("helmet")
+const passport = require('passport')
+const expressSession = require('express-session')
+const MemoryStore = require('memorystore')(expressSession)
 const { connectDB } = require("./config/database");
 const errorHandler = require("./middleware/error");
 
+const passportSetup = require('./utils/passport')
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
+const googleOauthRouter = require('./routes/google.oauth')
 const sponsorRouter = require('./routes/sponsor');
 const candidateRouter = require('./routes/candidate');
 
@@ -37,9 +42,29 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// express session setup with MemoryStore
+const STATUS = (process.env.NODE_ENV === 'production') ? true : false
+app.set('trust proxy', 1)
+app.use(expressSession({
+  secret: [process.env.SECRET_1, process.env.SECRET_2],
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 86400000,
+    secure:STATUS
+  },
+  store: new MemoryStore({
+      checkPeriod: 86400000
+  })
+}))
+// initialize passport with express session
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.get("/", (req, res) => res.send("Hello from Afrisplash"));
 app.use('/api/v1', indexRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/oauth/', googleOauthRouter)
 app.use('/api/v1/sponsor', sponsorRouter);
 app.use('/api/v1/candidate', candidateRouter);
 
