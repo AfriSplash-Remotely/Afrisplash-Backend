@@ -29,7 +29,7 @@ const _ = require("lodash");
 
 
 /**
- * @author Jehoshaphat Egbe And Cyril Ogoh <jehoshaphategbe1@gmail.com>
+ * @author Cyril Ogoh
  * @description to create a new comment under a post  
  * @route `/comment/create/:postid`
  * @access Public
@@ -40,9 +40,9 @@ const _ = require("lodash");
   const data = await Comment.create({
     _post: postID,
     body:body,
-    name:name,
-    email:email,
-    profile_pic:image,
+    name:name || "",
+    email:email || "",
+    profile_pic:image || "",
     replies:[],
     like:0
   })
@@ -231,12 +231,6 @@ const _ = require("lodash");
       title:title,
       categories:categories,
       tags:tags,
-      summary:summary,
-      read_time:read_time,
-      cover_image:cover_image,
-      thumbnail:thumbnail,
-      disable_comments:disable_comment,
-      url:url
     }]);
     await newPost[0].save();
     const postContent = await Content.create([{

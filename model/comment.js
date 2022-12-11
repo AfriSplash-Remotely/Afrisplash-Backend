@@ -25,7 +25,6 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter your Email address"],
         trim: true,
-        unique: true,
         lowercase:true,
         match: [
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
