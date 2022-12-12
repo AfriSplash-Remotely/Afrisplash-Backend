@@ -22,7 +22,7 @@ const Post = require("../model/post");
 
 
 router.get("/test", SampleCode);
-router.get("/posts", advancedResults(Post), allPosts);
+router.get("/posts", advancedResults(Post,"_author"), allPosts);
 router.get("/post/:url", onePost);
 router.get("/post/manage", protect, getMyPosts);
 router.post("/post/create", protect, createNewPost);
