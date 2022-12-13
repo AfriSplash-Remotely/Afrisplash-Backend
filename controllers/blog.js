@@ -41,7 +41,7 @@ const _ = require("lodash");
     _post: postID,
     body:body,
     name:name || "",
-    email:email || "",
+    email:email,
     profile_pic:image || "",
     replies:[],
     like:0
@@ -187,7 +187,7 @@ const _ = require("lodash");
         new: false,
         runValidators: true,
       });
-  
+
       res.status(200).json({
         success: true,
          data
@@ -267,7 +267,7 @@ const _ = require("lodash");
 /**
  * @author Cyril Ogoh <cyrilogoh@gmail.com>
  * @description to delete a Post And all it child  
- * @route `/post/delete/:id`
+ * @route `/delete/:id`
  * @access Private
  * @type DELETE
  */
@@ -285,19 +285,18 @@ const _ = require("lodash");
 /**
  * @author Cyril Ogoh <cyrilogoh@gmail.com>
  * @description to Edit a Post
- * @route `/post/edit/:id`
+ * @route `/edit/:id`
  * @access Private
  * @type PUT
  */
  exports.editPost = asyncHandler(async (req, res, next) => {
   const data =  req.body
-
   delete data._author
   delete data._content
   delete data.views
 
   const post = await Post.findByIdAndUpdate(req.params.id, data, {
-    new: true,
+    new: false,
     runValidators: true,
   });
 
@@ -312,7 +311,7 @@ const _ = require("lodash");
 /**
  * @author Cyril Ogoh <cyrilogoh@gmail.com>
  * @description to Edit a Post content
- * @route `/post/edit/body/:id`
+ * @route `/edit/body/:id`
  * @access Private
  * @type PUT
  */
@@ -320,8 +319,6 @@ const _ = require("lodash");
   const data =  req.body
 
   delete data._post
-  //TODO: Update Time Here 
-
   const content = await Content.findOneAndUpdate({_post:req.params.id}, data, {
     new: true,
     runValidators: true,
