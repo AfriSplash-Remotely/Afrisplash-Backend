@@ -153,3 +153,84 @@ This Table Manages The Gift Avaliable For A User Or Company
 | Created | Date  |
 | Expire | Date  |
 | For | schema {Object}  |
+
+
+### 7. Jobs
+<!-- I am tempeted to host this data on a different server -->
+This Table Manages The Jobs Created Registered  
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| Name     | String - Require - True|
+| Website    | String/URL - Require - True|
+| Logo     | String/URL - Require - True|
+| Level     | String - Require - True|
+| Location     | String - Require - True|
+| Type     | String - Require - True|
+| Salary | String - Require - True |//
+| Market     | Array[String] - Require - True|
+| Number_Of_Employee     | Number - Require - True|//
+| One_Line_Pitch    | String - Require - True|
+| Salary     | Array[Object] - Require - True |
+| Phone | String/Number - Require - True|
+| About     | String - Require - False|
+| Socials | Array[Object] |
+| Private | Boolean - Require - True |
+| Verify | Boolean - Require - True |
+| _Author | PRIMARY_KEY table(user)|
+| _comapny | FOREIGN_KEY table(company)|
+
+
+### 8. Post Table (Blog)
+
+This Table is for blogs hosted on the system   
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| _ID | PRIMARY_KEY table(SELF)|
+| _Author | FOREIGN_KEY table(user)|
+| _content | FOREIGN_KEY table(post_body)|
+| Title     | String - Require - True|
+| Url     | String - Require - True|
+| Categories    | String - Require - True|
+| Tags | Array[string] |
+| Summary     | String - Require - True|
+| Read_Time     | Number - Require - True |
+| Cover_Image     | String/URL - Require - True|
+| Thumbnail     | String/URL - Require - True|
+| veiws     | Number - Require - True |
+| Created_at | Date  |
+| Update_at | Date  |
+| Disable_Comment | Boolean - Require - True |
+
+
+### 9. Comment (Blog)
+
+This Table Manages Of A Post Single Chainning   
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| _ID | PRIMARY_KEY table(SELF)|
+| _post | FOREIGN_KEY table(post)|
+| body    | String - Require - True|
+| Replies | Array[Object] |
+| Likes | Number  |
+| Created | Date  |
+| user | Object |
+
+
+
+### 10. Post Content (blog)
+
+This Contain the content or body of a blog  
+<!--Reason
+    Since the front end is using a WYSIWYG package
+    image, video and other assest would / might be converted to a 64 bit 
+    So it would make a row appromixate greater than > 5mb if not correctly optimized 
+   -->
+
+| Attribute       | Type        
+| ------------- |:-------------:| 
+| _ID | PRIMARY_KEY table(SELF)|
+| _post | FOREIGN_KEY table(post) |
+| Message     | String - Require - False|

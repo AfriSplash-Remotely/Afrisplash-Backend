@@ -14,6 +14,7 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const sponsorRouter = require('./routes/sponsor');
 const candidateRouter = require('./routes/candidate');
+const blogRouter = require('./routes/blog');
 
 dotenv.config({ path: "./.env/config.env" });
 var app = express();
@@ -42,6 +43,7 @@ app.use('/api/v1', indexRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/sponsor', sponsorRouter);
 app.use('/api/v1/candidate', candidateRouter);
+app.use('/api/v1/blog', blogRouter);
 
 app.use(errorHandler);
 
