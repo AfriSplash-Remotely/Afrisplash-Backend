@@ -19,10 +19,11 @@ const {
     editContent
 } = require("../controllers/blog");
 const Post = require("../model/post");
+const author = {email:1,bio:1,first_name:1,_id:0,last_name:1,profile_image:1,thumbnail:1,badge:1}
 
 
 router.get("/test", SampleCode);
-router.get("/posts", advancedResults(Post,"_author"), allPosts);
+router.get("/posts", advancedResults(Post,"_author",author), allPosts);
 router.get("/post/:url", onePost);
 router.get("/post/manage", protect, getMyPosts);
 router.post("/post/create", protect, createNewPost);
