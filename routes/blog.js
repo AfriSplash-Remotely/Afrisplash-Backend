@@ -25,11 +25,11 @@ const author = {email:1,bio:1,first_name:1,_id:0,last_name:1,profile_image:1,thu
 router.get("/test", SampleCode);
 router.get("/posts", advancedResults(Post,"_author",author), allPosts);
 router.get("/post/:url", onePost);
-router.get("/post/manage", protect, getMyPosts);
-router.post("/post/create", protect, createNewPost);
-router.delete("/post/delete/:id", protect, isAuthor(Post), deletePost);
-router.put("/post/edit/:id", protect, isAuthor(Post), editPost);
-router.put("/post/edit/content/:id", protect, isAuthor(Post), editContent);
+router.get("/manage", protect, getMyPosts);
+router.post("/create", protect, createNewPost);
+router.delete("/delete/:id", protect, isAuthor(Post), deletePost);
+router.put("/edit/:id", protect, isAuthor(Post), editPost);
+router.put("/edit/content/:id", protect, isAuthor(Post), editContent);
 
 router.get("/comment/:postid", getAllComments);
 router.post("/comment/create/:postid", postNewComment);
