@@ -183,6 +183,10 @@ const _ = require("lodash");
         },
       }
 
+      await Post.findOneAndUpdate({url:req.params.url.toLowerCase()}, {$inc:{"views":1}}, {
+        new: false,
+        runValidators: true,
+      });
   
       res.status(200).json({
         success: true,
