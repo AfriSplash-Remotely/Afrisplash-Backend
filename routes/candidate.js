@@ -20,6 +20,9 @@ const {
     updateUserPI,
     updateUserBio,
     updateUserContact,
+    getJobs,
+    saveAJob,
+    unSaveAJob,
 } = require("../controllers/candidate")
 
 
@@ -39,9 +42,9 @@ router.put("/edit/user/bio", protect, updateUserBio);
 router.put("/edit/user/", protect, updateUserPI);
 router.get("/notifications", protect, getNotifications);
 router.post("/gifts", protect, getGifts);
-// router.get("/jobs", protect, onboarding);
-// router.get("/job/save/:id", protect, onboarding);
-// router.get("/job/unsave/:id", protect, onboarding);
+router.get("/jobs/", protect, getJobs);
+router.get("/job/save/:id", protect, saveAJob);
+router.get("/job/unsave/:id/", protect, unSaveAJob);
 
 
 module.exports = router;
