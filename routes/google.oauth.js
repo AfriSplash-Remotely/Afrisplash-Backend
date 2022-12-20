@@ -2,7 +2,11 @@ const router = require('express').Router();
 
 const googleClient = require('../utils/google-client');
 
-const { getUserProfile, signUser } = require('../controllers/google.auth');
+const {
+  getUserProfile,
+  signinUser,
+  signupUser
+} = require('../controllers/google.auth');
 
 router.get('/google', (req, res) => {
   const scopes = [
@@ -20,6 +24,8 @@ router.get('/google', (req, res) => {
 
 router.get('/google/callback', getUserProfile);
 
-router.get('/sign', signUser);
+router.get('/signin', signinUser);
+
+router.post('/signup', signupUser);
 
 module.exports = router;
