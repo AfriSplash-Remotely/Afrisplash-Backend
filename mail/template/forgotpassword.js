@@ -1,3 +1,3 @@
-exports.forgotPasswordOtp = (name, otp) => {
-    return `Hi ${name},<br /><br />Please continue using this OTP <b>${otp}</b> <br> To reset your account`;
-  };
+exports.forgotPassword = (name, url) => {
+  return `Hi ${name},<br /><br />Please continue using this Link <b>${url}</b> <br> To reset your account`;
+};

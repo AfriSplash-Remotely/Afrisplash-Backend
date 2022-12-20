@@ -448,3 +448,60 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
     });
   });
   
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Get User Saved Jobs `Candidate Account Only`
+ * @route `/api/v1/candidate/jobs`
+ * @access Private
+ * @type GET
+ */
+ exports.getJobs = asyncHandler(async (req, res, next) => { 
+  const data = await Jobs.find({ _id: { $in: req.user.jobs } });
+  res.status(200).json({
+    success: true, 
+    data: data
+  })
+ })
+
+
+ /**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Remove a Jobs `Candidate Account Only`
+ * @route `/api/v1/candidate/unsave/Job/:id`
+ * @access Private
+ * @type DELETE
+ */
+  exports.unSaveAJob = asyncHandler(async (req, res, next) => {
+    const data = await User.findByIdAndUpdate(req.user._id, {$pop: {jobs: req.params.id}}, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      success: true,
+      status: "success",
+      data: data
+    });
+  });
+
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Save A New Job `Candidate Account Only`
+ * @route `/api/v1/candidate/job/:id`
+ * @access Private
+ * @type GET
+ */
+ exports.saveAJob = asyncHandler(async (req, res, next) => {
+  //TODO  JOI VALIDATOR
+  const data = await User.findByIdAndUpdate(req.user._id, {$push: {jobs: req.body.job}}, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    status: "success",
+    data: data
+  });
+});
