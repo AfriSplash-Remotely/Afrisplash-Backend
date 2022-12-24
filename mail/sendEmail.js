@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const fs = require('fs');
+
 /**
  *
  * @param {Object} option
@@ -45,45 +46,11 @@ const sendEmail = async (option) => {
 
   return transporter.sendMail(mailOptions, (error, data) => {
     if (data) {
-      fs.appendFile(
-        'sent.txt',
-        data.response +
-          ',' +
-          ' - ' +
-          ',' +
-          email +
-          ',' +
-          ',' +
-          name +
-          ',' +
-          ',' +
-          ',' +
-          '\n',
-        (err) => {
-          if (err) console.log(err);
-        }
-      );
+    //TODO: implenment Proper Logging
       return;
     }
     if (error) {
-      fs.appendFile(
-        'error.txt',
-        error +
-          ',' +
-          ' - ' +
-          ',' +
-          email +
-          ',' +
-          ',' +
-          name +
-          ',' +
-          ',' +
-          ',' +
-          '\n',
-        (err) => {
-          if (err) console.log(err);
-        }
-      );
+      //TODO: implenment Proper Logging
       return;
     }
   });
