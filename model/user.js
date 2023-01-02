@@ -162,8 +162,7 @@ const userSchema = new mongoose.Schema({
   },
 
   company_role: {
-    type: Array,
-    default: [],
+    type: String,
   },
 
   work_history: {
