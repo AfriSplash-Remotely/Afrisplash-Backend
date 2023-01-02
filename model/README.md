@@ -74,7 +74,7 @@ its contain a the `Foreign key` Pointing to the `auth table`
 | Password | 64bit(Hash)- Require - True  |
 | Friends | Array[Obejct]|
 | Company_ID | FOREIGN_KEY table(company) |
-| Company_ROLE | Array[String] |
+| Company_ROLE | String |
 | Extra_Email | String - Require - False |
 | Notifications | [FOREIGN_KEY table(notifications)]|
 | Gifts | [FOREIGN_KEY table(gift)]|
