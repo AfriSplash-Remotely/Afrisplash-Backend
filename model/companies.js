@@ -21,7 +21,7 @@ const companySchema = new mongoose.Schema(
     },
     location: {
       type: String,
-      required: false
+      required: true
     },
     map: {
       type: Object,
@@ -32,7 +32,8 @@ const companySchema = new mongoose.Schema(
       default: []
     },
     staff: {
-      type: Number
+      type: Number,
+      require:[true, "Number of staff is required"]
     },
     //TODO Test ASAP
     members: [
@@ -81,7 +82,7 @@ const companySchema = new mongoose.Schema(
         true,
         'Company cant be created without an authication handler'
       ],
-      ref: 'auth'
+      ref: 'user'
     }
   },
   {

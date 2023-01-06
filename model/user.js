@@ -154,7 +154,7 @@ const userSchema = new mongoose.Schema({
     default: [],
   },
 
-  company_id: {
+  _company: {
     type: mongoose.SchemaTypes.ObjectId,
     required: false,
     ref: "company",
