@@ -11,5 +11,8 @@ const {
 router.get("/", getCompanies);
 router.get('/verified', getVCompanies);
 router.post("/create", create);
+router.put("/verify", create);
+router.put("/edit/:company", create);
+router.delete("/company/:company", create);
 
 module.exports = router;
