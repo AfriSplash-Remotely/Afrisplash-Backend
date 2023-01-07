@@ -6,6 +6,7 @@ const {
     getCompanies,
     getVCompanies,
     deleteCompany,
+    verifyCompany,
 } = require("../controllers/company");
 const { editComment } = require("../controllers/blog");
 
@@ -13,7 +14,7 @@ const { editComment } = require("../controllers/blog");
 router.get("/", getCompanies);
 router.get('/verified', getVCompanies);
 router.post("/create", create);
-router.put("/verify", create);
+router.put("/verify", verifyCompany);
 router.put("/edit/:company", editComment);
 router.delete("/delete/:company", deleteCompany);
 

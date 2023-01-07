@@ -166,3 +166,31 @@ exports.getVCompanies = asyncHandler(async (req, res, next) => {
     data: company,
   });
 });
+
+
+/**
+ * @author Cyril Ogoh <cyrilogoh@gmail.com>
+ * @description to Verify a Company Details
+ * @route `/verify`
+ * @access Private
+ * @type PUT
+ */
+ exports.verifyCompany = asyncHandler(async (req, res, next) => {
+  const { id } =  req.body
+
+  const company = await Company.findByIdAndUpdate(id, {
+    verified:true
+  },
+    {
+    new: false,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    status: "success",
+    data: {
+        message:"Company Verify Successful"
+    },
+  });
+});
