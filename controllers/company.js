@@ -140,3 +140,29 @@ exports.getVCompanies = asyncHandler(async (req, res, next) => {
     data: {}
   })
 });
+
+
+/**
+ * @author Cyril Ogoh <cyrilogoh@gmail.com>
+ * @description to Edit a Company Details
+ * @route `/edit/:id`
+ * @access Private
+ * @type PUT
+ */
+ exports.editCompany = asyncHandler(async (req, res, next) => {
+  const data =  req.body
+  delete data._id
+  delete data.verified;
+  delete data.created_by
+
+  const company = await Company.findByIdAndUpdate(req.params.id, data, {
+    new: false,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    status: "success",
+    data: company,
+  });
+});

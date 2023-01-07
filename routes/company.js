@@ -6,14 +6,15 @@ const {
     getCompanies,
     getVCompanies,
     deleteCompany,
-} = require("../controllers/company")
+} = require("../controllers/company");
+const { editComment } = require("../controllers/blog");
 
 //TODO Protect Router 
 router.get("/", getCompanies);
 router.get('/verified', getVCompanies);
 router.post("/create", create);
 router.put("/verify", create);
-router.put("/edit/:company", create);
+router.put("/edit/:company", editComment);
 router.delete("/delete/:company", deleteCompany);
 
 module.exports = router;
