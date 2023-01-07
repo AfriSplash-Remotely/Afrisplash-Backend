@@ -122,3 +122,21 @@ exports.getVCompanies = asyncHandler(async (req, res, next) => {
     data: data
   });
 });
+
+
+/**
+ * @author Cyril Ogoh <cyrilogoh@gmail.com>
+ * @description to delete a Company  
+ * @route `/delete/:id`
+ * @access Private
+ * @type DELETE
+ */
+ exports.deleteCompany = asyncHandler(async (req, res, next) => {
+  await Company.findOneAndDelete({_id:req.params.company})
+    //TODO: Remove company from users 
+    // Remove Jobs from Company
+  res.status(200).json({
+    success: true,
+    data: {}
+  })
+});

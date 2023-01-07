@@ -5,6 +5,7 @@ const {
     create,
     getCompanies,
     getVCompanies,
+    deleteCompany,
 } = require("../controllers/company")
 
 //TODO Protect Router 
@@ -13,6 +14,6 @@ router.get('/verified', getVCompanies);
 router.post("/create", create);
 router.put("/verify", create);
 router.put("/edit/:company", create);
-router.delete("/company/:company", create);
+router.delete("/delete/:company", deleteCompany);
 
 module.exports = router;
