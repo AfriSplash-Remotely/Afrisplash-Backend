@@ -1,13 +1,32 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { protect } = require("../middleware/auth");
+const { protect } = require('../middleware/auth');
+const advancedResults = require('../middleware/advancedResults');
 const {
-    createCompany,
-    getCompany
-} = require("../controllers/company")
+  create,
+  getCompanies,
+  getVCompanies, // Would be filter by the front end developer
+  deleteCompany,
+  verifyCompany,
+  editCompany
+} = require('../controllers/company');
+const Company = require('../model/companies');
+const meta = {
+  name: 1,
+  logo: 1,
+  thumbnail: 1,
+  location: 1,
+  market: 1,
+  one_Line_Pitch: 1,
+  verified: 1,
+  staff: 1,
+  _id: 1
+};
 
-//TODO Protect Router 
-router.get("/", getCompany);
-router.post("/create/", createCompany);
+router.get('/', advancedResults(Company, 'created_by', meta), getCompanies);
+router.post('/', protect, create);
+router.put('/verify', verifyCompany);
+router.put('/:company', protect, editCompany);
+router.delete('/:company', protect, deleteCompany);
 
 module.exports = router;
