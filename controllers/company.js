@@ -5,7 +5,7 @@ const joi = require('joi');
 const Company = require('../model/companies');
 const User = require('../model/user');
 const _ = require('lodash');
-
+const Jobs = require('../model/jobs');
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
  * @description Create A New Company
@@ -62,7 +62,8 @@ exports.create = asyncHandler(async (req, res, next) => {
       },
       { new: true, runValidators: true, session: session }
     );
-
+    await session.commitTransaction();
+    session.endSession();
     res.status(201).json({
       success: true,
       data: data
@@ -81,21 +82,22 @@ exports.create = asyncHandler(async (req, res, next) => {
  * @type GET
  */
 exports.getCompanies = asyncHandler(async (req, res, next) => {
-  const data = await Company.find({}).sort({ _id: -1 }).select({
-    name: 1,
-    logo: 1,
-    thumbnail: 1,
-    location: 1,
-    market: 1,
-    one_Line_Pitch: 1,
-    verified: 1,
-    staff: 1,
-    _id: 1
-  });
-  res.status(200).json({
-    success: true,
-    data: data
-  });
+  //   const data = await Company.find({}).sort({ _id: -1 }).select({
+  //     name: 1,
+  //     logo: 1,
+  //     thumbnail: 1,
+  //     location: 1,
+  //     market: 1,
+  //     one_Line_Pitch: 1,
+  //     verified: 1,
+  //     staff: 1,
+  //     _id: 1
+  //   });
+  //   res.status(200).json({
+  //     success: true,
+  //     data: data
+  //   });
+  res.status(200).json(res.advancedResults);
 });
 
 /**
@@ -123,50 +125,59 @@ exports.getVCompanies = asyncHandler(async (req, res, next) => {
   });
 });
 
-
 /**
  * @author Cyril Ogoh <cyrilogoh@gmail.com>
- * @description to delete a Company  
- * @route `/delete/:id`
+ * @description to delete a Company
+ * @route `/api/v1/company/:company`
  * @access Private
  * @type DELETE
  */
- exports.deleteCompany = asyncHandler(async (req, res, next) => {
-  await Company.findOneAndDelete({_id:req.params.company})
-    //TODO: Remove company from users 
-    // Remove Jobs from Company
+exports.deleteCompany = asyncHandler(async (req, res, next) => {
+  await Company.findOneAndDelete({ _id: req.params.company });
+
+  await User.updateMany(
+    {
+      _company: req.params.company
+    },
+    {
+      _company: null,
+      company_role: ''
+    }
+  );
+  // Remove Jobs from Company
+  await Jobs.deleteMany({
+    _company: req.params.company
+  });
   res.status(200).json({
     success: true,
     data: {}
-  })
+  });
 });
-
 
 /**
  * @author Cyril Ogoh <cyrilogoh@gmail.com>
  * @description to Edit a Company Details
- * @route `/edit/:id`
+ * @route `/:id`
  * @access Private
  * @type PUT
  */
- exports.editCompany = asyncHandler(async (req, res, next) => {
-  const data =  req.body
-  delete data._id
+exports.editCompany = asyncHandler(async (req, res, next) => {
+  const data = req.body;
+  delete data._id;
   delete data.verified;
-  delete data.created_by
+  delete data.created_by;
 
   const company = await Company.findByIdAndUpdate(req.params.id, data, {
     new: false,
-    runValidators: true,
+    runValidators: true
   });
 
   res.status(200).json({
     success: true,
-    status: "success",
-    data: company,
+    status: 'success',
+    data: company
   });
 });
-
 
 /**
  * @author Cyril Ogoh <cyrilogoh@gmail.com>
@@ -175,22 +186,25 @@ exports.getVCompanies = asyncHandler(async (req, res, next) => {
  * @access Private
  * @type PUT
  */
- exports.verifyCompany = asyncHandler(async (req, res, next) => {
-  const { id } =  req.body
+exports.verifyCompany = asyncHandler(async (req, res, next) => {
+  const { id } = req.body;
 
-  const company = await Company.findByIdAndUpdate(id, {
-    verified:true
-  },
+  const company = await Company.findByIdAndUpdate(
+    id,
     {
-    new: false,
-    runValidators: true,
-  });
+      verified: true
+    },
+    {
+      new: false,
+      runValidators: true
+    }
+  );
 
   res.status(200).json({
     success: true,
-    status: "success",
+    status: 'success',
     data: {
-        message:"Company Verify Successful"
-    },
+      message: 'Company Verify Successful'
+    }
   });
 });
