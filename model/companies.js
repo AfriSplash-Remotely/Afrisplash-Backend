@@ -5,7 +5,8 @@ const companySchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, 'Please enter your Company Name'],
-      trim: true
+      trim: true,
+      lowercase: true
     },
     logo: {
       type: String,
@@ -33,7 +34,7 @@ const companySchema = new mongoose.Schema(
     },
     staff: {
       type: Number,
-      require:[true, "Number of staff is required"]
+      require: [true, 'Number of staff is required']
     },
     //TODO Test ASAP
     members: [
@@ -54,6 +55,7 @@ const companySchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please enter your Email address'],
       trim: true,
+      lowercase: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         'Please enter a valid Email address'
