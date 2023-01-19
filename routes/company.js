@@ -31,3 +31,6 @@ router.put('/:company', protect, editCompany);
 router.delete('/:company', protect, deleteCompany);
 
 module.exports = router;
+
+
+//TODO only employeee or creator should be able to edit company 
