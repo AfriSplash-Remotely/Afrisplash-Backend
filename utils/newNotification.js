@@ -7,7 +7,7 @@ const new_notification = () =>{
 const sendEmail = () =>{
     //TODO
 }
-
+// Sending to a user 
 const sendPush = ( ) =>{
     //TODO
 }
