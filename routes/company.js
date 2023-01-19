@@ -32,5 +32,6 @@ router.delete('/:company', protect, deleteCompany);
 
 module.exports = router;
 
-
-//TODO only employeee or creator should be able to edit company 
+//TODO only employeee or creator should be able to edit company
+// TODO create list of company requesting
+//TODO  Remove an empoleee from a company
