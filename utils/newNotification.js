@@ -1,3 +1,4 @@
+// Using FCM to send notification
 const new_notification = () =>{
     // TODO
 }
