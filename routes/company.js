@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { protect } = require('../middleware/auth');
+const { R_protect } = require('../middleware/auth');
+const protect = R_protect; //Ony Recuiter can create Jobs Now
 const advancedResults = require('../middleware/advancedResults');
 const {
   create,
   getCompanies,
-  getVCompanies, // Would be filter by the front end developer
+  getVCompanies, // Would be filter by the front end developer (Not Required)
   deleteCompany,
   verifyCompany,
   editCompany
