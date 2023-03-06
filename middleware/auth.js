@@ -110,8 +110,17 @@ exports.R_protect = asyncHandler(async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decoded.user_id);
 
-    if(req.user.user_type == "recuiter"){
-      next()
+    if(req.user.user_type == "recruiter"){
+        if (req.user.account_setup_completed) {
+            next();
+        } else if (
+          !req.user.account_setup_completed &&
+          req.originalUrl == '/api/v1/recruiter/onboarding'
+        ) {
+          next();
+        } else {
+          res.redirect('/recruiter/onboarding');
+        }
     }else if (req.user.user_type == "candidate"){
       return next(new ErrorResponse("Not authorized to access this route", 401));
     }else{

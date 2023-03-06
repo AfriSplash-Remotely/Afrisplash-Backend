@@ -26,3 +26,11 @@ Bulk Email Would be handled using `MailGun`
 - noreply@afrisplash.com
 - admin@afrisplash.com
 - notify@afrisplash.com ( low priority )
+
+
+
+## When Mail Are Triggered
+- [ ] After Signup to verify Email
+- [ ] When Trying to reset Accounts
+- [ ] when account has been verifed and ready to use (Welcome Mail) 
+- [ ] when a new notifcation is set 
