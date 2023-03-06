@@ -6,67 +6,69 @@ const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
   auth_id: {
     type: mongoose.SchemaTypes.ObjectId,
-    required: [true, "a User cant be created without an authication handler"],
-    ref: "auth",
+    required: [true, 'a User cant be created without an authication handler'],
+    ref: 'auth'
   },
   user_type: {
     type: String,
     required: true,
-    enum: ["recuiter", "candidate"],
-    default: "candidate",
+    enum: ['recuiter', 'candidate'],
+    default: 'candidate'
   },
   first_name: {
     type: String,
-    required: [true, "Please enter your First name"],
-    trim: true,
+    required: [true, 'Please enter your First name'],
+    trim: true
   },
 
   last_name: {
     type: String,
-    required: [true, "Please enter your Last name"],
-    trim: true,
+    required: [true, 'Please enter your Last name'],
+    trim: true
   },
 
   email: {
     type: String,
-    required: [true, "Please enter your Email address"],
+    required: [true, 'Please enter your Email address'],
     trim: true,
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please enter a valid Email address",
-    ],
+      'Please enter a valid Email address'
+    ]
   },
 
   bio: {
     type: String,
-    default: null,
+    default: null
   },
 
   profile_image: {
     type: String,
-    required: false,
+    required: false
   },
 
   thumbnail: {
     type: String,
-    required: false,
+    required: false
   },
 
   cover_letter: {
     type: String,
-    required: false,
+    required: false
   },
 
   cv: {
     type: String,
-    required: false,
+    required: false
   },
-  
-  langauge: [{
-    name:String,
-    level:String
-  }],
+
+  langauge: [
+    {
+      name: String,
+      level: String
+    }
+  ],
 
   account_setup_completed: {
     type: Boolean,
@@ -74,67 +76,74 @@ const userSchema = new mongoose.Schema({
     default: false
   },
 
-  location : {
+  location: {
     type: String,
-    required: false,
+    required: false
   },
 
   role: {
     type: String,
-    required: [true, "Please enter user role"],
-    default: "Product Design",
+    required: [true, 'Please enter user role'],
+    default: 'Product Design'
   },
 
   avaliability: {
     type: Array,
-    required: [true, "Please enter Time Avaliable (Time OnJob), Type of Work Location"],
-    default: ["Full-time Remote"],
+    required: [
+      true,
+      'Please enter Time Avaliable (Time OnJob), Type of Work Location'
+    ],
+    default: ['Full-time Remote']
   },
 
-  badge : {
+  badge: {
     type: Number,
     required: [true],
-    max:5,
-    min:0,
-    default: 0 
+    max: 5,
+    min: 0,
+    default: 0
   },
 
   phone_number: {
     type: String,
-    required: [false, "Please enter your Phone Number"],
-    trim: true,
+    required: [false, 'Please enter your Phone Number'],
+    trim: true
   },
 
   skills: {
     type: Array,
-    default: [],
+    default: []
   },
 
-  experience: [{
-    company_name : String,
-    position_held : String,
-    location : String,
-    job_type : String,
-    date_start : String,
-    date_end : String,
-    description : String
-}],
+  experience: [
+    {
+      company_name: String,
+      position_held: String,
+      location: String,
+      job_type: String,
+      date_start: String,
+      date_end: String,
+      description: String
+    }
+  ],
 
-  education: [{
-    institution_name: String,
-    degree : String,
-    field_of_study  : String,
-    date_start : String,
-    date_end : String,
-    description : String 
-  }],
+  education: [
+    {
+      institution_name: String,
+      degree: String,
+      field_of_study: String,
+      date_start: String,
+      date_end: String,
+      description: String
+    }
+  ],
 
   jobs: {
-    type: Array,
+    type: Array
   },
 
   settings: {
-    type: Object, //FIXME
+    type: Object //FIXME
   },
 
   hide_detail: {
@@ -149,51 +158,61 @@ const userSchema = new mongoose.Schema({
     default: false
   },
 
-  friends: {
-    type: Array,
-    default: [],
+  activelyHiring: {
+    type: Boolean,
+    required: true,
+    default: false
   },
 
-  company_id: {
+  privateMode: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  friends: {
+    type: Array,
+    default: []
+  },
+
+  _company: {
     type: mongoose.SchemaTypes.ObjectId,
     required: false,
-    ref: "company",
-    default: null,
+    ref: 'company',
+    default: null
   },
 
   company_role: {
-    type: Array,
-    default: [],
+    type: String
   },
 
   work_history: {
     type: Array,
-    default: [],
+    default: []
   },
 
-  extra_email : {
+  extra_email: {
     type: Array,
-    default: [],
+    default: []
   },
 
   notifications: [
     {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "Notification",
-    },
+      ref: 'Notification'
+    }
   ],
 
   gifts: [
     {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: "Gifts",
-    },
+      ref: 'Gifts'
+    }
   ],
 
   created_at: {
     type: Date,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 });
 
 // Sign JWT

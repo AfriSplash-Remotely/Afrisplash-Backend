@@ -74,7 +74,7 @@ its contain a the `Foreign key` Pointing to the `auth table`
 | Password | 64bit(Hash)- Require - True  |
 | Friends | Array[Obejct]|
 | Company_ID | FOREIGN_KEY table(company) |
-| Company_ROLE | Array[String] |
+| Company_ROLE | String |
 | Extra_Email | String - Require - False |
 | Notifications | [FOREIGN_KEY table(notifications)]|
 | Gifts | [FOREIGN_KEY table(gift)]|
@@ -88,22 +88,23 @@ This Table Manages The Companies Registered
 | Attribute       | Type        
 | ------------- |:-------------:| 
 | Name     | String - Require - True|
-| Website    | String/URL - Require - True|
 | Logo     | String/URL - Require - True|
-| Last Name     | String - Require - True|
+| thumbnail     | String/URL - Require - True|
+| Website    | String/URL - Require - False|
 | Location     | String - Require - True|
-| Co-Ordinate     | String - Require - True|
+| map     | String - Require - false|
 | Market     | Array[String] - Require - True|
-| Number_Of_Employee     | Number - Require - True |
+| Number_Of_Employee(Staff)     | Number - Require - True |
+| Team_Members   (Members)  | Array[ObjectID] - Require - True |
 | One_Line_Pitch    | String - Require - True|
-| Team_Members     | Array[Object] - Require - True |
+| Description (About)    | String - Require - False|
 |<!--Company Contact-->|
 | Email | String - Require - True |
 | Phone | String/Number - Require - True |
-| About     | String - Require - False|
 | Socials | Array[Object] |
 | Verify | Boolean - Require - True |
-| Hide_Detail | Boolean - Require - True |
+| CreateBy | FOREIGN_KEY table(user)|
+| invites     | Array[String] - Require - True|
 
 ### 4. Sponsor
 
