@@ -3,7 +3,7 @@ const router = express.Router();
 const { R_protect } = require('../middleware/auth');
 const protect = R_protect; //Ony Recuiter can create Jobs Now
 const advancedResults = require('../middleware/advancedResults');
-const { create, ping, updateJob } = require('../controllers/jobs');
+const { create, ping, updateJob, delJob } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
 router.get('/', ping);
@@ -33,7 +33,7 @@ router.get('/c/:id', protect, ping);
 router.get('/o/:id', protect, ping);
 
 // Delete a Job
-router.delete('/d/:id', protect, ping);
+router.delete('/d/:id', protect, delJob);
 // Report a Job
 router.post('/r/:id', ping);
 

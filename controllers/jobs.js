@@ -69,7 +69,7 @@ exports.create = asyncHandler(async (req, res, next) => {
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
- * @description  `Candidate Account Only`
+ * @description  Edit A Job
  * @route `/api/v1/jobs/e/:id`
  * @access Private
  * @type PUT
@@ -83,7 +83,7 @@ exports.updateJob = asyncHandler(async (req, res, next) => {
   delete data.publish;
   delete data.verify;
 
-  const jobOld = await Jobs.find({ _id: req.params.id });
+  const jobOld = await Jobs.findOne({ _id: req.params.id });
 
   // check if User is Asscoited with the company
   if (req.user._company !== jobOld._company) {
@@ -94,6 +94,33 @@ exports.updateJob = asyncHandler(async (req, res, next) => {
     new: true,
     runValidators: true
   });
+
+  res.status(200).json({
+    success: true,
+    status: 'success',
+    data: job
+  });
+});
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description  Delete a Job
+ * @route `/api/v1/jobs/d/:id`
+ * @access Private
+ * @type DELETE
+ */
+exports.delJob = asyncHandler(async (req, res, next) => {
+  const jobOld = await Jobs.findOne({ _id: req.params.id });
+
+  if (!jobOld) {
+    return next(new ErrorResponse('No User Found', 404));
+  }
+  // check if User is Asscoited with the company
+  if (req.user._company !== jobOld._company) {
+    return next(new ErrorResponse('Not Authorize', 401));
+  }
+
+  const job = await Jobs.findOneAndDelete({ _id: req.params.id });
 
   res.status(200).json({
     success: true,
