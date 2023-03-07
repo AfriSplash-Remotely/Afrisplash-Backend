@@ -128,3 +128,18 @@ exports.delJob = asyncHandler(async (req, res, next) => {
     data: job
   });
 });
+
+/**
+ * @author Cyril Ogoh <cyrilogoh@gmail.com>
+ * @description Get All Jobs Post By Company
+ * @route `/api/v1/jobs/p`
+ * @access Private
+ * @type GET
+ */
+exports.getMyJobs = asyncHandler(async (req, res, next) => {
+  const jobs = await Jobs.find({ _company: req.user._company });
+  res.status(200).json({
+    success: true,
+    data: jobs
+  });
+});

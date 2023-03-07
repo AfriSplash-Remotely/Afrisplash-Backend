@@ -3,7 +3,13 @@ const router = express.Router();
 const { R_protect } = require('../middleware/auth');
 const protect = R_protect; //Ony Recuiter can create Jobs Now
 const advancedResults = require('../middleware/advancedResults');
-const { create, ping, updateJob, delJob } = require('../controllers/jobs');
+const {
+  create,
+  ping,
+  updateJob,
+  delJob,
+  getMyJobs
+} = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
 router.get('/', ping);
@@ -17,7 +23,7 @@ router.put('/e/:id', protect, updateJob);
 router.get('/p/:id', protect, ping);
 
 // View Jobs Private Only companies Member - pend draft close live and other
-router.get('/p/', protect, ping);
+router.get('/p/', protect, getMyJobs);
 
 // Apply For A job
 router.post('/a/:id', ping);
