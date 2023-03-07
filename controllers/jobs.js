@@ -43,7 +43,7 @@ exports.create = asyncHandler(async (req, res, next) => {
 
     input._company = req.user._company;
     input._author = req.user._id;
-    input.verify= true
+    input.verify = true;
     // save to db
     const data = await Jobs.create([input], opts);
     await data[0].save();
@@ -65,4 +65,39 @@ exports.create = asyncHandler(async (req, res, next) => {
     session.endSession();
     next(error);
   }
+});
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description  `Candidate Account Only`
+ * @route `/api/v1/jobs/e/:id`
+ * @access Private
+ * @type PUT
+ */
+exports.updateJob = asyncHandler(async (req, res, next) => {
+  const data = req.body;
+
+  delete data._company;
+  delete data._author;
+  delete data.promoted;
+  delete data.publish;
+  delete data.verify;
+
+  const jobOld = await Jobs.find({ _id: req.params.id });
+
+  // check if User is Asscoited with the company
+  if (req.user._company !== jobOld._company) {
+    return next(new ErrorResponse('Not Authorize', 401));
+  }
+
+  const job = await Jobs.findByIdAndUpdate(req.params.id, data, {
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({
+    success: true,
+    status: 'success',
+    data: job
+  });
 });
