@@ -8,7 +8,8 @@ const {
   ping,
   updateJob,
   delJob,
-  getMyJobs
+  getMyJobs,
+  getMyJob
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -20,7 +21,7 @@ router.post('/', protect, create);
 // edit a Job
 router.put('/e/:id', protect, updateJob);
 // View a Job Private Only companies Member
-router.get('/p/:id', protect, ping);
+router.get('/p/:id', protect, getMyJob);
 
 // View Jobs Private Only companies Member - pend draft close live and other
 router.get('/p/', protect, getMyJobs);

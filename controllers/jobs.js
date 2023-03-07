@@ -143,3 +143,21 @@ exports.getMyJobs = asyncHandler(async (req, res, next) => {
     data: jobs
   });
 });
+
+/**
+ * @author Cyril Ogoh <cyrilogoh@gmail.com>
+ * @description Get a Jobs Post By Company
+ * @route `/api/v1/jobs/p/:id`
+ * @access Private
+ * @type GET
+ */
+exports.getMyJob = asyncHandler(async (req, res, next) => {
+  const jobs = await Jobs.findOne({
+    _company: req.user._company,
+    _id: req.params.id
+  });
+  res.status(200).json({
+    success: true,
+    data: jobs
+  });
+});
