@@ -10,7 +10,7 @@ router.get('/', ping);
 // View Jobs Public
 router.get('/v/:id', ping);
 // Create A New Job
-router.post('/', protect, ping);
+router.post('/', protect, create);
 // edit a Job
 router.put('/e/:id', protect, ping);
 // View a Job Private Only companies Member
