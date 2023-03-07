@@ -13,13 +13,27 @@ const jobSchema = new mongoose.Schema({
     ref: 'user',
     default: null
   },
-  location: {
+  title: {
     type: String,
-    required: true,
-    enum: ['Download', 'Register', 'Visit', 'Apply'],
-    default: 'Visit'
+    required: true
   },
-  level: {
+  industry: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  requirement: {
+    type: String,
+    required: true
+  },
+  benefit: {
+    type: String,
+    required: false
+  },
+  experience: {
     type: String,
     required: true,
     enum: ['Intermidate', 'Beginner', 'Senior', 'Junior', 'All'],
@@ -27,8 +41,13 @@ const jobSchema = new mongoose.Schema({
   },
   type: {
     type: String,
+    enum: ['Remote', 'Physical', 'Hybrid'],
     require: true,
     default: null
+  },
+  location: {
+    type: String,
+    required: true
   },
   salary: {
     type: Object,
@@ -39,11 +58,12 @@ const jobSchema = new mongoose.Schema({
       period: null
     }
   },
-  market: {
-    type: Array,
-    default: []
+  redirect: {
+    type: Boolean,
+    default: false,
+    required: true
   },
-  about: {
+  redirect_url: {
     type: String,
     default: null
   },
@@ -55,16 +75,30 @@ const jobSchema = new mongoose.Schema({
   private: {
     type: Boolean,
     required: true,
-    default: true
+    default: false
   },
-  publish: {
+  promoted: {
     type: Boolean,
     required: true,
     default: false
   },
+  publish: {
+    type: Boolean,
+    required: true,
+    default: true
+  },
   expire: {
     type: Date,
     default: null
+  },
+  external_data: {
+    type: Object,
+    required: false,
+    default: {
+      image: null,
+      url: null,
+      date: null
+    }
   }
 });
 
