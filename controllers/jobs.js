@@ -161,3 +161,38 @@ exports.getMyJob = asyncHandler(async (req, res, next) => {
     data: jobs
   });
 });
+
+/**
+ * @author Cyril Ogoh <cyrilogoh@gmail.com>
+ * @description Get All Jobs Post Active And Public
+ * @route `/api/v1/jobs/`
+ * @access PUBLIC
+ * @type GET
+ */
+exports.getJobs = asyncHandler(async (req, res, next) => {
+  const jobs = await Jobs.find({ verify: true, private: false, publish: true });
+  res.status(200).json({
+    success: true,
+    data: jobs
+  });
+});
+
+/**
+ * @author Cyril Ogoh <cyrilogoh@gmail.com>
+ * @description Get a Jobs Post Active And Public
+ * @route `/api/v1/jobs/v/:id`
+ * @access PUBLIC
+ * @type GET
+ */
+exports.getJob = asyncHandler(async (req, res, next) => {
+  const jobs = await Jobs.findOne({
+    verify: true,
+    private: false,
+    publish: true,
+    _id: req.params.id
+  });
+  res.status(200).json({
+    success: true,
+    data: jobs
+  });
+});

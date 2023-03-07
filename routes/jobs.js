@@ -9,13 +9,15 @@ const {
   updateJob,
   delJob,
   getMyJobs,
-  getMyJob
+  getMyJob,
+  getJobs,
+  getJob
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
-router.get('/', ping);
+router.get('/', getJobs);
 // View Jobs Public
-router.get('/v/:id', ping);
+router.get('/v/:id', getJob);
 // Create A New Job
 router.post('/', protect, create);
 // edit a Job
