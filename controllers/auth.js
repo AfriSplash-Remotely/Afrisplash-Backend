@@ -144,11 +144,28 @@ exports.register = asyncHandler(async (req, res, next) => {
   }
 
   // Get reset token
-  const resetToken = generateOTP(6);
-  user.resetPasswordToken = resetToken;
-  await user.save({ validateBeforeSave: false });
+   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+     JWT_SECRET: '5m'
+   });
 
-  console.log(resetToken);
+   user.resetPasswordToken = resetToken;
+   if (resetToken) {
+     jwt.verify(resetToken, process.env.JWT_SECRET, (err, decoded) => {
+       User.findOne({ resetToken: resetToken }, (err, user) => {
+         if (!user) {
+           User.findOne({ resetToken: resetToken }, (err, user) => {
+             if (!user)
+               return res.status(404).json({ msg: 'No user With this token' });
+           });
+         } else {
+           user.save({ validateBeforeSave: false });
+         }
+       });
+     });
+   } else {
+     res.status(400).json({ msg: 'No resetToken in params' });
+   }
+
 
   try {
   //TODO Send email
