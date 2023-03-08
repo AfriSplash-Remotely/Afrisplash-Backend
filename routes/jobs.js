@@ -11,7 +11,9 @@ const {
   getMyJobs,
   getMyJob,
   getJobs,
-  getJob
+  getJob,
+  closeJob,
+  openJob
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -38,8 +40,8 @@ router.get('/applicant/:Job_id/:applicant_id/accept', protect, ping);
 router.get('/applicant/:Job_id/:applicant_id/reject', protect, ping);
 
 // Close or reopen a Job
-router.get('/c/:id', protect, ping);
-router.get('/o/:id', protect, ping);
+router.get('/c/:id', protect, closeJob);
+router.get('/o/:id', protect, openJob);
 
 // Delete a Job
 router.delete('/d/:id', protect, delJob);

@@ -196,3 +196,79 @@ exports.getJob = asyncHandler(async (req, res, next) => {
     data: jobs
   });
 });
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description  Close A Job
+ * @route `/api/v1/jobs/c/:id`
+ * @access Private
+ * @type PUT
+ */
+exports.closeJob = asyncHandler(async (req, res, next) => {
+  const jobOld = await Jobs.findOne({ _id: req.params.id });
+
+  // check if User is Asscoited with the company
+  if (req.user._company !== jobOld._company) {
+    return next(new ErrorResponse('Not Authorize', 401));
+  }
+
+  // check if User is Asscoited with the company
+  if (!jobOld._company.publish) {
+    return next(new ErrorResponse('Job is already Close', 400));
+  }
+
+  const job = await Jobs.findByIdAndUpdate(
+    req.params.id,
+    {
+      publish: false
+    },
+    {
+      new: true,
+      runValidators: true
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+    status: 'success',
+    data: job
+  });
+});
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description  Open A Job
+ * @route `/api/v1/jobs/o/:id`
+ * @access Private
+ * @type PUT
+ */
+exports.openJob = asyncHandler(async (req, res, next) => {
+  const jobOld = await Jobs.findOne({ _id: req.params.id });
+
+  // check if User is Asscoited with the company
+  if (req.user._company !== jobOld._company) {
+    return next(new ErrorResponse('Not Authorize', 401));
+  }
+
+  // check if User is Asscoited with the company
+  if (jobOld._company.publish) {
+    return next(new ErrorResponse('Job is already Open', 400));
+  }
+
+  const job = await Jobs.findByIdAndUpdate(
+    req.params.id,
+    {
+      publish: true
+    },
+    {
+      new: true,
+      runValidators: true
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+    status: 'success',
+    data: job
+  });
+});
