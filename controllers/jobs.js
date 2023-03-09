@@ -149,10 +149,71 @@ exports.delJob = asyncHandler(async (req, res, next) => {
  * @type GET
  */
 exports.getMyJobs = asyncHandler(async (req, res, next) => {
-  const jobs = await Jobs.find({ _company: req.user._company });
+  let query;
+  const reqQuery = { ...req.query };
+  const removeFields = ['select', 'sort', 'page', 'limit'];
+  removeFields.forEach((param) => delete reqQuery[param]);
+  let queryStr = JSON.stringify(reqQuery);
+  queryStr = queryStr.replace(
+    /\b(gt|gte|lt|lte|in)\b/g,
+    (match) => `$${match}`
+  );
+
+  queryStr._company = req.user._company;
+
+  query = Jobs.find(JSON.parse(queryStr));
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    query = query.select(fields);
+  }
+
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ');
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
+  }
+
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 25;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = await Jobs.find({
+    _company: req.user._company
+  }).countDocuments();
+  query = query.skip(startIndex).limit(limit);
+
+  query = query.populate('_author', {
+    first_name: 1,
+    last_name: 1,
+    profile_image: 1,
+    thumbnail: 1,
+    bio: 1
+  });
+
+  const results = await query;
+  const pagination = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit
+    };
+  }
+
   res.status(200).json({
     success: true,
-    data: jobs
+    status: 'success',
+    count: results.length,
+    pagination,
+    data: results
   });
 });
 
@@ -164,13 +225,27 @@ exports.getMyJobs = asyncHandler(async (req, res, next) => {
  * @type GET
  */
 exports.getMyJob = asyncHandler(async (req, res, next) => {
-  const jobs = await Jobs.findOne({
+  const job = await Jobs.findOne({
     _company: req.user._company,
     _id: req.params.id
-  });
+  })
+    .populate('_company', { logo: 1, name: 1, thumbnail: 1 })
+    .populate('_author', {
+      first_name: 1,
+      last_name: 1,
+      profile_image: 1,
+      thumbnail: 1,
+      bio: 1
+    });
+
+  // check if Job Is Close
+  if (!job) {
+    return next(new ErrorResponse('No Job Found', 404));
+  }
+
   res.status(200).json({
     success: true,
-    data: jobs
+    data: job
   });
 });
 
@@ -210,10 +285,7 @@ exports.getJobs = asyncHandler(async (req, res, next) => {
   // Pagination result
   const pagination = {};
 
-    status: 'success',
-    count: results.length,
-    pagination,
-    data: results
+  if (endIndex < total) {
     pagination.next = {
       page: page + 1,
       limit
@@ -250,7 +322,20 @@ exports.getJob = asyncHandler(async (req, res, next) => {
     private: false,
     publish: true,
     _id: req.params.id
-  });
+  })
+    .populate('_company', { logo: 1, name: 1, thumbnail: 1 })
+    .populate('_author', {
+      first_name: 1,
+      last_name: 1,
+      profile_image: 1,
+      thumbnail: 1,
+      bio: 1
+    });
+
+  // check if Job Is Close
+  if (!jobs) {
+    return next(new ErrorResponse('No Job Found', 404));
+  }
   res.status(200).json({
     success: true,
     data: jobs
