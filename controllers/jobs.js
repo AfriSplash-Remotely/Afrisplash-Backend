@@ -342,3 +342,94 @@ exports.openJob = asyncHandler(async (req, res, next) => {
     data: job
   });
 });
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Get All User That Applied
+ * @route `/api/v1/applicants/:id`
+ * @access Private
+ * @type GET
+ */
+exports.getApplicants = asyncHandler(async (req, res, next) => {
+  const job = await Jobs.findOne({ _id: req.params.id });
+
+  // check if User is Asscoited with the company
+  if (req.user._company !== job._company) {
+    return next(new ErrorResponse('Not Authorize', 401));
+  }
+  let query;
+  // Pagination
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 25;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = job.applicants.length;
+  // Populate
+  const results = await job.applicants.populate('user_id', {
+    email: 1,
+    bio: 1,
+    first_name: 1,
+    _id: 0,
+    last_name: 1,
+    profile_image: 1,
+    thumbnail: 1,
+    badge: 1
+  });
+
+  query = results;
+
+  const pagination = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit
+    };
+  }
+
+  res.status(200).json({
+    success: true,
+    status: 'success',
+    count: query.length,
+    totaldoc: total,
+    pagination,
+    data: query
+  });
+});
+
+/**
+ * @author Cyril ogoh <cyrilogoh@gmail.com>
+ * @description Applied For A New Job `Candidate Account Only`
+ * @route `/api/v1/job/a/:id`
+ * @access Private
+ * @type GET
+ */
+exports.applyJob = asyncHandler(async (req, res, next) => {
+  // Check if user hasnt applied before
+  if (req.user.jobs.include('req.params.id')) {
+    return next(new ErrorResponse('User Has Applied For Job Already', 409));
+  }
+
+  // Transaction
+  const data = await User.findByIdAndUpdate(
+    req.user._id,
+    { $push: { jobs: req.body.job } },
+    {
+      new: true,
+      runValidators: true
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+    status: 'success',
+    data: data
+  });
+});

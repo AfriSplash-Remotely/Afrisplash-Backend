@@ -13,7 +13,9 @@ const {
   getJobs,
   getJob,
   closeJob,
-  openJob
+  openJob,
+  applyJob,
+  getApplicants
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -31,10 +33,10 @@ router.get('/p/:id', protect, getMyJob);
 router.get('/p/', protect, getMyJobs);
 
 // Apply For A job
-router.post('/a/:id', ping);
+router.post('/a/:id', applyJob);
 
 // Veiw all applicants
-router.get('/applicants/:id', protect, ping);
+router.get('/applicants/:id', protect, getApplicants);
 // Manage Applican State
 router.get('/applicant/:Job_id/:applicant_id/accept', protect, ping);
 router.get('/applicant/:Job_id/:applicant_id/reject', protect, ping);
