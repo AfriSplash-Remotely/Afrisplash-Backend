@@ -436,21 +436,10 @@ exports.openJob = asyncHandler(async (req, res, next) => {
  * @type GET
  */
 exports.getApplicants = asyncHandler(async (req, res, next) => {
-  const job = await Jobs.findOne({ _id: req.params.id });
+  let job = Jobs.findOne({ _id: req.params.id });
 
-  // check if User is Asscoited with the company
-  if (req.user._company !== job._company) {
-    return next(new ErrorResponse('Not Authorize', 401));
-  }
-  let query;
-  // Pagination
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 25;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const total = job.applicants.length;
   // Populate
-  const results = await job.applicants.populate('user_id', {
+  job = job.populate('applicants._user', {
     email: 1,
     bio: 1,
     first_name: 1,
@@ -461,31 +450,16 @@ exports.getApplicants = asyncHandler(async (req, res, next) => {
     badge: 1
   });
 
-  query = results;
-
-  const pagination = {};
-
-  if (endIndex < total) {
-    pagination.next = {
-      page: page + 1,
-      limit
-    };
-  }
-
-  if (startIndex > 0) {
-    pagination.prev = {
-      page: page - 1,
-      limit
-    };
+  const results = await job;
+  //   check if User is Asscoited with the company
+  if (req.user._company.toString() !== results._company.toString()) {
+    return next(new ErrorResponse('Not Authorize', 401));
   }
 
   res.status(200).json({
     success: true,
     status: 'success',
-    count: query.length,
-    totaldoc: total,
-    pagination,
-    data: query
+    data: results.applicants
   });
 });
 
