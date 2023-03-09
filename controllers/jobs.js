@@ -50,7 +50,7 @@ exports.create = asyncHandler(async (req, res, next) => {
 
     //Add Job to Company Schema
     await Company.findOneAndUpdate(
-      { _id: req.user._id },
+      { _id: req.user._company },
       { $push: { jobs: data[0]._id } },
       { new: true, runValidators: true, session: session }
     );
