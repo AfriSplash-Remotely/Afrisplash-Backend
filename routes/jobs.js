@@ -40,8 +40,8 @@ router.get('/applicant/:Job_id/:applicant_id/accept', protect, ping);
 router.get('/applicant/:Job_id/:applicant_id/reject', protect, ping);
 
 // Close or reopen a Job
-router.get('/c/:id', protect, closeJob);
-router.get('/o/:id', protect, openJob);
+router.put('/c/:id', protect, closeJob);
+router.put('/o/:id', protect, openJob);
 
 // Delete a Job
 router.delete('/d/:id', protect, delJob);

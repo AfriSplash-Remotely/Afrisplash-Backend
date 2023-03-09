@@ -18,7 +18,7 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      lowercase:true
+      lowercase: true
     },
     industry: {
       type: String,
@@ -102,7 +102,20 @@ const jobSchema = new mongoose.Schema(
         url: null,
         date: null
       }
-    }
+    },
+    applicants: [
+      {
+        user_id: {
+          type: mongoose.SchemaTypes.ObjectId,
+          required: false,
+          ref: 'user',
+          default: null
+        },
+        date: String,
+        rejected: Boolean,
+        accpected: Boolean
+      }
+    ]
   },
   {
     timestamps: true
