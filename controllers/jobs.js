@@ -170,10 +170,55 @@ exports.getMyJob = asyncHandler(async (req, res, next) => {
  * @type GET
  */
 exports.getJobs = asyncHandler(async (req, res, next) => {
-  const jobs = await Jobs.find({ verify: true, private: false, publish: true });
+  const jobs = await Jobs.find({
+    verify: true,
+    private: false,
+    publish: true
+  })
+    .populate('_company', { logo: 1, name: 1, thumbnail: 1 })
+    .populate('_author', {
+      first_name: 1,
+      last_name: 1,
+      profile_image: 1,
+      thumbnail: 1,
+      bio: 1
+    })
+    .select({
+      applicants: 0
+    });
+
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 25;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = jobs.length;
+
+  const query = jobs.slice(startIndex, endIndex);
+
+  // Pagination result
+  const pagination = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit
+    };
+  }
+
   res.status(200).json({
     success: true,
-    data: jobs
+    status: 'success',
+    total: total,
+    count: query.length,
+    pagination,
+    data: query
   });
 });
 
