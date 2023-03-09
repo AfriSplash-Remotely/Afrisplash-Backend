@@ -498,23 +498,58 @@ exports.getApplicants = asyncHandler(async (req, res, next) => {
  */
 exports.applyJob = asyncHandler(async (req, res, next) => {
   // Check if user hasnt applied before
-  if (req.user.jobs.include('req.params.id')) {
-    return next(new ErrorResponse('User Has Applied For Job Already', 409));
+
+  if (req.user.jobs.some((j) => j._job.toString() === req.params.id)) {
+    return next(
+      new ErrorResponse('User Has Applied For This Job Already', 409)
+    );
   }
 
-  // Transaction
-  const data = await User.findByIdAndUpdate(
-    req.user._id,
-    { $push: { jobs: req.body.job } },
-    {
-      new: true,
-      runValidators: true
-    }
-  );
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    // Add data to job
+    await Jobs.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: {
+          applicants: {
+            _user: req.user._id,
+            date: Date.now(),
+            rejected: false,
+            accpected: false
+          }
+        }
+      },
+      { new: true, runValidators: true, session: session }
+    );
 
-  res.status(200).json({
-    success: true,
-    status: 'success',
-    data: data
-  });
+    // add data to user
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        $push: {
+          jobs: {
+            _job: req.params.id,
+            date: Date.now(),
+            state: 'pending'
+          }
+        }
+      },
+      { new: true, runValidators: true, session: session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+    //TODO: SEND NOTIFICATION
+    res.status(200).json({
+      success: true,
+      status: 'success'
+    });
+  } catch (error) {
+    session.endSession();
+    return next(error);
+  }
+
+  res.end();
 });

@@ -33,7 +33,7 @@ router.get('/p/:id', protect, getMyJob);
 router.get('/p/', protect, getMyJobs);
 
 // Apply For A job
-router.post('/a/:id', applyJob);
+router.post('/a/:id', protect, applyJob);
 
 // Veiw all applicants
 router.get('/applicants/:id', protect, getApplicants);
