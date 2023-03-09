@@ -85,8 +85,11 @@ exports.updateJob = asyncHandler(async (req, res, next) => {
 
   const jobOld = await Jobs.findOne({ _id: req.params.id });
 
+  if (!jobOld) {
+    return next(new ErrorResponse('No Job Found', 404));
+  }
   // check if User is Asscoited with the company
-  if (req.user._company !== jobOld._company) {
+  if (req.user._company.toString() !== jobOld._company.toString()) {
     return next(new ErrorResponse('Not Authorize', 401));
   }
 
