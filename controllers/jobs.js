@@ -261,13 +261,18 @@ exports.getJob = asyncHandler(async (req, res, next) => {
 exports.closeJob = asyncHandler(async (req, res, next) => {
   const jobOld = await Jobs.findOne({ _id: req.params.id });
 
-  // check if User is Asscoited with the company
-  if (req.user._company !== jobOld._company) {
-    return next(new ErrorResponse('Not Authorize', 401));
+  // check if Job Is Close
+  if (!jobOld) {
+    return next(new ErrorResponse('No Job Found', 404));
   }
 
   // check if User is Asscoited with the company
-  if (!jobOld._company.publish) {
+  if (req.user._company.toString() !== jobOld._company.toString()) {
+    return next(new ErrorResponse('Not Authorize', 401));
+  }
+
+  // check if Job Is Close
+  if (!jobOld.publish) {
     return next(new ErrorResponse('Job is already Close', 400));
   }
 
@@ -299,13 +304,18 @@ exports.closeJob = asyncHandler(async (req, res, next) => {
 exports.openJob = asyncHandler(async (req, res, next) => {
   const jobOld = await Jobs.findOne({ _id: req.params.id });
 
+  // check if Job Is Close
+  if (!jobOld) {
+    return next(new ErrorResponse('No Job Found', 404));
+  }
+
   // check if User is Asscoited with the company
-  if (req.user._company !== jobOld._company) {
+  if (req.user._company.toString() !== jobOld._company.toString()) {
     return next(new ErrorResponse('Not Authorize', 401));
   }
 
   // check if User is Asscoited with the company
-  if (jobOld._company.publish) {
+  if (jobOld.publish) {
     return next(new ErrorResponse('Job is already Open', 400));
   }
 
