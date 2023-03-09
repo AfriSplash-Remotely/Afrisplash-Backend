@@ -85,6 +85,10 @@ const companySchema = new mongoose.Schema(
         'Company cant be created without an authication handler'
       ],
       ref: 'user'
+    },
+    jobs: {
+      type: Array,
+      default: []
     }
   },
   {
