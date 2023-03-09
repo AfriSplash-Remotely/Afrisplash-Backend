@@ -105,7 +105,7 @@ const jobSchema = new mongoose.Schema(
     },
     applicants: [
       {
-        user_id: {
+        _user: {
           type: mongoose.SchemaTypes.ObjectId,
           required: false,
           ref: 'user',

@@ -1,7 +1,7 @@
-const crypto = require("crypto");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const crypto = require('crypto');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
   auth_id: {
@@ -138,9 +138,24 @@ const userSchema = new mongoose.Schema({
     }
   ],
 
-  jobs: {
-    type: Array
-  },
+  jobs: [
+    {
+      _job: {
+        type: mongoose.SchemaTypes.ObjectId,
+        required: false,
+        ref: 'user',
+        default: null,
+        unique: true
+      },
+      date: String,
+      state: {
+        type: String,
+        required: true,
+        enum: ['appected', 'pending', 'rejected'],
+        default: 'pending'
+      }
+    }
+  ],
 
   settings: {
     type: Object //FIXME
@@ -219,10 +234,10 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.getSignedJwtToken = function () {
   return jwt.sign(
     {
-      user_id: this._id,
+      user_id: this._id
     },
     process.env.JWT_SECRET
   );
 };
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model('user', userSchema);
