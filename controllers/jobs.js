@@ -113,15 +113,24 @@ exports.delJob = asyncHandler(async (req, res, next) => {
   const jobOld = await Jobs.findOne({ _id: req.params.id });
 
   if (!jobOld) {
-    return next(new ErrorResponse('No User Found', 404));
+    return next(new ErrorResponse('No Resource Found', 404));
   }
   // check if User is Asscoited with the company
-  if (req.user._company !== jobOld._company) {
-    return next(new ErrorResponse('Not Authorize', 401));
+  if (req.user._company.toString() !== jobOld._company.toString()) {
+    return next(
+      new ErrorResponse('Not Authorize, Can Not Perform Action', 401)
+    );
   }
 
   const job = await Jobs.findOneAndDelete({ _id: req.params.id });
-
+  await Company.updateOne(
+    { _id: req.user._company },
+    {
+      $pull: {
+        jobs: jobOld._id
+      }
+    }
+  );
   res.status(200).json({
     success: true,
     status: 'success',
