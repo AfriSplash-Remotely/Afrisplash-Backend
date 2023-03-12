@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { R_protect } = require('../middleware/auth');
+const { R_protect, C_protect } = require('../middleware/auth');
 const protect = R_protect; //Ony Recuiter can create Jobs Now
 const advancedResults = require('../middleware/advancedResults');
 const {
@@ -36,7 +36,7 @@ router.get('/p/', protect, getMyJobs);
 router.post('/a/:id', protect, applyJob);
 
 // Veiw all applicants
-router.get('/applicants/:id', protect, getApplicants);
+router.get('/applicants/:id', C_protect, getApplicants);
 // Manage Applican State
 router.get('/applicant/:Job_id/:applicant_id/accept', protect, ping);
 router.get('/applicant/:Job_id/:applicant_id/reject', protect, ping);
