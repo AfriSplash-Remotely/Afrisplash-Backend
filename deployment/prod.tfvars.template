@@ -1,0 +1,3 @@
+gcp_credentials = "key.json"
+gcp_project_id = "altschool-23"
+gcp_region = "us-west1"
