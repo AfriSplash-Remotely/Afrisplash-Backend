@@ -1,48 +1,62 @@
-#  terraform init -backend-config ./backend.tfvars 
-# name: 'Deploy-Backend'
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
+name: 'Terraform'
+env:
+  AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
+  S3_BACKEND_BUCKET: ${{secrets.S3_BACKEND_BUCKET}}
+  AWS_REGION: ${{secrets.AWS_REGION}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
 
-# jobs:
-#   terraform:
-#     name: 'Deploy-Backend'
-#     runs-on: ubuntu-latest
-#     permissions:
-#       pull_request: write
-#     steps:
-#     - name: Checkout
-#       uses: actions/checkout@v3
-#     - name: Setup Terraform
-#       uses: hashicorp/setup-terraform@v2
-#       with:
-#       # terraform_version: 1.4.2
-#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-#     - name: Terraform Format
-#       id: fmt
-#       run: terraform fmt -check
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
 
-#     - name: Terraform Init
-#       id: init
-#       command: envsubst < backend.tfvars.template > backend.tfvars
-#       run:  terraform init -backend-config ./backend.tfvars 
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+permissions:
+  contents: read
+
 jobs:
-  Explore-GitHub-Actions:
+  terraform:
+    name: 'Terraform'
     runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        shell: bash
+    
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Terraform init, plan and apply
+      run: |
+        echo "** Running Terraform Init"
+        terraform init \
+          -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
+          -backend-config="key=${{env.AWS_BUCKET_KEY}}" \
+          -backend-config="region=${{env.AWS_REGION}}" \
+          -backend-config="secret_key=${{env.AWS_SECRET_ACCESS_KEY}}" \
+          -backend-config="access_key=${{env.AWS_ACCESS_KEY}}"
+        
+        echo "** Running Terraform Validate **"
+        terraform validate
+      working-directory: './deployment'
+
+
+    #     echo "** Running Terraform Plan **"
+    #     terraform plan
+    #   working-directory: ${{ github.event.inputs.tfpath }}
+    # - name: Terraform Destroy
+    #   run: |
+    #     echo "** Running Terraform Destroy **"
+    #     terraform plan -destroy
+    #   working-directory: ${{ github.event.inputs.tfpath }}
+
+      
