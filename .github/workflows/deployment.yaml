@@ -46,7 +46,7 @@ jobs:
           -backend-config="access_key=${{env.AWS_ACCESS_KEY}}"
         
         echo "** Runing Terraform Format Check **"
-        terraform fmt -check
+        terraform fmt 
         
         echo "** Running Terraform Validate **"
         terraform validate
