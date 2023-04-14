@@ -35,7 +35,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Terraform init, plan and apply
+    - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
         terraform init \
@@ -51,9 +51,11 @@ jobs:
         echo "** Running Terraform Validate **"
         terraform validate
       working-directory: './deployment'
-    - name: Terraform Plan
+    - name: Terraform Plan And Apply
       run: |
         echo "** Running Terraform Plan **"
+        terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
+        echo "** Running Terraform Apply **"
         terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
       working-directory: './deployment'
 
