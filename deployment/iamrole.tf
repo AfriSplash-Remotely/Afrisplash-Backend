@@ -24,8 +24,8 @@ resource "aws_iam_access_key" "frontend_key" {
 }
 
 
-resource "aws_iam_user_policy" "frontend_bucket_policy" {
-  name = "Frontend_Bucket_Policy"
+resource "aws_iam_user_policy" "frontend_user_policy" {
+  name = "Frontend_User_Policy"
   user = aws_iam_user.frontend_user.name
 
   policy = jsonencode({
