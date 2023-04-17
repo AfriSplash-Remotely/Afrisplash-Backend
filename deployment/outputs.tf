@@ -1,4 +1,4 @@
-output "bucket_domain_name" {
+output "image_bucket_domain_name" {
     value       = aws_s3_bucket.frontend_image_bucket.bucket_domain_name
     description = "domain name of bucket"
 }
@@ -16,6 +16,13 @@ output "frontend_secret_key" {
 output "frontend_access_key" {
     value = aws_iam_access_key.frontend_key.id 
 }
+
+
+output "function_name" {
+  description = "Name of the Lambda function."
+  value = aws_lambda_function.test_lambda.function_name
+}
+
 
 # output "bucket_regional_domain_name" {
 #   value       = frontend_image_bucket.bucket_regional_domain_name
