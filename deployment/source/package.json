@@ -2,8 +2,8 @@
   "name": "signed-url",
   "version": "1.0.0",
   "description": "",
-  "main": "signedUrl.js",
   "type": "module",
+  "main": "signedUrl.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

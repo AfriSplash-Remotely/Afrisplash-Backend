@@ -1,7 +1,7 @@
-output "image_bucket_domain_name" {
-    value       = aws_s3_bucket.frontend_image_bucket.bucket_domain_name
-    description = "domain name of bucket"
-}
+#output "image_bucket_domain_name" {
+#    value       = aws_s3_bucket.frontend_image_bucket.bucket_domain_name
+#    description = "domain name of bucket"
+#}
 
 output "frontend_user_name" {
     value = aws_iam_user.frontend_user.name
@@ -17,12 +17,13 @@ output "frontend_access_key" {
     value = aws_iam_access_key.frontend_key.id 
 }
 
-
-output "function_name" {
-  description = "Name of the Lambda function."
-  value = aws_lambda_function.test_lambda.function_name
+output "bucket_put_endpoint_url" {
+    value = "${aws_api_gateway_stage.pre_signed_url.invoke_url}/${var.put_signedUrl_endpoint_path}"
 }
 
+output "bucket_get_endpoint_url" {
+    value = "${aws_api_gateway_stage.get_signed_url.invoke_url}/${var.get_object_signedUrl_endpoint_path}"
+}
 
 # output "bucket_regional_domain_name" {
 #   value       = frontend_image_bucket.bucket_regional_domain_name

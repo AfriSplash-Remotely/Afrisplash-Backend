@@ -1,6 +1,6 @@
 resource "random_pet" "frontend_image_bucket_name" {
   prefix = "afri"
-  length = 4
+  length = 3
 }
 
 resource "aws_s3_bucket" "frontend_image_bucket" {
@@ -8,6 +8,5 @@ resource "aws_s3_bucket" "frontend_image_bucket" {
   tags = {
     Name = " Frontend Image Bucket"
     Environment : "Prod"
-
   }
 }
