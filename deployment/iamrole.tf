@@ -37,7 +37,7 @@ resource "aws_iam_user_policy" "frontend_user_policy" {
                     ]
                 Effect = "Allow"
                    Resource: [
-                       "arn:aws:s3:::afri-frontend-bucket"
+                       "arn:aws:s3:::aws_s3_bucket.frontend_image_bucket.bucket_domain_name"
                    ]
             }
       ]
