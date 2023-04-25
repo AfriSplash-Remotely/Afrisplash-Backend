@@ -1,6 +1,6 @@
 # Afrisplash-Backend
 <!-- https://developer.hashicorp.com/terraform/tutorials/automation/github-actions -->
-<!-- https://codelabs.transcend.io/codelabs/node-terraform/index.html?index=..%2F..index#4 -->
+https://codelabs.transcend.io/codelabs/node-terraform/index.html?index=..%2F..index#4
 
 # Tech Stack
 `Node` - Server Environment, `ExpressJS` - Framework, `Mongod` - Database, `Jest` - Testing 
