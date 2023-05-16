@@ -17,6 +17,7 @@ const recruiterRouter = require('./routes/recruiter');
 const blogRouter = require('./routes/blog');
 const companyRouter = require('./routes/company');
 const jobRouter = require('./routes/jobs');
+const adminRouter = require('./routes/admin');
 
 dotenv.config({ path: './.env/config.env' });
 var app = express();
@@ -48,6 +49,7 @@ app.use('/api/v1/recruiter', recruiterRouter);
 app.use('/api/v1/blog', blogRouter);
 app.use('/api/v1/company', companyRouter);
 app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/admin', adminRouter);
 
 app.use(errorHandler);
 
