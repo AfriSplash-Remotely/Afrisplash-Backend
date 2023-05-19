@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const {} = require('../controllers/admin');
+const { inviteAdmin } = require('../controllers/admin');
 
-// router.post();
+// TODO: protect route for only Super Admin user
+router.post('/invite', inviteAdmin);
 
 module.exports = router;

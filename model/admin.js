@@ -20,10 +20,11 @@ const adminSchema = new mongoose.Schema({
   permissions: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Permission'
+      ref: 'Permission',
+      required: true
     }
   ],
-  email_verify: {
+  account_verify: {
     type: Boolean,
     required: true,
     default: false
@@ -31,11 +32,25 @@ const adminSchema = new mongoose.Schema({
 });
 
 // Hook function to encrypt the password
-adminSchema.pre('save', async (next) => {
-  if (!this.isModified('password')) next();
+adminSchema.pre('save', async function (next) {
+  try {
+    // check if the password field is modified
+    if (!this.isModified('password')) return next();
 
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+    // Generate salt
+    const salt = await bcrypt.genSalt(10);
+
+    // hash the password with the salt
+    const hashedPassword = await bcrypt.hash(this.password, salt);
+
+    // set the hashed password to the model
+    this.password = hashedPassword;
+
+    // proceed to save the model
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 const Admin = mongoose.model('Admin', adminSchema);
