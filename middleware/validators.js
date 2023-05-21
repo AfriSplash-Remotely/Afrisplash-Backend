@@ -6,7 +6,19 @@ const validator = (schema) => (payload) =>
 const inviteAdminSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(3).max(10).required(),
-  permissions: Joi.array().items(Joi.string()).min(1)
+  permissions: Joi.array().items(Joi.string()).min(1).required()
 });
 
-exports.validateAdminInvite = validator(inviteAdminSchema);
+const loginAdminSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(3).max(10).required()
+});
+
+const validateAdminInvite = validator(inviteAdminSchema);
+const validateAdminLogin = validator(loginAdminSchema);
+
+module.exports = {
+  validateAdminInvite,
+  validateAdminLogin
+};
+// exports.validateAdminInvite = validator(inviteAdminSchema);
