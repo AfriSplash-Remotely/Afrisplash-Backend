@@ -49,7 +49,7 @@ app.use('/api/v1/recruiter', recruiterRouter);
 app.use('/api/v1/blog', blogRouter);
 app.use('/api/v1/company', companyRouter);
 app.use('/api/v1/jobs', jobRouter);
-app.use('/api/v1/admin', adminRouter);
+app.use('/api/v1/admins', adminRouter);
 
 app.use(errorHandler);
 
