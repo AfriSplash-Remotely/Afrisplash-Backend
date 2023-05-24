@@ -11,7 +11,7 @@ const {
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
  * @description Invite/Create Admin user
- * @route `/api/v1/admin/invite
+ * @route `/api/v1/admins/invite
  * @access Restricted
  * @type POST
  */
@@ -48,7 +48,6 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
 
     return res.status(201).json(adminUser);
   } catch (error) {
-    console.log(error);
     if (error.code === 11000)
       return next(new ErrorResponse('Email already exist', 409));
 
@@ -59,7 +58,7 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
  * @description Admin user login
- * @route `/api/v1/admin/login
+ * @route `/api/v1/admins/login
  * @access Public
  * @type POST
  */
@@ -100,7 +99,53 @@ exports.login = asyncHandler(async (req, res, next) => {
       data: admin
     });
   } catch (error) {
-    console.log(error);
+    return next(new ErrorResponse('An error occurred', 500));
+  }
+});
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Get all admin users
+ * @route `/api/v1/admins
+ * @access Public
+ * @type GET
+ */
+exports.getAllAdmins = asyncHandler(async (req, res, next) => {
+  try {
+    const admins = await Admin.find().populate('permissions', { name: true });
+
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 2;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = admins.length;
+
+    const queryResult = admins.slice(startIndex, endIndex);
+
+    const pagination = {};
+
+    if (endIndex < total)
+      pagination.next = {
+        page: page + 1,
+        limit
+      };
+
+    if (startIndex > 0)
+      pagination.prev = {
+        page: page - 1,
+        limit
+      };
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      total,
+      count: queryResult.length,
+      pagination,
+      data: queryResult
+    });
+  } catch (error) {
+    //TODO: logger
     return next(new ErrorResponse('An error occurred', 500));
   }
 });
