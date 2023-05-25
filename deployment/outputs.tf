@@ -90,7 +90,7 @@ output "bucket_get_endpoint_url" {
 #   value = ecr_repo.repository.registry_id
 # }
 
-# output "repository_url" {
- #   description = "The URL of the repository."
- # value = ecr_repo.repository.repository_url
-# }
+output "repository_url" {
+   description = "The URL of the repository."
+   value = aws_ecr_repository.ecr_repo.repository_url
+}
