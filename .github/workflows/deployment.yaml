@@ -39,22 +39,22 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Terraform init, format and validate
-      run: |
-        echo "** Running Terraform Init **"
-        terraform init \
-          -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
-          -backend-config="key=${{env.AWS_BUCKET_KEY}}" \
-          -backend-config="region=${{env.AWS_REGION}}" \
-          -backend-config="secret_key=${{env.AWS_SECRET_ACCESS_KEY}}" \
-          -backend-config="access_key=${{env.AWS_ACCESS_KEY}}"
+    # - name: Terraform init, format and validate
+    #   run: |
+    #     echo "** Running Terraform Init **"
+    #     terraform init \
+    #       -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
+    #       -backend-config="key=${{env.AWS_BUCKET_KEY}}" \
+    #       -backend-config="region=${{env.AWS_REGION}}" \
+    #       -backend-config="secret_key=${{env.AWS_SECRET_ACCESS_KEY}}" \
+    #       -backend-config="access_key=${{env.AWS_ACCESS_KEY}}"
         
-        echo "** Runing Terraform Format Check **"
-        terraform fmt 
+    #     echo "** Runing Terraform Format Check **"
+    #     terraform fmt 
         
-        echo "** Running Terraform Validate **"
-        terraform validate
-      working-directory: './deployment'
+    #     echo "** Running Terraform Validate **"
+    #     terraform validate
+    #   working-directory: './deployment'
     # - name: Terraform Plan And Apply
     #   run: |
     #     echo "** Running Terraform Plan **"
