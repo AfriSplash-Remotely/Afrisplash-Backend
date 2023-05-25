@@ -27,6 +27,10 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v3
+    # work on adding issues and pull requests to project
+    # - name: Add To GitHub projects
+    #   uses: actions/add-to-project@v0.5.0
+
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
@@ -51,15 +55,15 @@ jobs:
         echo "** Running Terraform Validate **"
         terraform validate
       working-directory: './deployment'
-    - name: Terraform Plan And Apply
-      run: |
-        echo "** Running Terraform Plan **"
-        terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
+    # - name: Terraform Plan And Apply
+    #   run: |
+    #     echo "** Running Terraform Plan **"
+    #     terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
         
-        echo "** Running Terraform Apply **"
-        terraform apply -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
-      working-directory: './deployment'
-
+    #     echo "** Running Terraform Apply **"
+    #     terraform apply -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}' -auto-approve
+    #   working-directory: './deployment' 
+    # - name: Build Docker image and push to ECR container
     # - name: Terraform Destroy
     #   run: |
     #     echo "** Running Terraform Destroy **"
@@ -67,3 +71,7 @@ jobs:
     #   working-directory: ${{ github.event.inputs.tfpath }}
 
       
+
+      ##wite test for signed url
+
+      ## write test for deployed server
