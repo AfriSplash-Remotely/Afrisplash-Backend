@@ -15,6 +15,7 @@
 - New Notification
 - New Job Offer
 - Account Verification
+- Invite Admin
 
 More would be added as the building goes on
 
@@ -27,10 +28,10 @@ Bulk Email Would be handled using `MailGun`
 - admin@afrisplash.com
 - notify@afrisplash.com ( low priority )
 
-
-
 ## When Mail Are Triggered
+
 - [ ] After Signup to verify Email
 - [ ] When Trying to reset Accounts
-- [ ] when account has been verifed and ready to use (Welcome Mail) 
-- [ ] when a new notifcation is set 
+- [ ] when account has been verifed and ready to use (Welcome Mail)
+- [ ] when a new notifcation is set
+- [ ] When a new admin user is invited to the Dashboard by the Super Admin
