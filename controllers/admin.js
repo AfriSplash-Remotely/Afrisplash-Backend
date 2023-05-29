@@ -7,6 +7,7 @@ const {
   validateAdminInvite,
   validateAdminLogin
 } = require('../middleware/validators');
+const emailSender = require('../mail/emailSender');
 
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
@@ -22,7 +23,8 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
 
     if (error) return res.status(400).send(error.details);
 
-    let { email, password, permissions } = value;
+    const { email, permissions } = value;
+    const password = '123456abc';
 
     // create the admin user
     const adminUser = new Admin({
@@ -44,8 +46,31 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     // save the admin user
     await adminUser.save();
 
-    // TODO Send Verification Mail to Update Password
+    // Send Invitation Email
+    const email_view = 'invite-admin';
+    const sender_email = process.env.NO_REPLY_EMAIL;
+    const sender_pass = process.env.NO_REPLY_PASS;
+    const from = `Afrisplash Admin <${sender_email}>`;
+    const subject = 'Invitation to Afrisplash Dashboard';
+    const permissionString = permissions.join(', ');
+    const body = `You have been invited to Afrisplash dashboard as an admin user with the following permissions ${permissionString}. Kindly proceed to login on the dashboard with the credentials: Email-${email} Password-${password}, and verify your account by updating your password to a more secure password.`;
 
+    // execute email sender service
+    const send_email = await emailSender(
+      email_view,
+      sender_email,
+      sender_pass,
+      from,
+      email,
+      subject,
+      body
+    );
+    console.log(send_email);
+    if (!send_email) {
+      // log: create mechanism to automatically retry sending email OR
+      // notify Super Admin user to probably send it manually
+      console.log(send_email);
+    }
     return res.status(201).json(adminUser);
   } catch (error) {
     if (error.code === 11000)
