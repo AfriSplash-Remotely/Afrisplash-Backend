@@ -1,7 +1,29 @@
-# output "bucket_domain_name" {
-#   value       = frontend_image_bucket.bucket_domain_name
-#   description = "FQDN of bucket"
-# }
+#output "image_bucket_domain_name" {
+#    value       = aws_s3_bucket.frontend_image_bucket.bucket_domain_name
+#    description = "domain name of bucket"
+#}
+
+output "frontend_user_name" {
+    value = aws_iam_user.frontend_user.name
+    description = " User name of Frontend end Aws account"
+}
+
+output "frontend_secret_key" {
+    value = aws_iam_access_key.frontend_key.secret 
+    sensitive = true
+}
+
+output "frontend_access_key" {
+    value = aws_iam_access_key.frontend_key.id 
+}
+
+output "bucket_put_endpoint_url" {
+    value = "${aws_api_gateway_stage.pre_signed_url.invoke_url}/${var.put_signedUrl_endpoint_path}"
+}
+
+output "bucket_get_endpoint_url" {
+    value = "${aws_api_gateway_stage.get_signed_url.invoke_url}/${var.get_object_signedUrl_endpoint_path}"
+}
 
 # output "bucket_regional_domain_name" {
 #   value       = frontend_image_bucket.bucket_regional_domain_name
@@ -68,7 +90,7 @@
 #   value = ecr_repo.repository.registry_id
 # }
 
-# output "repository_url" {
- #   description = "The URL of the repository."
- # value = ecr_repo.repository.repository_url
-# }
+output "repository_url" {
+   description = "The URL of the repository."
+   value = aws_ecr_repository.ecr_repo.repository_url
+}
