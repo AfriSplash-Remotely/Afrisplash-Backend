@@ -118,6 +118,10 @@ ul {
 }
 
 .footer_links{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
 }
 
@@ -127,8 +131,7 @@ ul {
     justify-content: space-between;
     align-items: center;
     list-style: none;
-    padding-left: 9.125rem;
-    padding-right: 9.125rem;
+    gap: 2.5rem;
     line-height: 2.25rem;
 }
 
@@ -137,13 +140,8 @@ ul {
 }
 
 .ellipse {
-    width: 100%;
-    height: 100%;
-}
-
-.footer_links.detail_align{
-    padding-left: 9.125rem;
-    padding-right: 9.125rem;
+    width: 0.5rem;
+    height: 0.5rem;
 }
 
 /* 
@@ -232,7 +230,7 @@ ul {
     flex-direction: column;
     align-items: center;
     border-radius: 0.5rem;
-    padding: 0.75rem 0rem;
+    padding: 0.75rem 0.5rem;
     width: 100%;
     background-color: #D6ECDC;
 }
@@ -358,6 +356,11 @@ ul {
     gap: 1rem;
 }
 
+.job_title img {
+    width: 3.091rem;
+    height: auto;
+}
+
 .main_text {
     display: flex;
     flex-direction: column;
@@ -407,10 +410,68 @@ ul {
     margin-top: 1.5rem;
 }
 
+
+
 /* 
  Application Rejected
 */
 .tag.rejected {
     color: #BE0000;
     background-color: #D9DEDC;
+}
+
+
+/* 
+ Media Queries
+*/
+@media screen and (max-width: 992px) {
+    .logo_container img{
+        width: 100%;
+    }
+    .email_template{
+        width: 70vw;
+    }
+
+    .job_title_container {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .logo_container img{
+        width: 90%;
+    }
+
+    .email_template{
+        margin: 8% 1%;
+        padding: 2.3rem 1rem 1rem 1rem;
+    }
+    .email_template h1,
+    .header_highlight h1 {
+        font-size: 2rem;
+    }
+
+    .header_highlight p {
+        text-align: center;
+    }
+
+    .text_container p {
+        line-height: 2rem;
+    }
+
+    .greetings.align ul{
+        flex-wrap: wrap;
+    }
+
+    .job_title_container {
+        justify-content: center;
+        
+    }
+
+    .footer_links ul {
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
 }
