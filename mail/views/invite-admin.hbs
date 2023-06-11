@@ -1,76 +1,64 @@
-<html>
+<html lang='en'>
   <head>
+    <meta charset='utf-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <meta name='description' content='Thanks for joining us' />
+    <title>AfriSplash - Thanks for joining us</title>
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
     <link
+      href='https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap'
       rel='stylesheet'
-      href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
     />
-    <title>Afrisplash Notification</title>
-    <style>
-      body { font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-      sans-serif; background-color: #ffffff; margin: 0; padding: 0; } .container
-      { max-width: 600px; margin: 0 auto; padding: 20px; } .header { text-align:
-      left; } .header img { height: 50px; vertical-align: middle; } .header h1 {
-      display: inline-block; font-size: 24px; font-weight: bold; color: #fc5059;
-      margin: 0; margin-left: 10px; vertical-align: middle; } .subject {
-      margin-top: 20px; font-size: 18px; font-weight: bold; color: #000000; }
-      .body { margin-top: 20px; font-size: 16px; color: #000000; } .footer {
-      margin-top: 40px; background-color: #fc5059; padding: 20px; text-align:
-      center; color: #ffffff; } .social { margin-bottom: 10px; } .social a {
-      display: inline-block; margin-right: 10px; color: #ffffff;
-      text-decoration: none; } .unsubscribe { margin-top: 20px; font-size: 14px;
-      color: #ffffff; } .logo { height: 30px; vertical-align: middle; }
-      .copyright { margin-top: 20px; font-size: 12px; color: #ffffff; }
-    </style>
+    <link rel='stylesheet' type='text/css' href='./style.css' />
   </head>
   <body>
     <div class='container'>
-      <div class='header'>
-        <img src='your_app_logo.png' alt='Afrisplash Logo' />
-        <h1>Afrisplash</h1>
-      </div>
-
-      <div class='subject'>Welcome to Afrisplash Admin Dashboard</div>
-
-      <div class='body'>
-        <p>
-          {{body}}
-        </p>
-        <p>
-          Sed ullamcorper nisl nec rutrum efficitur. Nullam non velit lacinia,
-          fermentum libero in, suscipit elit. Aliquam gravida aliquam mauris, at
-          dapibus erat dapibus in.
-        </p>
-        <p>
-          Donec tristique nunc quis enim pulvinar malesuada. Sed a magna sit
-          amet felis consectetur elementum vel a est.
-        </p>
-      </div>
-
-      <div class='footer'>
-        <div class='social'>
-          <a href='https://instragram.com/aradugbo' target='_blank'>
-            <i class='lab la-instagram'></i>
-          </a>
-          <a href='https://twitter.com/your_app_twitter' target='_blank'><i
-              class='lab la-twitter'
-            ></i></a>
-          <a href='https://facebook.com/your_app_facebook' target='_blank'><i
-              class='lab la-facebook-square'
-            ></i></a>
-          <!-- <a href="https://linkedin.com/your_app_linkedin" target="_blank"
-            >LinkedIn</a
-          > -->
+      <div class='email_template'>
+        <div>
+          <div class='upper_design'>
+            <img src='./images/top-design-1.png' class='top_design' alt='' />
+          </div>
+          <div class='logo_container'>
+            <img src='./images/logo-2.png' class='logo' alt='' />
+          </div>
         </div>
-
-        <img src='your_app_logo.png' alt='Afrisplash Logo' class='logo' />
-        <h1>Afrisplash</h1>
-
-        <div class='unsubscribe'>
-          If you wish to unsubscribe, please
-          <a href='#'>click here</a>.
+        <h1>Welcome to Afrisplash Admin Dashboard</h1>
+        <div class='template_container'>
+          <div class='text_container'>
+            <p class='greetings'>
+              Hello, we're glad to have you here
+            </p>
+            <p>
+              {{body}}
+            </p>
+          </div>
+          <div>
+            <button type='button' class='cta_btn'>Go to Dashboard</button>
+          </div>
         </div>
-
-        <div class='copyright'>&copy; 2023 Afrisplash. All rights reserved.</div>
+        <div class='footer'>
+          <div class='footer_details'>
+            <div>
+              <p>71-75, Shelton Street, London, Greater London.</p>
+              <p>&copy; 2021 AfriSplash Remotely LTD. All rights reserved.</p>
+            </div>
+            <div class='footer_links'>
+              <ul>
+                <li><a href='https://afrisplash.com/blog'>Our Blog</a></li>
+                <li>
+                  <image class='ellipse' src='./images/ellipse.svg' alt='' />
+                </li>
+                <li><a href=''>Unsubscribe</a></li>
+                <li>
+                  <image class='ellipse' src='./images/ellipse.svg' alt='' />
+                </li>
+                <li><a href=''>Policies</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>
