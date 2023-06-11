@@ -24,7 +24,7 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     if (error) return res.status(400).send(error.details);
 
     const { email, permissions } = value;
-    const password = '123456abc';
+    const password = '1234@splash';
 
     // create the admin user
     const adminUser = new Admin({
@@ -65,7 +65,6 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
       subject,
       body
     );
-    console.log(send_email);
     if (!send_email) {
       // log: create mechanism to automatically retry sending email OR
       // notify Super Admin user to probably send it manually
@@ -74,7 +73,7 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     return res.status(201).json(adminUser);
   } catch (error) {
     if (error.code === 11000)
-      return next(new ErrorResponse('Email already exist', 409));
+      return next(new ErrorResponse('Email user already invited', 409));
 
     return next(new ErrorResponse('An error occured.', 500));
   }
