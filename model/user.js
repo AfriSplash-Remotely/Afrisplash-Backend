@@ -143,15 +143,13 @@ const userSchema = new mongoose.Schema({
       _job: {
         type: mongoose.SchemaTypes.ObjectId,
         required: false,
-        ref: 'user',
-        default: null,
-        unique: true
+        ref: 'user'
       },
       date: String,
       state: {
         type: String,
         required: true,
-        enum: ['appected', 'pending', 'rejected'],
+        enum: ['accepted', 'pending', 'rejected'],
         default: 'pending'
       }
     }
