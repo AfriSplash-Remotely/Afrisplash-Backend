@@ -79,7 +79,7 @@ exports.C_protect = asyncHandler(async (req, res, next) => {
           )
         );
       }
-    } else if (req.user.user_type == 'recuiter') {
+    } else if (req.user.user_type == 'recruiter') {
       return next(
         new ErrorResponse('Not authorized to access this route', 401)
       );

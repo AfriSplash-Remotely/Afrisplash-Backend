@@ -6,6 +6,7 @@ const Jobs = require('../model/jobs');
 const Company = require('../model/companies');
 const User = require('../model/user');
 const _ = require('lodash');
+const { validateJobStatus } = require('../middleware/validators');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -34,9 +35,6 @@ exports.create = asyncHandler(async (req, res, next) => {
   try {
     const opts = { session, new: true };
     const input = req.body;
-    if (!req.user._company) {
-      return next(new ErrorResponse('Company Is Required', 400));
-    }
     if (!req.user._company) {
       return next(new ErrorResponse('Company Is Required', 400));
     }
@@ -526,4 +524,40 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
   }
 
   res.end();
+});
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Change the status of a job
+ * @route `/api/v1/jobs/:id/status`
+ * @access Private
+ * @type PATCH
+ */
+exports.updateStatus = asyncHandler(async (req, res, next) => {
+  try {
+    // validate the request body
+    const { error, value } = validateJobStatus(req.body);
+    if (error) return res.status(400).send(error.details);
+
+    const job = await Jobs.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: req.body.status
+      },
+      { new: true }
+    ).populate('_company', {
+      _id: true,
+      name: true
+    });
+
+    if (!job) return next(new ErrorResponse('Job not found', 404));
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      data: job
+    });
+  } catch (error) {
+    return next(error);
+  }
 });

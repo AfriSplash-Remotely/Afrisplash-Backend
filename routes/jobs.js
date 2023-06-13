@@ -15,7 +15,8 @@ const {
   closeJob,
   openJob,
   applyJob,
-  getApplicants
+  getApplicants,
+  updateStatus
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -49,5 +50,11 @@ router.put('/o/:id', protect, openJob);
 router.delete('/d/:id', protect, delJob);
 // Report a Job
 router.post('/r/:id', ping);
+
+// update job status
+/**
+ * TODO: Add Admin guard
+ */
+router.patch('/:id/status', updateStatus);
 
 module.exports = router;

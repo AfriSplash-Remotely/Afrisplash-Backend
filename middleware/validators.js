@@ -14,11 +14,19 @@ const loginAdminSchema = Joi.object({
   password: Joi.string().min(3).max(10).required()
 });
 
+const jobStatus = Joi.object({
+  status: Joi.string()
+    .valid('Active', 'Accepted', 'Rejected', 'Archived')
+    .required()
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
+const validateJobStatus = validator(jobStatus);
 
 module.exports = {
   validateAdminInvite,
-  validateAdminLogin
+  validateAdminLogin,
+  validateJobStatus
 };
 // exports.validateAdminInvite = validator(inviteAdminSchema);

@@ -39,14 +39,20 @@ const jobSchema = new mongoose.Schema(
     experience: {
       type: String,
       required: true,
-      enum: ['Intermidate', 'Beginner', 'Senior', 'Junior', 'All'],
+      enum: ['Intermidiate', 'Beginner', 'Senior', 'Junior', 'All'],
       default: 'All'
     },
     type: {
       type: String,
-      enum: ['Remote', 'Physical', 'Hybrid'],
+      enum: ['Remote', 'Onsite', 'Hybrid'],
       require: true,
       default: null
+    },
+    status: {
+      type: String,
+      enum: ['Active', 'Accepted', 'Rejected', 'Archived'],
+      require: true,
+      default: 'Active'
     },
     location: {
       type: String,
@@ -113,7 +119,7 @@ const jobSchema = new mongoose.Schema(
         },
         date: String,
         rejected: Boolean,
-        accpected: Boolean
+        accepted: Boolean
       }
     ]
   },
