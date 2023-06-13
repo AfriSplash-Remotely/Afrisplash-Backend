@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
   user_type: {
     type: String,
     required: true,
-    enum: ['recuiter', 'candidate'],
+    enum: ['recruiter', 'candidate'],
     default: 'candidate'
   },
   first_name: {
