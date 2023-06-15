@@ -6,7 +6,10 @@ const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema({
   auth_id: {
     type: mongoose.SchemaTypes.ObjectId,
-    required: [true, 'a User cant be created without an authication handler'],
+    required: [
+      true,
+      'a User cant be created without an authentication handler'
+    ],
     ref: 'auth'
   },
   user_type: {
@@ -26,7 +29,11 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please enter your Last name'],
     trim: true
   },
-
+  gender: {
+    type: String,
+    required: [true, 'Please specify your gender'],
+    enum: ['male', 'female']
+  },
   email: {
     type: String,
     required: [true, 'Please enter your Email address'],
@@ -87,7 +94,7 @@ const userSchema = new mongoose.Schema({
     default: 'Product Design'
   },
 
-  avaliability: {
+  availability: {
     type: Array,
     required: [
       true,
