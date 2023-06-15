@@ -139,7 +139,7 @@ exports.getAllAdmins = asyncHandler(async (req, res, next) => {
     const admins = await Admin.find().populate('permissions', { name: true });
 
     const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 2;
+    const limit = parseInt(req.query.limit, 10) || 30;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     const total = admins.length;

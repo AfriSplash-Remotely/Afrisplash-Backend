@@ -54,7 +54,8 @@ exports.register = asyncHandler(async (req, res, next) => {
           auth_id: authProfile[0]._id,
           first_name: req.body.first_name,
           last_name: req.body.last_name,
-          user_type: req.body.user_type
+          user_type: req.body.user_type,
+          gender: req.body.gender
         }
       ],
       opts
@@ -89,7 +90,6 @@ exports.register = asyncHandler(async (req, res, next) => {
  */
 exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
-
   // Validate email & password
   //TODO use Joi
   if (!email || !password) {
