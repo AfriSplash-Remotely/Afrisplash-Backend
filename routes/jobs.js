@@ -16,7 +16,8 @@ const {
   openJob,
   applyJob,
   getApplicants,
-  updateStatus
+  updateStatus,
+  jobsByCompany
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -56,5 +57,8 @@ router.post('/r/:id', ping);
  * TODO: Add Admin guard
  */
 router.patch('/:id/status', updateStatus);
+
+// All jobs in a particular company
+router.get('/:company', jobsByCompany);
 
 module.exports = router;
