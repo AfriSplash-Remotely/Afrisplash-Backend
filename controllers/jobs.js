@@ -561,3 +561,65 @@ exports.updateStatus = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 });
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Get all jobs by a particular company
+ * @route `/api/v1/jobs/:company
+ * @access Public
+ * @type GET
+ */
+exports.jobsByCompany = asyncHandler(async (req, res, next) => {
+  try {
+    const { company } = req.params;
+
+    // get company
+    const companyId = await Company.findOne({
+      name: company
+    }).select({
+      id: 1
+    });
+
+    let jobs = [];
+
+    if (companyId) {
+      // get jobs
+      jobs = await Jobs.find({
+        _company: companyId._id
+      });
+    }
+
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 30;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = jobs.length;
+
+    const queryResult = jobs.slice(startIndex, endIndex);
+
+    const pagination = {};
+
+    if (endIndex < total)
+      pagination.next = {
+        page: page + 1,
+        limit
+      };
+
+    if (startIndex > 0)
+      pagination.prev = {
+        page: page - 1,
+        limit
+      };
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      total,
+      count: queryResult.length,
+      pagination,
+      data: queryResult
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
