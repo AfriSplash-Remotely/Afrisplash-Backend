@@ -39,6 +39,17 @@ exports.create = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Company Is Required', 400));
     }
 
+    let expiry = 30; // default expiry days
+    if (input.expiry) expiry = input.expiry; // set expiry day from user if provided
+
+    // calculate expiry date
+    const currentDate = new Date();
+    const expiryDate = new Date();
+    expiryDate.setDate(currentDate.getDate() + expiry);
+
+    // set expiry date
+    input.expiry = expiryDate;
+
     input._company = req.user._company;
     input._author = req.user._id;
     input.verify = true;
