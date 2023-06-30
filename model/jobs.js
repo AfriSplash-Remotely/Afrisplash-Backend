@@ -96,9 +96,9 @@ const jobSchema = new mongoose.Schema(
       required: true,
       default: true
     },
-    expire: {
+    expiry: {
       type: Date,
-      default: null
+      required: true
     },
     external_data: {
       type: Object,

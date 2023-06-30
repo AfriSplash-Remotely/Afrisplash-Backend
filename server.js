@@ -8,6 +8,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const { connectDB } = require('./config/database');
 const errorHandler = require('./middleware/error');
+const jobExpiryCron = require('./utils/jobExpiryCron');
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
@@ -74,5 +75,8 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// start job expiry cronjob
+jobExpiryCron.start();
 
 module.exports = app;
