@@ -15,9 +15,7 @@ const loginAdminSchema = Joi.object({
 });
 
 const jobStatus = Joi.object({
-  status: Joi.string()
-    .valid('Active', 'Accepted', 'Rejected', 'Archived')
-    .required()
+  status: Joi.string().valid('Active', 'Expired', 'Archived').required()
 });
 
 const validateAdminInvite = validator(inviteAdminSchema);
