@@ -90,8 +90,7 @@ const userSchema = new mongoose.Schema({
 
   role: {
     type: String,
-    required: [true, 'Please enter user role'],
-    default: 'Product Design'
+    default: null
   },
 
   availability: {
