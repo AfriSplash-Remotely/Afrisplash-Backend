@@ -634,3 +634,62 @@ exports.jobsByCompany = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 });
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Search jobs by Type
+ * @route `/api/v1/jobs/:type
+ * @access Public
+ * @type GET
+ */
+exports.jobsByType = asyncHandler(async (req, res, next) => {
+  try {
+    const { type } = req.params;
+
+    if (!['Onsite', 'Remote', 'Hybrid'].includes(type)) {
+      return res.status(400).json({
+        success: false,
+        status: error,
+        message: 'Job type can only be any of [Onsite, Remote, Hybrid]'
+      });
+    }
+
+    // find jobs
+    const jobs = await Jobs.find({
+      type: type
+    });
+
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 30;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = jobs.length;
+
+    const queryResult = jobs.slice(startIndex, endIndex);
+
+    const pagination = {};
+
+    if (endIndex < total)
+      pagination.next = {
+        page: page + 1,
+        limit
+      };
+
+    if (startIndex > 0)
+      pagination.prev = {
+        page: page - 1,
+        limit
+      };
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      total,
+      count: queryResult.length,
+      pagination,
+      data: queryResult
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
