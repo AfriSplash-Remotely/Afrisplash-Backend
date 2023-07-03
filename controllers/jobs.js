@@ -576,7 +576,7 @@ exports.updateStatus = asyncHandler(async (req, res, next) => {
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
  * @description Get all jobs by a particular company
- * @route `/api/v1/jobs/:company
+ * @route /api/v1/jobs/search/c/:company
  * @access Public
  * @type GET
  */
@@ -638,7 +638,7 @@ exports.jobsByCompany = asyncHandler(async (req, res, next) => {
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
  * @description Search jobs by Type
- * @route `/api/v1/jobs/:type
+ * @route /api/v1/jobs/search/t/:type
  * @access Public
  * @type GET
  */
@@ -657,6 +657,57 @@ exports.jobsByType = asyncHandler(async (req, res, next) => {
     // find jobs
     const jobs = await Jobs.find({
       type: type
+    });
+
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 30;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = jobs.length;
+
+    const queryResult = jobs.slice(startIndex, endIndex);
+
+    const pagination = {};
+
+    if (endIndex < total)
+      pagination.next = {
+        page: page + 1,
+        limit
+      };
+
+    if (startIndex > 0)
+      pagination.prev = {
+        page: page - 1,
+        limit
+      };
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      total,
+      count: queryResult.length,
+      pagination,
+      data: queryResult
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Search jobs by Location
+ * @route /api/v1/jobs/search/l/location
+ * @access Public
+ * @type GET
+ */
+exports.jobsByLocation = asyncHandler(async (req, res, next) => {
+  try {
+    const { location } = req.params;
+
+    // find jobs
+    const jobs = await Jobs.find({
+      location: location
     });
 
     const page = parseInt(req.query.page, 10) || 1;
