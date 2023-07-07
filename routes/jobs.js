@@ -18,7 +18,8 @@ const {
   getApplicants,
   updateStatus,
   jobsByCompany,
-  jobsByType
+  jobsByType,
+  jobsByLocation
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -60,9 +61,12 @@ router.post('/r/:id', ping);
 router.patch('/:id/status', updateStatus);
 
 // Search jobs in a particular company
-router.get('/:company', jobsByCompany);
+router.get('/search/c/:company', jobsByCompany);
 
 // Search jobs by Type
-router.get('/:type', jobsByType);
+router.get('/search/t/:type', jobsByType);
+
+// Search jobs by Location
+router.get('/search/l/:location', jobsByLocation);
 
 module.exports = router;
