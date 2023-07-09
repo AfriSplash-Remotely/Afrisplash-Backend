@@ -6,7 +6,10 @@ const Jobs = require('../model/jobs');
 const Company = require('../model/companies');
 const User = require('../model/user');
 const _ = require('lodash');
-const { validateJobStatus } = require('../middleware/validators');
+const {
+  validateJobStatus,
+  validateJobTimeRange
+} = require('../middleware/validators');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -596,7 +599,8 @@ exports.jobsByCompany = asyncHandler(async (req, res, next) => {
     if (companyId) {
       // get jobs
       jobs = await Jobs.find({
-        _company: companyId._id
+        _company: companyId._id,
+        status: 'Active'
       });
     }
 
@@ -656,7 +660,8 @@ exports.jobsByType = asyncHandler(async (req, res, next) => {
 
     // find jobs
     const jobs = await Jobs.find({
-      type: type
+      type: type,
+      status: 'Active'
     });
 
     const page = parseInt(req.query.page, 10) || 1;
@@ -697,7 +702,7 @@ exports.jobsByType = asyncHandler(async (req, res, next) => {
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
  * @description Search jobs by Location
- * @route /api/v1/jobs/search/l/location
+ * @route /api/v1/jobs/search/l/:location
  * @access Public
  * @type GET
  */
@@ -707,8 +712,87 @@ exports.jobsByLocation = asyncHandler(async (req, res, next) => {
 
     // find jobs
     const jobs = await Jobs.find({
-      location: location
+      location: location,
+      status: 'Active'
     });
+
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 30;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const total = jobs.length;
+
+    const queryResult = jobs.slice(startIndex, endIndex);
+
+    const pagination = {};
+
+    if (endIndex < total)
+      pagination.next = {
+        page: page + 1,
+        limit
+      };
+
+    if (startIndex > 0)
+      pagination.prev = {
+        page: page - 1,
+        limit
+      };
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      total,
+      count: queryResult.length,
+      pagination,
+      data: queryResult
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Search jobs by Date
+ * @route /api/v1/jobs/search/d/:date
+ * @access Public
+ * @type GET
+ */
+exports.jobsByDate = asyncHandler(async (req, res, next) => {
+  const { timeRange } = req.query;
+  // validate the request query
+  const { error, value } = validateJobTimeRange(req.query);
+  if (error) return res.status(400).send(error.details);
+
+  let startDate;
+
+  // set the start date based on the desired time range
+  if (timeRange === 'past24hours') {
+    startDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  } else if (timeRange === 'pastweek') {
+    startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  } else if (timeRange === 'pastmonth') {
+    startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  } else if (timeRange === 'anytime') {
+    startDate = null;
+  }
+
+  try {
+    let jobs;
+
+    if (startDate) {
+      // search for jobs created after the start date
+      jobs = await Jobs.find({
+        createdAt: {
+          $gte: startDate
+        }
+      });
+    } else {
+      // return all jobs that are active
+      jobs = await Jobs.find({
+        status: 'Active'
+      });
+    }
 
     const page = parseInt(req.query.page, 10) || 1;
     const limit = parseInt(req.query.limit, 10) || 30;

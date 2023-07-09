@@ -18,13 +18,21 @@ const jobStatus = Joi.object({
   status: Joi.string().valid('Active', 'Expired', 'Archived').required()
 });
 
+const jobTimeRange = Joi.object({
+  timeRange: Joi.string()
+    .valid('past24hours', 'pastweek', 'pastmonth', 'anytime')
+    .required()
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
+const validateJobTimeRange = validator(jobTimeRange);
 
 module.exports = {
   validateAdminInvite,
   validateAdminLogin,
-  validateJobStatus
+  validateJobStatus,
+  validateJobTimeRange
 };
 // exports.validateAdminInvite = validator(inviteAdminSchema);
