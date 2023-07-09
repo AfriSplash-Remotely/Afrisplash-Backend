@@ -19,7 +19,8 @@ const {
   updateStatus,
   jobsByCompany,
   jobsByType,
-  jobsByLocation
+  jobsByLocation,
+  jobsByDate
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -68,5 +69,8 @@ router.get('/search/t/:type', jobsByType);
 
 // Search jobs by Location
 router.get('/search/l/:location', jobsByLocation);
+
+// Search jobs by Date
+router.get('/search/d', jobsByDate);
 
 module.exports = router;
