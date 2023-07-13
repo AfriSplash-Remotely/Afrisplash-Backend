@@ -24,15 +24,22 @@ const jobTimeRange = Joi.object({
     .required()
 });
 
+const sendEmailSchema = Joi.object({
+  email: Joi.string().email().required(),
+  subject: Joi.string().required(),
+  body: Joi.string().required()
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
 const validateJobTimeRange = validator(jobTimeRange);
-
+const validateSendEmail = validator(sendEmailSchema);
 module.exports = {
   validateAdminInvite,
   validateAdminLogin,
   validateJobStatus,
-  validateJobTimeRange
+  validateJobTimeRange,
+  validateSendEmail
 };
 // exports.validateAdminInvite = validator(inviteAdminSchema);

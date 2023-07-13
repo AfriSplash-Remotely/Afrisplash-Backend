@@ -5,7 +5,8 @@ const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 const {
   validateAdminInvite,
-  validateAdminLogin
+  validateAdminLogin,
+  validateSendEmail
 } = require('../middleware/validators');
 const emailSender = require('../mail/emailSender');
 
@@ -172,4 +173,50 @@ exports.getAllAdmins = asyncHandler(async (req, res, next) => {
     //TODO: logger
     return next(new ErrorResponse('An error occurred', 500));
   }
+});
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Send email
+ * @route `/api/v1/admins/email
+ * @access Private
+ * @type POST
+ */
+exports.sendEmail = asyncHandler(async (req, res, next) => {
+  // validate the request body
+  const { error, value } = validateSendEmail(req.body);
+
+  if (error) return res.status(400).send(error.details);
+
+  const { email, subject, body } = value;
+
+  const email_view = 'invite-admin';
+  const sender_email = process.env.HELLO_EMAIL;
+  const sender_pass = process.env.HELLO_PASS;
+  const from = `Afrisplash Admin <${sender_email}>`;
+
+  // run email sender function
+  const send_email = await emailSender(
+    email_view,
+    sender_email,
+    sender_pass,
+    from,
+    email,
+    subject,
+    body
+  );
+
+  if (!send_email.status)
+    return res.status(500).json({
+      success: false,
+      status: 'failed',
+      message: 'Internal server error',
+      error: send_email
+    });
+
+  return res.status(200).json({
+    success: true,
+    status: 'success',
+    data: send_email
+  });
 });
