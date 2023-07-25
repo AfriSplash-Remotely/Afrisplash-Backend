@@ -39,13 +39,19 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    # - name: Terraform init, format and validate
-    #   run: |
-    #     echo "** Running Terraform Init **"
-    #     terraform init \
-    #       -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
-    #       -backend-config="key=${{env.AWS_BUCKET_KEY}}" \
-    #       -backend-config="region=${{env.AWS_REGION}}" \
+    - name: Terraform init, format and validate
+      run: |
+        echo "** Running Terraform Init **"
+        terraform init \
+          -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
+          -backend-config="key=${{env.AWS_BUCKET_KEY}}" \
+          -backend-config="region=${{env.AWS_REGION}}" 
+    - name: Terraform Destroy
+      run: |
+        echo "** Running Terraform Destroy **"
+        terraform plan -destroy
+      working-directory: ${{ github.event.inputs.tfpath }}
+
     #       -backend-config="secret_key=${{env.AWS_SECRET_ACCESS_KEY}}" \
     #       -backend-config="access_key=${{env.AWS_ACCESS_KEY}}"
         
@@ -64,12 +70,7 @@ jobs:
     #     terraform apply -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}' -auto-approve
     #   working-directory: './deployment' 
     # - name: Build Docker image and push to ECR container
-    # - name: Terraform Destroy
-    #   run: |
-    #     echo "** Running Terraform Destroy **"
-    #     terraform plan -destroy
-    #   working-directory: ${{ github.event.inputs.tfpath }}
-
+  
       
 
       ##wite test for signed url
