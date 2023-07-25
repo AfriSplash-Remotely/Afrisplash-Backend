@@ -7,7 +7,7 @@ env:
   AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}
 on:
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ 'dev' ]
 permissions:
   contents: read
 jobs:
