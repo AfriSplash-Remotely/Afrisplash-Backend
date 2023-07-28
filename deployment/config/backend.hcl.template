@@ -1,0 +1,3 @@
+bucket = "${S3_BACKEND_BUCKET}"
+key="state-files"
+region=${{env.AWS_REGION}}
