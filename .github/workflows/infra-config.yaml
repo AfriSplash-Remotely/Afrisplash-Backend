@@ -1,0 +1,60 @@
+name: 'Terraform Infrasture Pipeline'
+env:
+  AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
+  S3_BACKEND_BUCKET: ${{secrets.S3_BACKEND_BUCKET}}
+  AWS_REGION: ${{secrets.AWS_REGION}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
+
+on:
+  pull_request:
+    branches: [ $default-branch ]
+permissions:
+  contents: read
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    # environment: production
+    # defaults:
+    #   run:
+    #     shell: bash
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Terraform init, format and validate
+      run: |
+        echo "** Running Terraform Init **"
+        terraform init \
+          -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
+          -backend-config="key=state-files" \
+          -backend-config="region=${{env.AWS_REGION}}"
+        echo "** Runing Terraform Format Check **"
+        terraform fmt 
+        
+    #     echo "** Running Terraform Validate **"
+    #     terraform validate
+    #   working-directory: './deployment'
+    # - name: Terraform Plan And Apply
+    #   run: |
+    #     echo "** Running Terraform Plan **"
+    #     terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
+        
+    #     echo "** Running Terraform Apply **"
+    #     terraform apply -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}' -auto-approve
+    #   working-directory: './deployment' 
+    # - name: Build Docker image and push to ECR container
+  
+      
+
+      ##wite test for signed url
+
+      ## write test for deployed server

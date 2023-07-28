@@ -1,6 +1,0 @@
-bucket = "${S3_BACKEND_BUCKET}"
-key = "${{env.AWS_BUCKET_KEY}}"
-region = "${AWS_REGION}" 
-secret_key = "${AWS_SECRET_ACCESS_KEY}"
-access_key = "${AWS_ACCESS_KEY}"
-

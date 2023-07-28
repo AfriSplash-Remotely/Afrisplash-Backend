@@ -1,2 +1,31 @@
-<!-- https://developer.hashicorp.com/terraform/tutorials/automation/github-actions -->
-https://codelabs.transcend.io/codelabs/node-terraform/index.html?index=..%2F..index#4
+## Credentials Needed 
+- Get AWS credentials required to authenticate the IAM user following this [guide](https://docs.aws.amazon.com/keyspaces/latest/devguide/access.credentials.html)
+- Create an s3 bucket on AWS and note down the bucket name
+
+
+## Setup Terraform on Local Machine
+- After succecfully getting the necessary credentials, change directory into the config folder.
+- Create a new file named `backend.hcl` and add the terraform backend credentials as shown in the `backend.hcl.template` and shown below
+```
+bucket = "[name_of_s3_bucker]"
+key="[key_name]"
+region="[aws_region]"
+```
+- Open a terminal in the deployment directory and run the command
+```
+terraform init -backend-config=config/backend.hcl
+```
+- Create a new file named `dev.tfvars` and add the aws user credentials to authenticate terraform  as shown in the `dev.tfvars.template` and shown below
+```
+aws_secret_key=[your_aws_secret_credentials]
+aws_access_key=[your_aws_access_key]
+region=[your_aws_region]
+```
+- In the terminal run the following command to see any changes that are required for you infrastructure
+```
+terraform plan --var-file config/dev.tfvars
+```
+
+## Additional Resources 
+- https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
+- https://codelabs.transcend.io/codelabs/node-terraform/index.html?index=..%2F..index#4
