@@ -2,15 +2,13 @@ const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
   reporter_id: {
-    type: mongoose.SchemaTypes.ObjectId({
-      required: [true, 'Report can not be created without the reporter id'],
-      ref: 'user'
-    })
+    type: mongoose.SchemaTypes.ObjectId,
+    required: [true, 'Report can not be created without the reporter id'],
+    ref: 'user'
   },
   reported_item: {
-    type: mongoose.SchemaTypes.ObjectId({
-      required: true
-    })
+    type: mongoose.SchemaTypes.ObjectId,
+    required: true
   },
   reason: {
     type: String,
@@ -27,6 +25,6 @@ const reportSchema = new mongoose.Schema({
   }
 });
 
-const Report = mongoose.model('report', reportSchema);
+const Report = mongoose.model('Report', reportSchema);
 
 module.exports = Report;
