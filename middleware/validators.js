@@ -30,16 +30,25 @@ const sendEmailSchema = Joi.object({
   body: Joi.string().required()
 });
 
+const createReportSchema = Joi.object({
+  reported_item: Joi.string().required(),
+  reason: Joi.string().required(),
+  type: Joi.string().valid('post', 'user', 'company', 'job').required()
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
 const validateJobTimeRange = validator(jobTimeRange);
 const validateSendEmail = validator(sendEmailSchema);
+const validateReportSchema = validator(createReportSchema);
+
 module.exports = {
   validateAdminInvite,
   validateAdminLogin,
   validateJobStatus,
   validateJobTimeRange,
-  validateSendEmail
+  validateSendEmail,
+  validateReportSchema
 };
 // exports.validateAdminInvite = validator(inviteAdminSchema);

@@ -5,7 +5,7 @@ const User = require('../model/user');
 const _ = require('lodash');
 
 //TODO: Review This
-/**Route Graud For `All User` -- *MIDDLEWARE* */
+/**Route Gaurd For `All User` -- *MIDDLEWARE* */
 exports.protect = asyncHandler(async (req, res, next) => {
   let token;
 
