@@ -1,4 +1,4 @@
 module "deploy_vpc" {
-    source = "./modules/vpc"
+    source = "./modules/new_vpc"
     vpc_name = "application-deployemnt-VPC"
 }

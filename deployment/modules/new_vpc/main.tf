@@ -1,4 +1,5 @@
-module "deploy_vpc" {
+data "aws_availability_zones" "available" {}
+module "new_vpc" {
   source = "terraform-aws-modules/vpc/aws"
   version = "3.14.2"
 
