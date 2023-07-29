@@ -26,6 +26,12 @@ region=[your_aws_region]
 terraform plan --var-file config/dev.tfvars
 ```
 
+- Run the following command to download vpc
+
+```
+terraform get
+```
+
 ## Additional Resources 
 - https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 - https://codelabs.transcend.io/codelabs/node-terraform/index.html?index=..%2F..index#4
