@@ -19,6 +19,11 @@ const reportSchema = new mongoose.Schema({
     required: true,
     enum: ['post', 'user', 'company', 'job']
   },
+  resolved: {
+    type: Boolean,
+    default: false,
+    required: false
+  },
   created_at: {
     type: Date,
     default: Date.now
