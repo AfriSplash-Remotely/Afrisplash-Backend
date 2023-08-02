@@ -22,12 +22,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
-    
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
@@ -36,7 +34,7 @@ jobs:
           -backend-config="key=state-files" \
           -backend-config="region=${{env.AWS_REGION}}"
         echo "** Runing Terraform Format Check **"
-        terraform fmt         
+        terraform fmt
         echo "** Running Terraform Validate **"
         terraform validate
       working-directory: './deployment'
