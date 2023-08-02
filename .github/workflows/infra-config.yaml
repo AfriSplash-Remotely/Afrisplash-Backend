@@ -29,6 +29,9 @@ jobs:
         else
           echo "::set-output name=env_name::Preview"
         fi
+    - name: Use variable setup in previous step
+      run: echo "I'm using variable ${{ steps.branch_check.outputs.env_name }}"
+        
     outputs:
       env_name: ${{ steps.branch_check.outputs.env_name }}
 
