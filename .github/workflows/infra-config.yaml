@@ -39,8 +39,7 @@ jobs:
     name: 'Terraform'
     needs: [github]
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ needs.github.outputs.env_name }}
+    environment: ${{ needs.github.outputs.env_name }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
