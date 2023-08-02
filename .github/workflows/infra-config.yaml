@@ -7,7 +7,6 @@ name: 'Terraform Infrasture Pipeline'
 #   AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
 
 on:
-  # workflow_dispatch:
   push:
     branches: [ 'dev', 'main' ]
   pull_request:
@@ -15,10 +14,28 @@ on:
 permissions:
   contents: read
 jobs:
+  github:
+    name: 'Github Actions Setup'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Branch check to determine environment 
+      id: branch_check
+      run: |
+        echo "Running on branch ${{ github.ref }}"
+        if ["${{ github.ref }}" = "refs/heads/main"]; then
+          echo "::set-output name=env_name::Production"
+        else
+          echo "::set-output name=env_name::Preview"
+        fi
+  outputs:
+    env_name: ${{ steps.branch_check.outputs.env_name }}
+
   terraform:
     name: 'Terraform'
+    needs: [github]
     runs-on: ubuntu-latest
-    secretsironment: Preview
+    environment:
+      name: ${{ needs.github.outputs.env_name }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
