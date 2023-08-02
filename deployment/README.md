@@ -20,6 +20,15 @@ terraform init -backend-config=config/backend.hcl
 aws_secret_key="[your_aws_secret_credentials]"
 aws_access_key="[your_aws_access_key]"
 region="[your_aws_region]"
+<<<<<<< HEAD
+```
+
+- Run the following command to download the local modules
+
+```
+terraform get
+=======
+>>>>>>> 2c873e4 (fix deployment issues)
 ```
 
 - Run the following command to download the local modules
@@ -27,12 +36,14 @@ region="[your_aws_region]"
 ```
 terraform get
 ```
+
+
 - In the terminal run the following command to see any changes that are required for you infrastructure
 ```
 terraform plan -var-file ./config/dev.tfvars
 ```
 
-- Run the command below t
+- Run the command below to format terraform files
 ```
 terraform fmt
 
