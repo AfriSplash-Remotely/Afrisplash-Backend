@@ -58,15 +58,17 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
         terraform_wrapper: false
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
-        echo pwd
+        echo $(pwd)
         terraform init \
           -backend-config="bucket=afri-backend-state-bucket" \
           -backend-config="key=state-files" \
-          -backend-config="region=us-east-1"
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
