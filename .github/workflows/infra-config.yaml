@@ -7,20 +7,18 @@ env:
   AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
 
 on:
-  push:
-    branches: [ 'dev', 'main' ]
-  pull_request:
-    branches: [ 'dev', 'main' ]
+  workflow_dispatch:
+  # push:
+  #   branches: [ 'dev', 'main' ]
+  # pull_request:
+  #   branches: [ 'dev', 'main' ]
 permissions:
   contents: read
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    # environment: production
-    # defaults:
-    #   run:
-    #     shell: bash
+    environment: Preview
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -38,21 +36,18 @@ jobs:
           -backend-config="key=state-files" \
           -backend-config="region=${{env.AWS_REGION}}"
         echo "** Runing Terraform Format Check **"
-        terraform fmt 
+        terraform fmt         
+        echo "** Running Terraform Validate **"
+        terraform validate
+      working-directory: './deployment'
+    - name: Terraform Plan And Apply
+      run: |
+        echo "** Running Terraform Plan **"
+        terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
         
-    #     echo "** Running Terraform Validate **"
-    #     terraform validate
-    #   working-directory: './deployment'
-    # - name: Terraform Plan And Apply
-    #   run: |
-    #     echo "** Running Terraform Plan **"
-    #     terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
-        
-    #     echo "** Running Terraform Apply **"
-    #     terraform apply -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}' -auto-approve
-    #   working-directory: './deployment' 
-    # - name: Build Docker image and push to ECR container
-  
+        echo "** Running Terraform Apply **"
+        terraform apply -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}' -auto-approve
+      working-directory: './deployment' 
       
 
       ##wite test for signed url
