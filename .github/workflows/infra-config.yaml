@@ -67,7 +67,7 @@ jobs:
         echo "** Running Terraform Init **"
         terraform init \
           -backend-config="bucket=afri-backend-state-bucket" \
-          -backend-config="key=state-files" \
+          -backend-config="key=state-files" 
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
