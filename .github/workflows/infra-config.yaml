@@ -1,19 +1,17 @@
 name: 'Terraform Infrasture Pipeline'
-# secrets:
-#   AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
-#   S3_BACKEND_BUCKET: ${{secrets.S3_BACKEND_BUCKET}}
-#   AWS_REGION: ${{secrets.AWS_REGION}}
-#   AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-#   AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
 
 on:
   push:
     branches: [ 'dev', 'main' ]
-  pull_request:
-    branches: [ 'dev', 'main' ]
+  pull_request_target:
 permissions:
   contents: read
 jobs:
+  approve:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Approve
+      run: echo "All PRS need to be approved before starting automated CI"
   github:
     name: 'Github Actions Setup'
     runs-on: ubuntu-latest
@@ -31,7 +29,6 @@ jobs:
         fi
     - name: Use variable setup in previous step
       run: echo "I'm using variable ${{ steps.branch_check.outputs.env_name }}"
-        
     outputs:
       env_name: ${{ steps.branch_check.outputs.env_name }}
 
@@ -40,11 +37,15 @@ jobs:
     needs: [github]
     runs-on: ubuntu-latest
     environment: ${{ needs.github.outputs.env_name }}
+    env:
+      AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
+      S3_BACKEND_BUCKET: ${{secrets.S3_BACKEND_BUCKET}}
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Use variable setup in previous step
-      run: echo "I'm using variable ${{  needs.github.outputs.env_name }}"
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
@@ -53,9 +54,9 @@ jobs:
       run: |
         echo "** Running Terraform Init **"
         terraform init \
-          -backend-config="bucket=${{secrets.S3_BACKEND_BUCKET}}" \
+          -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
           -backend-config="key=state-files" \
-          -backend-config="region=${{secrets.AWS_REGION}}"
+          -backend-config="region=${{env.AWS_REGION}}"
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
@@ -64,7 +65,7 @@ jobs:
     - name: Terraform Plan And Apply
       run: |
         echo "** Running Terraform Plan **"
-        terraform plan -var 'aws_secret_key=${{secrets.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}'
+        terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}'
         
         echo "** Running Terraform Apply **"
         terraform apply -var 'aws_secret_key=${{secrets.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}' -auto-approve
