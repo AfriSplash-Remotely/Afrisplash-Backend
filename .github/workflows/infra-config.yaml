@@ -65,7 +65,6 @@ jobs:
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
-        echo $(pwd)
         terraform init \
           -backend-config="bucket=afri-backend-state-bucket" \
           -backend-config="key=state-files" \
