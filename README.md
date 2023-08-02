@@ -1,3 +1,4 @@
+[![Terraform Infrasture Pipeline](https://github.com/AfriSplash-Remotely/Afrisplash-Backend/actions/workflows/infra-config.yaml/badge.svg?branch=dev)](https://github.com/AfriSplash-Remotely/Afrisplash-Backend/actions/workflows/infra-config.yaml)
 # Afrisplash-Backend
 
 # Tech Stack
