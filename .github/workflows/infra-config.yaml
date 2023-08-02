@@ -1,60 +1,78 @@
 name: 'Terraform Infrasture Pipeline'
-env:
-  AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
-  S3_BACKEND_BUCKET: ${{secrets.S3_BACKEND_BUCKET}}
-  AWS_REGION: ${{secrets.AWS_REGION}}
-  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-  AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
 
-on:
-  push:
-    branches: [ 'dev', 'main' ]
-  pull_request:
-    branches: [ 'dev', 'main' ]
-permissions:
-  contents: read
+on: pull_request_target
+  # pull_request:
+  #   branches: ['dev']
+  # push:
+  #   branches: [ 'dev', 'main' ]
+
 jobs:
-  terraform:
-    name: 'Terraform'
+  approve:
     runs-on: ubuntu-latest
-    # environment: production
-    # defaults:
-    #   run:
-    #     shell: bash
+    steps:
+    - name: Approve
+      run: echo "All PRS need to be approved before starting automated CI"
+
+  github:
+    name: 'Github Actions Setup'
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+    - name: Branch check to determine environment 
+      id: branch_check
+      run: |
+        echo "Running on branch ${{ github.ref }}"
+        if ["${{ github.ref }}" = "refs/heads/main"]; then
+          echo "::set-output name=env_name::Production"
+        else
+          echo "::set-output name=env_name::Preview"
+        fi
+    - name: Use variable setup in previous step
+      run: echo "I'm using variable ${{ steps.branch_check.outputs.env_name }}"
+    outputs:
+      env_name: ${{ steps.branch_check.outputs.env_name }}
 
+  terraform:
+    name: 'Terraform'
+    needs: [github]
+    runs-on: ubuntu-latest
+    environment: ${{ needs.github.outputs.env_name }}
+    env:
+      AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
+      S3_BACKEND_BUCKET: ${{secrets.S3_BACKEND_BUCKET}}
+      AWS_REGION: ${{secrets.AWS_REGION}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha || github.ref }}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
-    
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
-        terraform init \
-          -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
+        echo ${{env.AWS_SECRET_KEY}}
+        terraform init -backend-config="bucket=afri-backend-state-bucket" \
           -backend-config="key=state-files" \
-          -backend-config="region=${{env.AWS_REGION}}"
+          -backend-config="region=us-east-1" \
+          -backend-config="access_key=${{env.AWS_ACCESS_KEY}}" \
+          -backend-config="secret_key=${{env.AWS_SECRET_ACCESS_KEY}}"
         echo "** Runing Terraform Format Check **"
-        terraform fmt 
-        
-    #     echo "** Running Terraform Validate **"
-    #     terraform validate
-    #   working-directory: './deployment'
+        terraform fmt
+        echo "** Running Terraform Validate **"
+        terraform validate
+      working-directory: './deployment'
     # - name: Terraform Plan And Apply
     #   run: |
     #     echo "** Running Terraform Plan **"
-    #     terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}'
+    #     terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}'
         
     #     echo "** Running Terraform Apply **"
-    #     terraform apply -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{env.AWS_ACCESS_KEY}}' -auto-approve
+    #     terraform apply -var 'aws_secret_key=${{secrets.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}' -auto-approve
     #   working-directory: './deployment' 
-    # - name: Build Docker image and push to ECR container
-  
-      
-
-      ##wite test for signed url
-
-      ## write test for deployed server
+    
