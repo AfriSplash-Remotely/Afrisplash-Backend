@@ -59,10 +59,11 @@ jobs:
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
+        echo pwd
         terraform init \
-          -backend-config="bucket=${{env.S3_BACKEND_BUCKET}}" \
+          -backend-config="bucket=afri-backend-state-bucket" \
           -backend-config="key=state-files" \
-          -backend-config="region=${{env.AWS_REGION}}"
+          -backend-config="region=us-east-1"
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
