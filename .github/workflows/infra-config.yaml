@@ -39,7 +39,7 @@ jobs:
     name: 'Terraform'
     needs: [github]
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'valid')
+    # if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     environment: ${{ needs.github.outputs.env_name }}
     env:
       AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
