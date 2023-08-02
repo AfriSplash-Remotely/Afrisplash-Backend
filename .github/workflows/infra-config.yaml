@@ -21,6 +21,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Branch check to determine environment 
       id: branch_check
       run: |
@@ -39,7 +42,6 @@ jobs:
     name: 'Terraform'
     needs: [github]
     runs-on: ubuntu-latest
-    # if: contains(github.event.pull_request.labels.*.name, 'safe to test')
     environment: ${{ needs.github.outputs.env_name }}
     env:
       AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
@@ -52,6 +54,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: ${{ github.event.pull_request.head.sha }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
