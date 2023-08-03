@@ -7,6 +7,7 @@ on:
     branches: [ 'dev', 'main' ]
 
 jobs:
+  environment: Preview
   approve:
     runs-on: ubuntu-latest
     steps:
@@ -39,9 +40,7 @@ jobs:
     name: 'Terraform'
     needs: [github]
     runs-on: ubuntu-latest
-    environment: ${{ needs.github.outputs.env_name }}
-    # with:
-    #   environment: Preview
+    # environment: ${{ needs.github.outputs.env_name }}
     permissions:
       pull-requests: write
     env:
@@ -52,7 +51,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.pull_request.head.sha || github.ref }}
+        ref: ${{ github.event.pull_r  equest.head.sha || github.ref }}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
@@ -64,7 +63,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         echo "** Running Terraform Init **"
-        echo $TEST_VAR
         terraform init -backend-config="bucket=afri-backend-state-bucket" -backend-config="key=state-files" -backend-config="region=us-east-1" -migrate-state
         echo "** Runing Terraform Format Check **"
         terraform fmt

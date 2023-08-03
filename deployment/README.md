@@ -27,8 +27,6 @@ region="[your_aws_region]"
 ```
 terraform get
 ```
-
-
 - In the terminal run the following command to see any changes that are required for you infrastructure
 ```
 terraform plan -var-file ./config/dev.tfvars
