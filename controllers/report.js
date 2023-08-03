@@ -1,4 +1,9 @@
 const Report = require('../model/report');
+const Post = require('../model/post');
+const User = require('../model/user');
+const Compnay = require('../model/companies');
+const Job = require('../model/jobs');
+const Comment = require('../model/comment');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
 const { validateReportSchema } = require('../middleware/validators');
@@ -21,7 +26,7 @@ exports.createReport = asyncHandler(async (req, res, next) => {
 
     // create report document
     const newReport = new Report({
-      reporter_id: req.user._id,
+      reporter: req.user._id,
       reported_item,
       type,
       reason
@@ -45,7 +50,7 @@ exports.createReport = asyncHandler(async (req, res, next) => {
  */
 exports.getReports = asyncHandler(async (req, res, next) => {
   try {
-    const reports = await Report.find().populate('reporter_id', {
+    const reports = await Report.find().populate('reporter', {
       _id: 1,
       email: 1,
       user_type: 1,
@@ -84,6 +89,86 @@ exports.getReports = asyncHandler(async (req, res, next) => {
       pagination,
       data: queryResult
     });
+  } catch (error) {
+    console.log(error);
+    //TODO: logger
+    return next(new ErrorResponse('An error occurred', 500));
+  }
+});
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Get a report
+ * @route `/api/v1/report/:id
+ * @access Restricted
+ * @type GET
+ */
+exports.getReport = asyncHandler(async (req, res, next) => {
+  try {
+    let report = await Report.findById(req.params.id).populate('reporter', {
+      _id: 1,
+      email: 1,
+      user_type: 1,
+      email: 1,
+      first_name: 1,
+      last_name: 1
+    });
+
+    if (!report) return next(new ErrorResponse('Report Not Found', 404));
+
+    const type = report.type;
+    let reported_item_data;
+    const reported_item_id = report.reported_item;
+
+    if (type === 'post') {
+      const query = await Post.findById(reported_item_id, {
+        _id: 1,
+        title: 1
+      });
+      reported_item_data = query.toObject();
+    } else if (type === 'user') {
+      const query = await User.findById(reported_item_id, {
+        _id: 1,
+        user_type: 1,
+        first_name: 1,
+        last_name: 1,
+        email: 1,
+        gender: 1
+      });
+      reported_item_data = query.toObject();
+    } else if (type === 'company') {
+      const query = await Compnay.findById(reported_item_id, {
+        _id: 1,
+        name: 1,
+        one_Line_Pitch: 1
+      });
+      reported_item_data = query.toObject();
+    } else if (type === 'job') {
+      const query = await Job.findById(reported_item_id, {
+        _id: 1,
+        title: 1,
+        industry: 1,
+        experience: 1,
+        type: 1,
+        status: 1,
+        location: 1,
+        salary: 1
+      });
+      reported_item_data = query.toObject();
+    } else if (type === 'comment') {
+      const query = await Comment.findById(reported_item_id, {
+        _id: 1,
+        body: 1
+      });
+      reported_item_data = query.toObject();
+    } else {
+      //
+    }
+
+    let data = report.toObject();
+    data.reported_item = reported_item_data;
+
+    return res.status(200).json(data);
   } catch (error) {
     console.log(error);
     //TODO: logger

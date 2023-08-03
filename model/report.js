@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
-  reporter_id: {
+  reporter: {
     type: mongoose.SchemaTypes.ObjectId,
     required: [true, 'Report can not be created without the reporter id'],
     ref: 'user'
@@ -17,7 +17,7 @@ const reportSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ['post', 'user', 'company', 'job']
+    enum: ['post', 'user', 'company', 'job', 'comment']
   },
   resolved: {
     type: Boolean,

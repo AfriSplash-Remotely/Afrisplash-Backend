@@ -33,7 +33,9 @@ const sendEmailSchema = Joi.object({
 const createReportSchema = Joi.object({
   reported_item: Joi.string().required(),
   reason: Joi.string().required(),
-  type: Joi.string().valid('post', 'user', 'company', 'job').required()
+  type: Joi.string()
+    .valid('post', 'user', 'company', 'job', 'comment')
+    .required()
 });
 
 const validateAdminInvite = validator(inviteAdminSchema);
