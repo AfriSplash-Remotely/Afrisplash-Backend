@@ -39,10 +39,15 @@ jobs:
     name: 'Terraform'
     needs: [github]
     runs-on: ubuntu-latest
-    # environment: ${{ needs.github.outputs.env_name }}
-    environment: Preview
+    environment: ${{ needs.github.outputs.env_name }}
+    # with:
+    #   environment: Preview
     permissions:
       pull-requests: write
+    env:
+      aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      region: ${{ secrets.AWS_SECRET_REGION }}
+      aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -51,14 +56,15 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
         terraform_wrapper: false
     - name: Terraform init, format and validate
+      env:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        region: ${{ secrets.AWS_SECRET_REGION }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         echo "** Running Terraform Init **"
-
+        echo $TEST_VAR
         terraform init -backend-config="bucket=afri-backend-state-bucket" -backend-config="key=state-files" -backend-config="region=us-east-1" -migrate-state
         echo "** Runing Terraform Format Check **"
         terraform fmt
