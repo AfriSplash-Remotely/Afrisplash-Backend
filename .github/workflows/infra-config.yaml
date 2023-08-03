@@ -41,6 +41,8 @@ jobs:
     runs-on: ubuntu-latest
     # environment: ${{ needs.github.outputs.env_name }}
     environment: Preview
+    permissions:
+      pull-requests: write
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -57,11 +59,7 @@ jobs:
       run: |
         echo "** Running Terraform Init **"
 
-        terraform init -backend-config="bucket=afri-backend-state-bucket" \
-          -backend-config="key=state-files" \
-          -backend-config="region=us-east-1" \
-          -backend-config="access_key=${{secrets.AWS_ACCESS_KEY_ID}}" \
-          -backend-config="secret_key=${{secrets.AWS_SECRET_ACCESS_KEY}}"
+        terraform init -backend-config="bucket=afri-backend-state-bucket" -backend-config="key=state-files" -backend-config="region=us-east-1" -migrate-state
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
