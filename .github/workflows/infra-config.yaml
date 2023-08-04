@@ -46,7 +46,7 @@ jobs:
       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
       region: ${{ secrets.AWS_SECRET_REGION }}
       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TEST_VAR: ${{ env.TEST_VAR }}
+      # TEST_VAR: ${{ env.TEST_VAR }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -59,7 +59,7 @@ jobs:
     - name: Check current environement
       run: |
         echo "$TEST_VAR" 
-        echo "${{ vars.TEST_VAR }}"
+        echo "${{ env.TEST_VAR }}"
     - name: Terraform init, format and validate
       env:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
