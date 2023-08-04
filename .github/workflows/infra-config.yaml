@@ -59,10 +59,13 @@ jobs:
       run: |
         echo "${{ vars.TEST_VAR }}"
         echo "${{ vars.region }}"
+        echo $region
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
         terraform init -backend-config="bucket=afri-backend-state-bucket" -backend-config="key=state-files" -backend-config="region=us-east-1" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -migrate-state
+        echo "** Download local modules"
+        terraform get
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
