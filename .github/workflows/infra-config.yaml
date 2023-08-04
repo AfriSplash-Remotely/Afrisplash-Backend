@@ -47,6 +47,7 @@ jobs:
       region: ${{ secrets.AWS_REGION }}
       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       backend_bucket: ${{ secrets.S3_BACKEND_BUCKET }}
+      backend_key: ${{ vars.S3_BACKEND_KEY }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -63,7 +64,8 @@ jobs:
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
-        terraform init -backend-config="bucket=$backend_bucket" -backend-config="key=state-files" -backend-config="region=us-east-1" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -migrate-state
+        terraform init \
+        -backend-config="bucket=$backend_bucket" -backend-config="key=$backend_key" -backend-config="region=$region" 
         echo "** Download local modules"
         terraform get
         echo "** Runing Terraform Format Check **"
@@ -71,11 +73,10 @@ jobs:
         echo "** Running Terraform Validate **"
         terraform validate
       working-directory: './deployment'
-    # - name: Terraform Plan And Apply
-    #   run: |
-    #     echo "** Running Terraform Plan **"
-    #     terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}'
-        
+    - name: Terraform Plan And Apply
+      run: |
+        echo "** Running Terraform Plan **"
+        terraform plan -var 'aws_secret_key=$aws_secret_key' -var 'aws_access_key=$aws_access_key'
     #     echo "** Running Terraform Apply **"
     #     terraform apply -var 'aws_secret_key=${{secrets.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}' -auto-approve
     #   working-directory: './deployment' 
