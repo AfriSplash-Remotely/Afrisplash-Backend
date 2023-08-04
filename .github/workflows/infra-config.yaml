@@ -46,7 +46,6 @@ jobs:
       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
       region: ${{ secrets.AWS_REGION }}
       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #   # TEST_VAR: ${{ env.TEST_VAR }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
