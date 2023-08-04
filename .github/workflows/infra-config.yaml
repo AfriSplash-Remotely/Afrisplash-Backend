@@ -55,6 +55,10 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
+    - name: Check current environement
+      run: |
+        echo "$TEST_VAR" 
+        echo "${{ vars.TEST_VAR }}"
     - name: Terraform init, format and validate
       env:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
