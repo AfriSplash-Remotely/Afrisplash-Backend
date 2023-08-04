@@ -62,7 +62,7 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         echo "** Running Terraform Init **"
-        terraform init -backend-config="bucket=afri-backend-state-bucket" -backend-config="key=state-files" -backend-config="region=us-east-1" -migrate-state
+        terraform init -backend-config="bucket=afri-backend-state-bucket" -backend-config="key=state-files" -backend-config="region=us-east-1" -backend-config="access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" -migrate-state
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
