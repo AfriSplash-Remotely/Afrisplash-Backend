@@ -7,7 +7,6 @@ on:
     branches: [ 'dev', 'main' ]
 
 jobs:
-  # environment: Preview
   approve:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +50,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.pull_r  equest.head.sha || github.ref }}
+        ref: ${{ github.event.pull_request.head.sha || github.ref }}
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
