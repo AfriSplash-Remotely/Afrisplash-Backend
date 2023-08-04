@@ -40,14 +40,14 @@ jobs:
     needs: [github]
     runs-on: ubuntu-latest
     environment: ${{ needs.github.outputs.env_name }}
-    # permissions:
-    #   pull-requests: write
+    permissions:
+      pull-requests: write
     env:
       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      region: ${{ secrets.AWS_REGION }}
       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       backend_bucket: ${{ secrets.S3_BACKEND_BUCKET }}
-      backend_key: ${{ vars.S3_BACKEND_KEY }}
+      backend_key: ${{ vars.S3_BACKEND_KEY }}]
+      region: ${{ secrets.AWS_REGION }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -61,10 +61,11 @@ jobs:
       run: |
         echo "${{ vars.TEST_VAR }}"
         echo $region
+        echo $backend_key
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
-        terraform init -backend-config="bucket=$backend_bucket" -backend-config="key=$backend_key" -backend-config="region=$region" 
+        terraform init -backend-config="bucket=$backend_bucket" -backend-config="key=$backend_key" -backend-config="region=$region"   -backend-config="access_key=$aws_access_key" -backend-config="secret_key=$aws_secret_key"
         echo "** Download local modules"
         terraform get
         echo "** Runing Terraform Format Check **"
