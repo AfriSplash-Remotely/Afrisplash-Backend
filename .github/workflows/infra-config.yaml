@@ -7,7 +7,7 @@ on:
     branches: [ 'dev', 'main' ]
 
 jobs:
-  environment: Preview
+  # environment: Preview
   approve:
     runs-on: ubuntu-latest
     steps:
