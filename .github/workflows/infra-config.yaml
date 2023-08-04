@@ -44,7 +44,7 @@ jobs:
       pull-requests: write
     env:
       aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      region: ${{ secrets.AWS_SECRET_REGION }}
+      region: ${{ secrets.AWS_REGION }}
       aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     #   # TEST_VAR: ${{ env.TEST_VAR }}
     steps:
@@ -59,7 +59,7 @@ jobs:
     - name: Check current environement
       run: |
         echo "${{ vars.TEST_VAR }}"
-        echo "${{ vars.aws_access_key }}"
+        echo "${{ secrets.AWS_REGION }}"
     # - name: Terraform init, format and validate
       # env:
       #   aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
