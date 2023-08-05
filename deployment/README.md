@@ -41,3 +41,6 @@ terraform fmt
 ## Additional Resources 
 - https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 - https://codelabs.transcend.io/codelabs/node-terraform/index.html?index=..%2F..index#4
+- https://developer.hashicorp.com/terraform/tutorials/modules/module
+- https://registry.terraform.io/modules/terraform-aws-modules/ecs/aws/latest
+- https://registry.terraform.io/modules/terraform-aws-modules/ecr/aws/latest
