@@ -76,7 +76,7 @@ jobs:
     - name: Terraform Plan And Apply
       run: |
         echo "** Running Terraform Plan **"
-        terraform plan -var 'aws_secret_key=$aws_secret_key' -var 'aws_access_key=$aws_access_key' -var 'region=$region'
+        terraform plan -var "aws_secret_key=$aws_secret_key" -var "aws_access_key=$aws_access_key" -var "region=$region"
         echo "** Running Terraform Apply **"
     #     terraform apply -var 'aws_secret_key=$aws_secret_key' -var 'aws_access_key=$aws_access_key' -var 'region=$region' -auto-approve
       working-directory: './deployment' 
