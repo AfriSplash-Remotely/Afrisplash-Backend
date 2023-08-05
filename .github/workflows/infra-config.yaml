@@ -12,6 +12,7 @@ jobs:
     steps:
     - name: Approve
       run: echo "All PRS need to be approved before starting automated CI"
+
   github:
     name: 'Github Actions Setup'
     runs-on: ubuntu-latest
@@ -19,7 +20,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       with:
-        ref: ${{ github.event.pull_request.head.sha || github.ref }}
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Branch check to determine environment 
       id: branch_check
       run: |
@@ -39,12 +40,14 @@ jobs:
     needs: [github]
     runs-on: ubuntu-latest
     environment: ${{ needs.github.outputs.env_name }}
+    permissions:
+      pull-requests: write
     env:
-      AWS_BUCKET_KEY: ${{secrets.AWS_BUCKET_KEY}}
-      S3_BACKEND_BUCKET: ${{secrets.S3_BACKEND_BUCKET}}
-      AWS_REGION: ${{secrets.AWS_REGION}}
-      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-      AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY_ID}}
+      aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      backend_bucket: ${{ secrets.S3_BACKEND_BUCKET }}
+      backend_key: ${{ vars.S3_BACKEND_KEY }}]
+      region: ${{ secrets.AWS_REGION }}
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -54,26 +57,27 @@ jobs:
       uses: hashicorp/setup-terraform@v2
       with:
         terraform_wrapper: false
+    - name: Check current environement
+      run: |
+        echo "${{ vars.TEST_VAR }}"
+        echo $region
+        echo $backend_key
     - name: Terraform init, format and validate
       run: |
         echo "** Running Terraform Init **"
-        echo ${{env.AWS_SECRET_KEY}}
-        terraform init -backend-config="bucket=afri-backend-state-bucket" \
-          -backend-config="key=state-files" \
-          -backend-config="region=us-east-1" \
-          -backend-config="access_key=${{env.AWS_ACCESS_KEY}}" \
-          -backend-config="secret_key=${{env.AWS_SECRET_ACCESS_KEY}}"
+        terraform init -backend-config="bucket=$backend_bucket" -backend-config="key=$backend_key" -backend-config="region=$region"   -backend-config="access_key=$aws_access_key" -backend-config="secret_key=$aws_secret_key"
+        echo "** Download local modules"
+        terraform get
         echo "** Runing Terraform Format Check **"
         terraform fmt
         echo "** Running Terraform Validate **"
         terraform validate
       working-directory: './deployment'
-    # - name: Terraform Plan And Apply
-    #   run: |
-    #     echo "** Running Terraform Plan **"
-    #     terraform plan -var 'aws_secret_key=${{env.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}'
-        
-    #     echo "** Running Terraform Apply **"
-    #     terraform apply -var 'aws_secret_key=${{secrets.AWS_SECRET_ACCESS_KEY}}' -var 'aws_access_key=${{secrets.AWS_ACCESS_KEY_ID}}' -auto-approve
-    #   working-directory: './deployment' 
+    - name: Terraform Plan And Apply
+      run: |
+        echo "** Running Terraform Plan **"
+        terraform plan -var "aws_secret_key=$aws_secret_key" -var "aws_access_key=$aws_access_key" -var "region=$region"
+        echo "** Running Terraform Apply **"
+    #     terraform apply -var 'aws_secret_key=$aws_secret_key' -var 'aws_access_key=$aws_access_key' -var 'region=$region' -auto-approve
+      working-directory: './deployment' 
     

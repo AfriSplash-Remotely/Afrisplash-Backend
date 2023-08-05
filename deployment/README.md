@@ -17,15 +17,30 @@ terraform init -backend-config=config/backend.hcl
 ```
 - Create a new file named `dev.tfvars` and add the aws user credentials to authenticate terraform  as shown in the `dev.tfvars.template` and shown below
 ```
-aws_secret_key=[your_aws_secret_credentials]
-aws_access_key=[your_aws_access_key]
-region=[your_aws_region]
+aws_secret_key="[your_aws_secret_credentials]"
+aws_access_key="[your_aws_access_key]"
+region="[your_aws_region]"
+```
+
+- Run the following command to download the local modules
+
+```
+terraform get
 ```
 - In the terminal run the following command to see any changes that are required for you infrastructure
 ```
-terraform plan --var-file config/dev.tfvars
+terraform plan -var-file ./config/dev.tfvars
+```
+
+- Run the command below t
+```
+terraform fmt
+
 ```
 
 ## Additional Resources 
 - https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
 - https://codelabs.transcend.io/codelabs/node-terraform/index.html?index=..%2F..index#4
+- https://developer.hashicorp.com/terraform/tutorials/modules/module
+- https://registry.terraform.io/modules/terraform-aws-modules/ecs/aws/latest
+- https://registry.terraform.io/modules/terraform-aws-modules/ecr/aws/latest
