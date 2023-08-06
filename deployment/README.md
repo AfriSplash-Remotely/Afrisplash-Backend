@@ -20,15 +20,12 @@ terraform init -backend-config=config/backend.hcl
 aws_secret_key="[your_aws_secret_credentials]"
 aws_access_key="[your_aws_access_key]"
 region="[your_aws_region]"
-<<<<<<< HEAD
 ```
 
 - Run the following command to download the local modules
 
 ```
 terraform get
-=======
->>>>>>> 2c873e4 (fix deployment issues)
 ```
 
 - Run the following command to download the local modules
