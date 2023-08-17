@@ -9,7 +9,9 @@ const helmet = require('helmet');
 const { connectDB } = require('./config/database');
 const errorHandler = require('./middleware/error');
 const jobExpiryCron = require('./utils/jobExpiryCron');
+const swaggerDocs = require('./utils/swagger');
 
+const PORT = process.env.PORT;
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const sponsorRouter = require('./routes/sponsor');
@@ -56,6 +58,9 @@ app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reports', reportRouter);
 
+// server Swagger documentation
+swaggerDocs(app, 7000)
+
 app.use(errorHandler);
 
 // catch 404 and forward to error handler
@@ -80,5 +85,6 @@ app.use(function (err, req, res, next) {
 
 // start job expiry cronjob
 jobExpiryCron.start();
+
 
 module.exports = app;
