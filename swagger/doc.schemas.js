@@ -1,4 +1,17 @@
 // *************SCHEMA DEFINITIONS***********************************
+
+// *************SECURITY SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *      securitySchemes:
+ *          BearerAuth:
+ *              type: http
+ *              scheme: bearer
+ *              bearerFormat: JWT
+ */
+
+// *************AUTH SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -34,6 +47,7 @@
  *              example: 2023-08-17T06:22:27.136+00:00
  *  */
 
+// *************USER SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -254,6 +268,7 @@
  *           example: 2023-08-17T06:22:27.136Z
  */
 
+// *************ADMIN SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -289,6 +304,8 @@
  *           example: 2023-08-17T06:22:27.136Z
  */
 
+
+// *************COMPANY SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -393,6 +410,7 @@
  */
 
 
+// *************JOB SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -529,6 +547,7 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
+// *************PERMISSION SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -555,6 +574,8 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
+
+// *************POST SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -623,6 +644,8 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
+
+// *************COMMENT SCHEMA***********************************
 /**
  * @openapi
  * components:
@@ -679,5 +702,228 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
+// *************CONTENT SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Content:
+ *       type: object
+ *       required:
+ *         - _post
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7738
+ *         _post:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7739
+ *         message:
+ *           type: string
+ *           example: This is the content of the post.
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-17T06:22:27.136Z
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-18T08:15:43.256Z
+ */
 
-// *************************API DOCUMENTATION******************************
+
+// *************GIFT SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Gift:
+ *       type: object
+ *       required:
+ *         - title
+ *         - image
+ *         - url
+ *         - disable
+ *         - expire
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7738
+ *         title:
+ *           type: string
+ *           example: Special Gift
+ *         image:
+ *           type: string
+ *           example: http://example.com/gift_image.jpg
+ *         theme:
+ *           type: string
+ *           example: #FF5733
+ *         message:
+ *           type: string
+ *           example: Congratulations!
+ *         url:
+ *           type: string
+ *           example: http://example.com/gift
+ *         disable:
+ *           type: boolean
+ *           example: false
+ *         expire:
+ *           type: string
+ *           example: 2023-12-31
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-17T06:22:27.136Z
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-18T08:15:43.256Z
+ */
+
+
+// *************NOTIFICATION SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Notification:
+ *       type: object
+ *       required:
+ *         - to
+ *         - title
+ *         - message
+ *         - seen
+ *         - action
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7738
+ *         to:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7739
+ *         from:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a773a
+ *         title:
+ *           type: string
+ *           example: New Message
+ *         message:
+ *           type: string
+ *           example: You have a new message.
+ *         seen:
+ *           type: boolean
+ *           example: false
+ *         action:
+ *           type: string
+ *           example: view_message
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-17T06:22:27.136Z
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-18T08:15:43.256Z
+ */
+
+
+// *************REPORT SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Report:
+ *       type: object
+ *       required:
+ *         - reporter
+ *         - reported_item
+ *         - reason
+ *         - type
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7738
+ *         reporter:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7739
+ *         reported_item:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a773a
+ *         reason:
+ *           type: string
+ *           example: Offensive content
+ *         type:
+ *           type: string
+ *           enum:
+ *             - post
+ *             - user
+ *             - company
+ *             - job
+ *             - comment
+ *           example: post
+ *         resolved:
+ *           type: boolean
+ *           example: false
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-17T06:22:27.136Z
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-18T08:15:43.256Z
+ */
+
+
+// *************SPONSOR SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Sponsor:
+ *       type: object
+ *       required:
+ *         - name
+ *         - image
+ *         - action
+ *         - url
+ *         - disable
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: 64ddbca37ff26a9ea19a7738
+ *         name:
+ *           type: string
+ *           example: Sponsor Company
+ *         image:
+ *           type: string
+ *           example: http://example.com/sponsor_image.jpg
+ *         theme:
+ *           type: string
+ *           example: #FF5733
+ *         description:
+ *           type: string
+ *           example: Sponsor description
+ *         action:
+ *           type: string
+ *           enum:
+ *             - Download
+ *             - Register
+ *             - Visit
+ *             - Apply
+ *           example: Visit
+ *         url:
+ *           type: string
+ *           example: http://example.com/sponsor
+ *         disable:
+ *           type: boolean
+ *           example: false
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-17T06:22:27.136Z
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *           example: 2023-08-18T08:15:43.256Z
+ */
