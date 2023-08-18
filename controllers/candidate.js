@@ -385,11 +385,12 @@ exports.getGifts = asyncHandler(async (req, res, next) => {
  * @type PUT
  */
 exports.updateReadyToInterview = asyncHandler(async (req, res, next) => {
-  const userState = req.user.Ready_to_interveiw;
+  const userState = req.user.ready_to_interview;
+  console.log('ready to interview', req.user.ready_to_interview)
 
   const user = await User.findByIdAndUpdate(
     req.user._id,
-    { Ready_to_interveiw: !userState },
+    { ready_to_interview: !userState },
     {
       new: true,
       runValidators: true

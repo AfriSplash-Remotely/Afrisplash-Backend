@@ -45,7 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => res.send('Hello from Afrisplash'));
+app.get('/', (req, res) => res.send('Hello from Afrisplash Backend API'));
 app.use('/api/v1', indexRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/sponsor', sponsorRouter);
