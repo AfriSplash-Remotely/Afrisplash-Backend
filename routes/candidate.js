@@ -11,8 +11,8 @@ const {
   addExperience,
   addEducation,
   addSkill,
-  addLangauge,
-  delLangauge,
+  addLanguage,
+  delLanguage,
   delExperience,
   delEducation,
   delSkill,
@@ -38,11 +38,11 @@ router.put('/readytointerview', protect, updateReadyToInterview);
 router.put('/edit/add/experience/', protect, addExperience);
 router.put('/edit/add/education/', protect, addEducation);
 router.put('/edit/add/skill/', protect, addSkill);
-router.put('/edit/add/langauge/', protect, addLangauge);
+router.put('/edit/add/language/', protect, addLanguage);
 router.delete('/edit/remove/experience/:id', protect, delExperience);
 router.delete('/edit/remove/education/:id', protect, delEducation);
-router.delete('/edit/remove/skill/:id', protect, delSkill);
-router.delete('/edit/remove/langauge/:id', protect, delLangauge);
+router.delete('/edit/remove/skill/:id', protect, delSkill); //not used
+router.delete('/edit/remove/language/:id', protect, delLanguage);
 router.put('/edit/user/contact', protect, updateUserContact);
 router.put('/edit/user/bio', protect, updateUserBio);
 router.put('/edit/user/', protect, updateUserPI);

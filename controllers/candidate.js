@@ -227,7 +227,7 @@ exports.addEducation = asyncHandler(async (req, res, next) => {
 exports.addSkill = asyncHandler(async (req, res, next) => {
   const skill = await User.findByIdAndUpdate(
     req.user._id,
-    { $addToSet: { skills: req.body.skill } },
+    { $addToSet: { skills: req.body } },
     {
       new: true,
       runValidators: true
@@ -248,8 +248,7 @@ exports.addSkill = asyncHandler(async (req, res, next) => {
  * @access Private
  * @type PUT
  */
-exports.addLangauge = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
+exports.addLanguage = asyncHandler(async (req, res, next) => {
   const newLang = await User.findByIdAndUpdate(
     req.user._id,
     { $push: { langauge: req.body } },
@@ -321,7 +320,7 @@ exports.delEducation = asyncHandler(async (req, res, next) => {
  * @access Private
  * @type DELETE
  */
-exports.delLangauge = asyncHandler(async (req, res, next) => {
+exports.delLanguage = asyncHandler(async (req, res, next) => {
   const data = await User.findByIdAndUpdate(
     req.user._id,
     { $pull: { langauge: { _id: req.params.id } } },
