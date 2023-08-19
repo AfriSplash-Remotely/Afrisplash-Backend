@@ -22,13 +22,7 @@ aws_access_key="[your_aws_access_key]"
 region="[your_aws_region]"
 ```
 
-- Run the following command to download the local modules
-
-```
-terraform get
-```
-
-- Run the following command to download the local modules
+- Run the following command to download and install the local modules
 
 ```
 terraform get
