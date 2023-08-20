@@ -391,7 +391,7 @@
  *          Language:
  *              type: object
  *              properties:
- *                  namge:
+ *                  name:
  *                      type: string
  *                  level:
  *                      type: string
@@ -474,4 +474,234 @@
  *                      type: string
  *                  location:
  *                      type: string
+ */
+
+// *************************UPDATE USER BIO******************************
+/**
+ * @openapi
+ * /candidate/edit/user/bio:
+ *  put:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Update my bio
+ *      requestBody:
+ *          description: bio
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          bio:
+ *                              type: string
+ *                              example: I'm a badass in this backend engineering thingy
+ *      responses:
+ *          200:
+ *              description: Bio updated successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
+ */
+
+// *************************UPDATE USER DETAILS******************************
+/**
+ * @openapi
+ * /candidate/edit/user:
+ *  put:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Update my details
+ *      requestBody:
+ *          description: update details
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type:
+ *                      $ref: '#/components/schemas/UserDetails'
+ *      responses:
+ *          200:
+ *              description: Bio updated successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
+ * components:
+ *      schemas:
+ *          UserDetails:
+ *              type: object
+ *              properties:
+ *                  profile_image:
+ *                      type: string
+ *                  thumbnail:
+ *                      type: string
+ *                  role:
+ *                      type: string
+ *                  availability:
+ *                      type: array
+ *                  first_name:
+ *                      type: string
+ *                  last_name:
+ *                      type: string
+ */
+
+// *************************GET NOTIFICATIONS******************************
+/**
+ * @openapi
+ * /candidate/notifications:
+ *  get:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get my notifications
+ *      responses:
+ *          200:
+ *              description: Retrieved notifications successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Notification'
+ */
+
+// *************************GET GIFTS******************************
+/**
+ * @openapi
+ * /candidate/gifts:
+ *  get:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get my gifts
+ *      responses:
+ *          200:
+ *              description: Retrieved gifts successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Gift'
+ */
+
+// *************************GET JOBS******************************
+/**
+ * @openapi
+ * /candidate/jobs:
+ *  get:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get my jobs
+ *      responses:
+ *          200:
+ *              description: Retrieved jobs successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Job'
+ */
+
+// *************************SAVE A JOB******************************
+/**
+ * @openapi
+ * /candidate/job/save/{id}:
+ *  patch:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Save a job
+ *      responses:
+ *          404:
+ *              description: Job not found
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: false
+ *                              data:
+ *                                  example: null
+ *          200:
+ *              description: Job saved successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
+ */
+
+// *************************UNSAVE A JOB******************************
+/**
+ * @openapi
+ * /candidate/job/unsave/{id}:
+ *  delete:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: UNSave a job
+ *      responses:
+ *          200:
+ *              description: Job unsaved successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
  */

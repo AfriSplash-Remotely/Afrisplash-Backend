@@ -6,6 +6,7 @@ const Auth = require('../model/auth');
 const User = require('../model/user');
 const notification = require('../model/notification');
 const gifts = require('../model/gifts');
+const jobs = require('../model/jobs');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -473,6 +474,7 @@ exports.updateUserPI = asyncHandler(async (req, res, next) => {
   delete data.user_type;
   delete data._id;
   delete data.email;
+  delete data.gender;
   delete data.badge;
   delete data.company_id;
   delete data.company_role;
@@ -554,12 +556,22 @@ exports.unSaveAJob = asyncHandler(async (req, res, next) => {
  * @route `/api/v1/candidate/job/:id`
  * @access Private
  * @type GET
+ * @modified_by Timothy
  */
 exports.saveAJob = asyncHandler(async (req, res, next) => {
   //TODO  JOI VALIDATOR
+  const job = await jobs.exists({_id: req.params.id});
+
+  if(!job) return res.status(404).json({success: false, data: null});
+
+  const save_job = {
+    _job: req.params.id,
+    date: new Date()
+  }
+
   const data = await User.findByIdAndUpdate(
     req.user._id,
-    { $push: { jobs: req.body.job } },
+    { $push: { jobs: save_job } },
     {
       new: true,
       runValidators: true

@@ -49,7 +49,7 @@ router.put('/edit/user/', protect, updateUserPI);
 router.get('/notifications', protect, getNotifications);
 router.post('/gifts', protect, getGifts);
 router.get('/jobs/', protect, getJobs);
-router.get('/job/save/:id', protect, saveAJob);
-router.get('/job/unsave/:id/', protect, unSaveAJob);
+router.patch('/job/save/:id', protect, saveAJob);
+router.delete('/job/unsave/:id/', protect, unSaveAJob);
 
 module.exports = router;
