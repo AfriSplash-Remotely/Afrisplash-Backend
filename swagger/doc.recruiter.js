@@ -442,3 +442,76 @@
  *                                  type:
  *                                  $ref: '#/components/schemas/User'
  */
+
+// *************************UPDATE USER BIO******************************
+/**
+ * @openapi
+ * /recruiter/edit/user/bio:
+ *  patch:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Update my bio
+ *      requestBody:
+ *          description: bio
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          bio:
+ *                              type: string
+ *                              example: I'm a badass in this backend engineering thingy
+ *      responses:
+ *          200:
+ *              description: Bio updated successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
+ */
+
+// *************************UPDATE USER DETAILS******************************
+/**
+ * @openapi
+ * /recruiter/edit/user:
+ *  patch:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Update my details
+ *      requestBody:
+ *          description: update details
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type:
+ *                      $ref: '#/components/schemas/UserDetails'
+ *      responses:
+ *          200:
+ *              description: Bio updated successfully
+ *              content:
+ *                  application/json:
+ *                      schema: 
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
+ */

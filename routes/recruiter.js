@@ -41,7 +41,7 @@ router.delete("/edit/remove/skill/:id", protect, delSkill); // Not Require
 router.delete("/edit/remove/langauge/:id", protect, delLangauge); // Not Require
 router.patch("/edit/user/contact", protect, updateUserContact); // Not Require
 router.patch("/edit/user/bio", protect, updateUserBio); // Not Require
-router.put("/edit/user/", protect, updateUserPI); // Not Require
+router.patch("/edit/user/", protect, updateUserPI); // Not Require
 router.get("/notifications", protect, getNotifications);
 router.post("/gifts", protect, getGifts); 
 router.get("/job/save/:id", protect, saveAJob);

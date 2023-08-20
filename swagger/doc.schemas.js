@@ -967,3 +967,25 @@
  *                  location:
  *                      type: string
  */
+
+// *************************USER DETAILS SCHEMA******************************
+/**
+ * @openapi
+ * components:
+ *      schemas:
+ *          UserDetails:
+ *              type: object
+ *              properties:
+ *                  profile_image:
+ *                      type: string
+ *                  thumbnail:
+ *                      type: string
+ *                  role:
+ *                      type: string
+ *                  availability:
+ *                      type: array
+ *                  first_name:
+ *                      type: string
+ *                  last_name:
+ *                      type: string
+ */

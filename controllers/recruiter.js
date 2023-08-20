@@ -462,7 +462,7 @@ exports.updateUserPI = asyncHandler(async (req, res, next) => {
   delete data.auth_id;
   delete data.user_type;
   delete data._id;
-  delete data.email;
+  delete data.email;z
   delete data.badge;
   delete data.company_id;
   delete data.company_role;
