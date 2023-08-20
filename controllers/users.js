@@ -67,3 +67,25 @@ exports.getAllCandidates = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('An error occurred', 500));
   }
 });
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Get User by id
+ * @route `/api/v1/users/:id`
+ * @access Private - Admin
+ * @type GET
+ */
+exports.getUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const user = await User.findOne({
+    _id: id
+  }).select({
+    auth_id: 0
+  });
+
+  return res.status(200).json({
+    success: true,
+    data: user
+  });
+});

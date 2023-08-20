@@ -32,7 +32,7 @@ const giftSchema = new mongoose.Schema({
   },
   expire:{
     type: String,
-    required: [true, "The Date This Gife Expire"],
+    required: [true, "The Date This Gift Expire"],
   }
 },{
   timestamps: true
