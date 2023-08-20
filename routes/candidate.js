@@ -5,7 +5,6 @@ const protect = C_protect;
 const {
   onboarding,
   profile,
-  getCandidate,
   updateUser, //Depercate
   getNotifications,
   addExperience,
@@ -28,11 +27,6 @@ const {
 
 router.post('/onboarding', protect, onboarding);
 router.get('/', protect, profile);
-
-/**
- * Add Admin Protect
- */
-router.get('/:id', getCandidate);
 
 router.put('/readytointerview', protect, updateReadyToInterview);
 router.put('/edit/add/experience/', protect, addExperience);

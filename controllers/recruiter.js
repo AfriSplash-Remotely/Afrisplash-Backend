@@ -137,7 +137,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
  * @description Add a new Experience `Candidate Account Only`
  * @route `/api/v1/candidate/edit/add/experience/`
  * @access Private
- * @type PUT
+ * @type PATCH
  */
 exports.addExperience = asyncHandler(async (req, res, next) => {
   const newExp = await User.findByIdAndUpdate(
@@ -190,7 +190,7 @@ exports.addEducation = asyncHandler(async (req, res, next) => {
 exports.addSkill = asyncHandler(async (req, res, next) => {
   const skill = await User.findByIdAndUpdate(
     req.user._id,
-    { $addToSet: { skills: req.body.skill } },
+    { $addToSet: { skills: req.body } },
     {
       new: true,
       runValidators: true
@@ -344,7 +344,7 @@ exports.getGifts = asyncHandler(async (req, res, next) => {
  * @description Update User Choice For Hiring status 
  * @route `/api/v1/Recriuter/activelyHiring`
  * @access Private
- * @type PUT
+ * @type PATCH
  */
 exports.updateActivelyHiring = asyncHandler(async (req, res, next) => {
   const userState = req.user.activelyHiring;
@@ -371,7 +371,7 @@ exports.updateActivelyHiring = asyncHandler(async (req, res, next) => {
  * @description Update User Choice For Private Mode
  * @route `/api/v1/Recriuter/privateMode`
  * @access Private
- * @type PUT
+ * @type PATCH
  */
 exports.updateprivateMode = asyncHandler(async (req, res, next) => {
   const userState = req.user.privateMode;

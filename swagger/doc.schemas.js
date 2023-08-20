@@ -927,3 +927,43 @@
  *           format: date-time
  *           example: 2023-08-18T08:15:43.256Z
  */
+
+// *************************WORK EXPERIENCE SCHEMA******************************
+/**
+ * @openapi
+ * components:
+ *      schemas:
+ *          WorkExperience:
+ *              type: object
+ *              properties:
+ *                  company_name:
+ *                      type: string
+ *                  position_held:
+ *                      type: string
+ *                  location:
+ *                      type: string
+ *                  job_type:
+ *                      type: string
+ *                  date_start:
+ *                      type: string
+ *                  date_end:
+ *                      type: string
+ *                  description:
+ *                      type: string
+ */
+
+// *************************USER CONTACT SCHEMA******************************
+/**
+ * @openapi
+ * components:
+ *      schemas:
+ *          Contact:
+ *              type: object
+ *              properties:
+ *                  phone:
+ *                      type: string
+ *                  email:
+ *                      type: string
+ *                  location:
+ *                      type: string
+ */

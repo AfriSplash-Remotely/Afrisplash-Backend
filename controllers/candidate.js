@@ -91,28 +91,6 @@ exports.profile = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
- * @description Get Talent/Candidate by id
- * @route `/api/v1/candidate/:id`
- * @access Private - Admin
- * @type GET
- */
-exports.getCandidate = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  const candidate = await User.findOne({
-    _id: id
-  }).select({
-    auth_id: 0
-  });
-
-  return res.status(200).json({
-    success: true,
-    data: candidate
-  });
-});
-
-/**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
  * @description Update User `Candidate Account Only`
  * @route `/api/v1/candidate/edit`
@@ -386,7 +364,6 @@ exports.getGifts = asyncHandler(async (req, res, next) => {
  */
 exports.updateReadyToInterview = asyncHandler(async (req, res, next) => {
   const userState = req.user.ready_to_interview;
-  console.log('ready to interview', req.user.ready_to_interview)
 
   const user = await User.findByIdAndUpdate(
     req.user._id,

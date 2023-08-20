@@ -53,34 +53,34 @@
  *                                  $ref: '#/components/schemas/User'
  */
 
-// *************************GET A CANDIDATE DETAIL******************************
-/**
- * @openapi
- * /candidate/{id}:
- *  get:
- *      tags:
- *      - Candidate
- *      summary: Get a candidate details
- *      parameters:
- *          - in: path
- *            name: id
- *            schema:
- *              type: string 
- *              required: true
- *      responses:
- *          200:
- *              description: Candidate profile details
- *              content:
- *                  application/json:
- *                      schema: 
- *                          type: object
- *                          properties:
- *                              success:
- *                                  example: true
- *                              data:
- *                                  type:
- *                                  $ref: '#/components/schemas/User'
- */
+// // *************************GET A CANDIDATE DETAIL******************************
+// /**
+//  * @openapi
+//  * /candidate/{id}:
+//  *  get:
+//  *      tags:
+//  *      - Candidate
+//  *      summary: Get a candidate details
+//  *      parameters:
+//  *          - in: path
+//  *            name: id
+//  *            schema:
+//  *              type: string 
+//  *              required: true
+//  *      responses:
+//  *          200:
+//  *              description: Candidate profile details
+//  *              content:
+//  *                  application/json:
+//  *                      schema: 
+//  *                          type: object
+//  *                          properties:
+//  *                              success:
+//  *                                  example: true
+//  *                              data:
+//  *                                  type:
+//  *                                  $ref: '#/components/schemas/User'
+//  */
 
 // *************************UPDATE READY TO INTERVIEW******************************
 /**
@@ -143,25 +143,6 @@
  *                              data:
  *                                  type:
  *                                  $ref: '#/components/schemas/User'
- * components:
- *      schemas:
- *          WorkExperience:
- *              type: object
- *              properties:
- *                  company_name:
- *                      type: string
- *                  position_held:
- *                      type: string
- *                  location:
- *                      type: string
- *                  job_type:
- *                      type: string
- *                  date_start:
- *                      type: string
- *                  date_end:
- *                      type: string
- *                  description:
- *                      type: string
  */
 
 // *************************REMOVE WORK EXPERIENCE******************************
