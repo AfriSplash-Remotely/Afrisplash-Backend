@@ -1,5 +1,5 @@
 resource "aws_eip" "nat" {
-  count = 2
+  count = 1
 
   vpc = true
 }

@@ -22,7 +22,7 @@
  *              description: Onboarded successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          $ref: '#/components/schemas/User'
  */
@@ -42,7 +42,7 @@
  *              description: User profile
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -67,7 +67,7 @@
  *              description: Hiring status changed successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -94,7 +94,7 @@
  *              description: Privacy mode changed successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -130,7 +130,7 @@
  *              description: Work experiences added successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -156,14 +156,14 @@
  *          - in: path
  *            name: id
  *            schema:
- *              type: string 
+ *              type: string
  *              required: true
  *      responses:
  *          200:
  *              description: Work experiences removed successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -199,7 +199,7 @@
  *              description: Education added successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -242,14 +242,14 @@
  *          - in: path
  *            name: id
  *            schema:
- *              type: string 
+ *              type: string
  *              required: true
  *      responses:
  *          200:
  *              description: Education removed successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -285,7 +285,7 @@
  *              description: Skills added successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -311,14 +311,14 @@
 //  *          - in: path
 //  *            name: id
 //  *            schema:
-//  *              type: string 
+//  *              type: string
 //  *              required: true
 //  *      responses:
 //  *          200:
 //  *              description: Skill removed successfully
 //  *              content:
 //  *                  application/json:
-//  *                      schema: 
+//  *                      schema:
 //  *                          type: object
 //  *                          properties:
 //  *                              success:
@@ -354,7 +354,7 @@
  *              description: Languages added successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -389,14 +389,14 @@
  *          - in: path
  *            name: id
  *            schema:
- *              type: string 
+ *              type: string
  *              required: true
  *      responses:
  *          200:
  *              description: Language removed successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -431,7 +431,7 @@
  *              description: Contact updated successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -469,7 +469,7 @@
  *              description: Bio updated successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
@@ -504,7 +504,147 @@
  *              description: Bio updated successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
+ */
+
+// *************************GET NOTIFICATIONS******************************
+/**
+ * @openapi
+ * /recruiter/notifications:
+ *  get:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get my notifications
+ *      responses:
+ *          200:
+ *              description: Retrieved notifications successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Notification'
+ */
+
+// *************************GET GIFTS******************************
+/**
+ * @openapi
+ * /recruiter/gifts:
+ *  get:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get my gifts
+ *      responses:
+ *          200:
+ *              description: Retrieved gifts successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Gift'
+ */
+
+// *************************GET JOBS******************************
+/**
+ * @openapi
+ * /recruiter/jobs:
+ *  get:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get my jobs
+ *      responses:
+ *          200:
+ *              description: Retrieved jobs successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Job'
+ */
+
+// *************************SAVE A JOB******************************
+/**
+ * @openapi
+ * /recruiter/job/save/{id}:
+ *  patch:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Save a job
+ *      responses:
+ *          404:
+ *              description: Job not found
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: false
+ *                              data:
+ *                                  example: null
+ *          200:
+ *              description: Job saved successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/User'
+ */
+
+// *************************UNSAVE A JOB******************************
+/**
+ * @openapi
+ * /recruiter/job/unsave/{id}:
+ *  delete:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: UNSave a job
+ *      responses:
+ *          200:
+ *              description: Job unsaved successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
  *                          type: object
  *                          properties:
  *                              success:
