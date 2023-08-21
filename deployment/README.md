@@ -46,3 +46,4 @@ terraform fmt
 - https://developer.hashicorp.com/terraform/tutorials/modules/module
 - https://registry.terraform.io/modules/terraform-aws-modules/ecs/aws/latest
 - https://registry.terraform.io/modules/terraform-aws-modules/ecr/aws/latest
+- https://developer.hashicorp.com/terraform/tutorials/modules/module

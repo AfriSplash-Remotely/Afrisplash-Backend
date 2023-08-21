@@ -99,7 +99,7 @@ const userSchema = new mongoose.Schema({
       true,
       'Please enter Time Avaliable (Time OnJob), Type of Work Location'
     ],
-    default: ['Full-time Remote']
+    default: ['Full-time, Remote']
   },
 
   badge: {
@@ -117,7 +117,7 @@ const userSchema = new mongoose.Schema({
   },
 
   skills: {
-    type: Array,
+    type: [String],
     default: []
   },
 
@@ -152,12 +152,12 @@ const userSchema = new mongoose.Schema({
         ref: 'user'
       },
       date: String,
-      state: {
-        type: String,
-        required: true,
-        enum: ['accepted', 'pending', 'rejected'],
-        default: 'pending'
-      }
+      // state: {
+      //   type: String,
+      //   required: true,
+      //   enum: ['accepted', 'pending', 'rejected'],
+      //   default: 'pending'
+      // }
     }
   ],
 

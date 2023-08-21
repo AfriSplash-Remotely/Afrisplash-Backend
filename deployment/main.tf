@@ -4,8 +4,8 @@ module "deploy_vpc" {
 }
 
 module "image_upload_ecr" {
-  source        = "./modules/image_upload_ecr"
-  ecr_name      = "application-backend-image-repository"
-  major_version = 1
+  source         = "./modules/image_upload_ecr"
+  ecr_name       = "application-backend-image-repository"
+  major_version  = 1
   dockerfile_dir = "../."
 }

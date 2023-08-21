@@ -6,6 +6,7 @@ const Auth = require('../model/auth');
 const User = require('../model/user');
 const notification = require('../model/notification');
 const gifts = require('../model/gifts');
+const jobs = require('../model/jobs');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -86,28 +87,6 @@ exports.profile = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     data: data
-  });
-});
-
-/**
- * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
- * @description Get Talent/Candidate by id
- * @route `/api/v1/candidate/:id`
- * @access Private - Admin
- * @type GET
- */
-exports.getCandidate = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  const candidate = await User.findOne({
-    _id: id
-  }).select({
-    auth_id: 0
-  });
-
-  return res.status(200).json({
-    success: true,
-    data: candidate
   });
 });
 
@@ -227,7 +206,7 @@ exports.addEducation = asyncHandler(async (req, res, next) => {
 exports.addSkill = asyncHandler(async (req, res, next) => {
   const skill = await User.findByIdAndUpdate(
     req.user._id,
-    { $addToSet: { skills: req.body.skill } },
+    { $addToSet: { skills: req.body } },
     {
       new: true,
       runValidators: true
@@ -248,8 +227,7 @@ exports.addSkill = asyncHandler(async (req, res, next) => {
  * @access Private
  * @type PUT
  */
-exports.addLangauge = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
+exports.addLanguage = asyncHandler(async (req, res, next) => {
   const newLang = await User.findByIdAndUpdate(
     req.user._id,
     { $push: { langauge: req.body } },
@@ -321,7 +299,7 @@ exports.delEducation = asyncHandler(async (req, res, next) => {
  * @access Private
  * @type DELETE
  */
-exports.delLangauge = asyncHandler(async (req, res, next) => {
+exports.delLanguage = asyncHandler(async (req, res, next) => {
   const data = await User.findByIdAndUpdate(
     req.user._id,
     { $pull: { langauge: { _id: req.params.id } } },
@@ -385,11 +363,11 @@ exports.getGifts = asyncHandler(async (req, res, next) => {
  * @type PUT
  */
 exports.updateReadyToInterview = asyncHandler(async (req, res, next) => {
-  const userState = req.user.Ready_to_interveiw;
+  const userState = req.user.ready_to_interview;
 
   const user = await User.findByIdAndUpdate(
     req.user._id,
-    { Ready_to_interveiw: !userState },
+    { ready_to_interview: !userState },
     {
       new: true,
       runValidators: true
@@ -473,6 +451,7 @@ exports.updateUserPI = asyncHandler(async (req, res, next) => {
   delete data.user_type;
   delete data._id;
   delete data.email;
+  delete data.gender;
   delete data.badge;
   delete data.company_id;
   delete data.company_role;
@@ -554,12 +533,22 @@ exports.unSaveAJob = asyncHandler(async (req, res, next) => {
  * @route `/api/v1/candidate/job/:id`
  * @access Private
  * @type GET
+ * @modified_by Timothy
  */
 exports.saveAJob = asyncHandler(async (req, res, next) => {
   //TODO  JOI VALIDATOR
+  const job = await jobs.exists({_id: req.params.id});
+
+  if(!job) return res.status(404).json({success: false, data: null});
+
+  const save_job = {
+    _job: req.params.id,
+    date: new Date()
+  }
+
   const data = await User.findByIdAndUpdate(
     req.user._id,
-    { $push: { jobs: req.body.job } },
+    { $push: { jobs: save_job } },
     {
       new: true,
       runValidators: true

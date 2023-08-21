@@ -20,5 +20,5 @@ output "backend_repository_url" {
 
 output "backend_image_url" {
   description = "Image URL for backend"
-  value = module.image_upload_ecr.ecr_image_url
+  value       = module.image_upload_ecr.ecr_image_url
 }
