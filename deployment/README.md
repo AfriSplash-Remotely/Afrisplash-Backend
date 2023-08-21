@@ -22,17 +22,19 @@ aws_access_key="[your_aws_access_key]"
 region="[your_aws_region]"
 ```
 
-- Run the following command to download the local modules
+- Run the following command to download and install the local modules
 
 ```
 terraform get
 ```
+
+
 - In the terminal run the following command to see any changes that are required for you infrastructure
 ```
 terraform plan -var-file ./config/dev.tfvars
 ```
 
-- Run the command below t
+- Run the command below to format terraform files
 ```
 terraform fmt
 
