@@ -17,6 +17,7 @@ module "new_vpc" {
   
   enable_nat_gateway  = true
   single_nat_gateway  = false
+  one_nat_gateway_per_az = false
   reuse_nat_ips       = true                    # <= Skip creation of EIPs for the NAT Gateways
   external_nat_ip_ids = "${aws_eip.nat.*.id}"   
 }
