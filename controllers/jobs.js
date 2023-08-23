@@ -84,7 +84,7 @@ exports.create = asyncHandler(async (req, res, next) => {
  * @description  Edit A Job
  * @route `/api/v1/jobs/e/:id`
  * @access Private
- * @type PUT
+ * @type PATCH
  */
 exports.updateJob = asyncHandler(async (req, res, next) => {
   const data = req.body;
@@ -133,7 +133,7 @@ exports.delJob = asyncHandler(async (req, res, next) => {
   // check if User is Asscoited with the company
   if (req.user._company.toString() !== jobOld._company.toString()) {
     return next(
-      new ErrorResponse('Not Authorize, Can Not Perform Action', 401)
+      new ErrorResponse('Not Authorized, Can Not Perform Action', 401)
     );
   }
 
@@ -359,7 +359,7 @@ exports.getJob = asyncHandler(async (req, res, next) => {
  * @description  Close A Job
  * @route `/api/v1/jobs/c/:id`
  * @access Private
- * @type PUT
+ * @type Patch
  */
 exports.closeJob = asyncHandler(async (req, res, next) => {
   const jobOld = await Jobs.findOne({ _id: req.params.id });
@@ -376,7 +376,7 @@ exports.closeJob = asyncHandler(async (req, res, next) => {
 
   // check if Job Is Close
   if (!jobOld.publish) {
-    return next(new ErrorResponse('Job is already Close', 400));
+    return next(new ErrorResponse('Job is already Closed', 400));
   }
 
   const job = await Jobs.findByIdAndUpdate(
@@ -402,7 +402,7 @@ exports.closeJob = asyncHandler(async (req, res, next) => {
  * @description  Open A Job
  * @route `/api/v1/jobs/o/:id`
  * @access Private
- * @type PUT
+ * @type Patch
  */
 exports.openJob = asyncHandler(async (req, res, next) => {
   const jobOld = await Jobs.findOne({ _id: req.params.id });
@@ -465,7 +465,7 @@ exports.getApplicants = asyncHandler(async (req, res, next) => {
   const results = await job;
   //   check if User is Asscoited with the company
   if (req.user._company.toString() !== results._company.toString()) {
-    return next(new ErrorResponse('Not Authorize', 401));
+    return next(new ErrorResponse('Not Authorized', 401));
   }
 
   res.status(200).json({
