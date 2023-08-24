@@ -124,7 +124,7 @@
  *          401:
  *              description: Not Authorized
  *          200:
- *              description: Company updated successfully
+ *              description: Job updated successfully
  *              content:
  *                  application/json:
  *                      schema:

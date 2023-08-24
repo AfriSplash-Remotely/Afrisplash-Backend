@@ -584,15 +584,12 @@
  *     Post:
  *       type: object
  *       required:
- *         - _author
  *         - title
  *         - categories
  *         - summary
  *         - read_time
  *         - cover_image
  *         - thumbnail
- *         - views
- *         - disable_comments
  *       properties:
  *         _id:
  *           type: string
