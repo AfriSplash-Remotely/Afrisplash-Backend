@@ -880,7 +880,6 @@
  *         - image
  *         - action
  *         - url
- *         - disable
  *       properties:
  *         _id:
  *           type: string
@@ -893,7 +892,7 @@
  *           example: http://example.com/sponsor_image.jpg
  *         theme:
  *           type: string
- *           example: #FF5733
+ *           example: "#FF5733"
  *         description:
  *           type: string
  *           example: Sponsor description

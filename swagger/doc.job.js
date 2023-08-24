@@ -79,7 +79,7 @@
  *      responses:
  *          400:
  *              description: Company is required
- *          200:
+ *          201:
  *              description: Company created successfully
  *              content:
  *                  application/json:
