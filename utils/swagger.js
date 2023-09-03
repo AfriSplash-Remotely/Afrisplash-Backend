@@ -1,7 +1,10 @@
-require('dotenv').config({ path: '../.env/config.env' });
+const dotenv = require('dotenv');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
+dotenv.config({
+  path: '../.env/config.env'
+})
 const PORT = process.env.PORT;
 
 const options = {
@@ -45,4 +48,8 @@ function swaggerDocs(app, port) {
   return;
 }
 
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description OpenAPI Documentation
+ */
 module.exports = swaggerDocs;

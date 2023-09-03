@@ -11,9 +11,9 @@ const {
 
 //TODO Protect Router 
 router.get("/", activeSponsor);
-router.post("/create/", create);
-router.delete("/delete/:id", delSponsor);
-router.put("/edit/:id", editSponsor);
+router.post("/", create);
+router.delete("/:id", delSponsor);
+router.patch("/:id", editSponsor);
 router.get("/history", history);
 
 

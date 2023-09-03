@@ -304,7 +304,6 @@
  *           example: 2023-08-17T06:22:27.136Z
  */
 
-
 // *************COMPANY SCHEMA***********************************
 /**
  * @openapi
@@ -317,6 +316,7 @@
  *         - logo
  *         - thumbnail
  *         - location
+ *         - role
  *         - staff
  *         - one_Line_Pitch
  *         - company_email
@@ -329,6 +329,9 @@
  *         name:
  *           type: string
  *           example: Afrisplash Remotely.
+ *         role:
+ *           type: string
+ *           example: Project Manager
  *         logo:
  *           type: string
  *           example: http://example.com/logo.jpg
@@ -408,7 +411,6 @@
  *           format: date-time
  *           example: 2023-08-18T08:15:43.256Z
  */
-
 
 // *************JOB SCHEMA***********************************
 /**
@@ -574,7 +576,6 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
-
 // *************POST SCHEMA***********************************
 /**
  * @openapi
@@ -583,15 +584,12 @@
  *     Post:
  *       type: object
  *       required:
- *         - _author
  *         - title
  *         - categories
  *         - summary
  *         - read_time
  *         - cover_image
  *         - thumbnail
- *         - views
- *         - disable_comments
  *       properties:
  *         _id:
  *           type: string
@@ -643,7 +641,6 @@
  *           format: date-time
  *           example: 2023-08-18T08:15:43.256Z
  */
-
 
 // *************COMMENT SCHEMA***********************************
 /**
@@ -731,7 +728,6 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
-
 // *************GIFT SCHEMA***********************************
 /**
  * @openapi
@@ -780,7 +776,6 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
-
 // *************NOTIFICATION SCHEMA***********************************
 /**
  * @openapi
@@ -825,7 +820,6 @@
  *           format: date-time
  *           example: 2023-08-18T08:15:43.256Z
  */
-
 
 // *************REPORT SCHEMA***********************************
 /**
@@ -874,7 +868,6 @@
  *           example: 2023-08-18T08:15:43.256Z
  */
 
-
 // *************SPONSOR SCHEMA***********************************
 /**
  * @openapi
@@ -887,7 +880,6 @@
  *         - image
  *         - action
  *         - url
- *         - disable
  *       properties:
  *         _id:
  *           type: string
@@ -900,7 +892,7 @@
  *           example: http://example.com/sponsor_image.jpg
  *         theme:
  *           type: string
- *           example: #FF5733
+ *           example: "#FF5733"
  *         description:
  *           type: string
  *           example: Sponsor description

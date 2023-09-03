@@ -78,21 +78,24 @@ const sponsor = require("../model/sponsor");
  * @description Edit A Sponsor Post
  * @route `/api/v1/sponsor`
  * @access Private
- * @type PUT
+ * @type PATCH
  */
  exports.editSponsor = asyncHandler(async (req, res, next) => {
   //TODO Add Joi Vaildator
   const input =  req.body
+  console.log('body', input)
   try {
     const isTrue = await sponsor.findById(req.params.id)
+
     if(!isTrue){
       return next(new ErrorResponse("No User Found", 404));
     }
-    const data = await sponsor.findOneAndUpdate(
-      {_id:req.params.id},
-      {input},
-      { new: false, runValidators: true })
-    res.status(200).json({
+    const data = await sponsor.findByIdAndUpdate(
+      req.params.id,
+      input,
+      { new: true, runValidators: true })
+
+    return res.status(200).json({
       success: true,
       data: data
     })
