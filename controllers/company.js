@@ -133,11 +133,11 @@ exports.getVCompanies = asyncHandler(async (req, res, next) => {
  * @type DELETE
  */
 exports.deleteCompany = asyncHandler(async (req, res, next) => {
-  await Company.findOneAndDelete({ _id: req.params.company });
+  await Company.findOneAndDelete({ _id: req.params.id });
 
   await User.updateMany(
     {
-      _company: req.params.company
+      _company: req.params.id
     },
     {
       _company: null,
@@ -146,7 +146,7 @@ exports.deleteCompany = asyncHandler(async (req, res, next) => {
   );
   // Remove Jobs from Company
   await Jobs.deleteMany({
-    _company: req.params.company
+    _company: req.params.id
   });
   res.status(200).json({
     success: true,
@@ -168,7 +168,7 @@ exports.editCompany = asyncHandler(async (req, res, next) => {
   delete data.created_by;
 
   const company = await Company.findByIdAndUpdate(req.params.id, data, {
-    new: false,
+    new: true,
     runValidators: true
   });
 
