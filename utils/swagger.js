@@ -19,13 +19,13 @@ const options = {
     },
     servers: [
       {
-        // url: `http://localhost:${PORT}/api/v1`,
-        url: `http://localhost:7000/api/v1`,
-        description: 'Development server'
+        url: 'https://afrisplash-473196ceadbb.herokuapp.com/api/v1',
+        description: 'Production server'
       },
       {
-        url: 'https://',
-        description: 'Production server'
+        // url: `http://localhost:${PORT}/api/v1`,
+        url: `http://localhost:5000/api/v1`,
+        description: 'Development server'
       }
     ]
   },
@@ -41,7 +41,8 @@ function swaggerDocs(app, port) {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpecs);
   });
-  console.log(`Swagger Docs available at http://localhost:${port}/api-docs`);
+  console.log(`Dev: Swagger Docs available at http://localhost:${port}/api-docs`);
+  console.log('Prod: Swager Docs available at https://afrisplash-473196ceadbb.herokuapp.com/api-docs')
   return;
 }
 
