@@ -2,7 +2,7 @@ module "ecr" {
     source = "terraform-aws-modules/ecr/aws"
 
     repository_name = var.ecr_name
-    repository_read_write_access_arns = ["arn:aws:iam::012345678901:role/terraform"]
+    repository_read_write_access_arns = ["arn:aws:iam::620335327632:role/terraform"]
     repository_lifecycle_policy = jsonencode({
     rules = [
       {
@@ -42,7 +42,7 @@ resource "null_resource" "ecr_image" {
   #}
 
   # Runs the build.sh script which builds the dockerfile and pushes to ecr
-  provisioner "local-exec" {
+provisioner "local-exec" {
     command = "bash ${path.module}/bin/build.sh ${var.dockerfile_dir} ${module.ecr.repository_url}:${var.docker_image_tag}"
   }
 }

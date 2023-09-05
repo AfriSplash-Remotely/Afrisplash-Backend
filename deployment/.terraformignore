@@ -1,1 +1,3 @@
-ecs/
+ecs/alb.tf
+ecs/auto-sg.tf
+ecs/ecs_service.tf
