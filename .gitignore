@@ -40,6 +40,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-ecr/
-ecs/
 old_files/
+ecs/alb.tf
+ecs/auto-sg.tf
+ecs/ecs_service.tf

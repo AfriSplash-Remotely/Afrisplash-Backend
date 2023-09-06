@@ -39,6 +39,8 @@ terraform plan -var-file ./config/dev.tfvars
 terraform fmt
 
 ```
+## Architecture Diagram
+https://drive.google.com/file/d/18-FlyiWIeEnBhEf-sGsnfcdVI1_fc8QL/view
 
 ## Additional Resources 
 - https://developer.hashicorp.com/terraform/tutorials/automation/github-actions
@@ -47,3 +49,5 @@ terraform fmt
 - https://registry.terraform.io/modules/terraform-aws-modules/ecs/aws/latest
 - https://registry.terraform.io/modules/terraform-aws-modules/ecr/aws/latest
 - https://developer.hashicorp.com/terraform/tutorials/modules/module
+
+
