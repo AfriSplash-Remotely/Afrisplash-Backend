@@ -160,7 +160,7 @@ const _ = require("lodash");
     const post = await Post.findOne({url:req.params.url.toLowerCase()}).select({})
     try {
       if (_.isEmpty(post)) {
-        return next(new ErrorResponse("404 Content Do Not Exist Or Has Been Deleted", 404));
+        return next(new ErrorResponse("404 Content Does Not Exist Or Has Been Deleted", 404));
       }
       const content = await Content.findOne({_post:post._id}).select({
         message:1,
@@ -203,7 +203,7 @@ const _ = require("lodash");
  * @author Cyril Ogoh <cyrilogoh@gmail.com> 
  * @description Get Post by an Author
  * @route `/post/manage`
- * @access Public
+ * @access Private
  * @type GET
  */
  exports.getMyPosts = asyncHandler(async (req, res, next) => {
@@ -225,7 +225,7 @@ const _ = require("lodash");
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const {content, title, categories, tags, summary, read_time, cover_image, thumbnail, disable_comment } = req.body;
+    const {content, title, categories, tags, summary, read_time, cover_image, thumbnail, disable_comments } = req.body;
 
     const link = title.toLowerCase().split(" ").join("_")
     let url = link + "_" + Date.now().toString().slice(-4)
@@ -234,7 +234,13 @@ const _ = require("lodash");
       _author:req.user._id,
       title:title,
       categories:categories,
-      tags:tags,
+      tags,
+      url,
+      summary,
+      read_time,
+      cover_image,
+      thumbnail,
+      disable_comments
     }]);
     await newPost[0].save();
     const postContent = await Content.create([{
@@ -287,7 +293,7 @@ const _ = require("lodash");
  * @description to Edit a Post
  * @route `/edit/:id`
  * @access Private
- * @type PUT
+ * @type PATCH
  */
  exports.editPost = asyncHandler(async (req, res, next) => {
   const data =  req.body
@@ -296,9 +302,10 @@ const _ = require("lodash");
   delete data.views
 
   const post = await Post.findByIdAndUpdate(req.params.id, data, {
-    new: false,
+    new: true,
     runValidators: true,
   });
+  console.log(post)
 
   res.status(200).json({
     success: true,
@@ -313,7 +320,7 @@ const _ = require("lodash");
  * @description to Edit a Post content
  * @route `/edit/body/:id`
  * @access Private
- * @type PUT
+ * @type PATCH
  */
  exports.editContent = asyncHandler(async (req, res, next) => {
   const data =  req.body

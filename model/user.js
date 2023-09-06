@@ -152,12 +152,12 @@ const userSchema = new mongoose.Schema({
         ref: 'user'
       },
       date: String,
-      // state: {
-      //   type: String,
-      //   required: true,
-      //   enum: ['accepted', 'pending', 'rejected'],
-      //   default: 'pending'
-      // }
+      state: {
+        type: String,
+        required: true,
+        enum: ['accepted', 'pending', 'rejected'],
+        default: 'pending'
+      }
     }
   ],
 

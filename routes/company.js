@@ -26,9 +26,9 @@ const meta = {
 
 router.get('/', advancedResults(Company, 'created_by', meta), getCompanies);
 router.post('/', protect, create);
-router.put('/verify', verifyCompany);
-router.put('/:company', protect, editCompany);
-router.delete('/:company', protect, deleteCompany);
+router.patch('/verify', verifyCompany);
+router.patch('/:id', protect, editCompany);
+router.delete('/:id', protect, deleteCompany);
 
 module.exports = router;
 

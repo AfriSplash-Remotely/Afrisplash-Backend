@@ -11,7 +11,6 @@ const errorHandler = require('./middleware/error');
 const jobExpiryCron = require('./utils/jobExpiryCron');
 const swaggerDocs = require('./utils/swagger');
 
-const PORT = process.env.PORT;
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const sponsorRouter = require('./routes/sponsor');
@@ -25,6 +24,7 @@ const usersRouter = require('./routes/users');
 const reportRouter = require('./routes/report');
 
 dotenv.config({ path: './.env/config.env' });
+const PORT = process.env.PORT;
 var app = express();
 //Db Connector
 connectDB();
@@ -59,7 +59,7 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reports', reportRouter);
 
 // server Swagger documentation
-swaggerDocs(app, 7000)
+swaggerDocs(app, PORT)
 
 app.use(errorHandler);
 

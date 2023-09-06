@@ -6,6 +6,7 @@ const Auth = require('../model/auth');
 const User = require('../model/user');
 const notification = require('../model/notification');
 const gifts = require('../model/gifts');
+const Jobs = require('../model/jobs');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -92,7 +93,6 @@ exports.profile = asyncHandler(async (req, res, next) => {
     data: data
   });
 });
-
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -341,7 +341,7 @@ exports.getGifts = asyncHandler(async (req, res, next) => {
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
- * @description Update User Choice For Hiring status 
+ * @description Update User Choice For Hiring status
  * @route `/api/v1/Recriuter/activelyHiring`
  * @access Private
  * @type PATCH
@@ -364,7 +364,6 @@ exports.updateActivelyHiring = asyncHandler(async (req, res, next) => {
     data: user
   });
 });
-
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -391,7 +390,6 @@ exports.updateprivateMode = asyncHandler(async (req, res, next) => {
     data: user
   });
 });
-
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -462,7 +460,7 @@ exports.updateUserPI = asyncHandler(async (req, res, next) => {
   delete data.auth_id;
   delete data.user_type;
   delete data._id;
-  delete data.email;z
+  delete data.email;
   delete data.badge;
   delete data.company_id;
   delete data.company_role;

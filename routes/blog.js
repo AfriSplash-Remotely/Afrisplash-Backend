@@ -28,8 +28,8 @@ router.get("/post/:url", onePost);
 router.get("/manage", protect, getMyPosts);
 router.post("/create", protect, createNewPost);
 router.delete("/delete/:id", protect, isAuthor(Post), deletePost);
-router.put("/edit/:id", protect, isAuthor(Post), editPost);
-router.put("/edit/content/:id", protect, isAuthor(Post), editContent);
+router.patch("/edit/:id", protect, isAuthor(Post), editPost);
+router.patch("/edit/content/:id", protect, isAuthor(Post), editContent);
 
 router.get("/comment/:postid", getAllComments);
 router.post("/comment/create/:postid", postNewComment);
