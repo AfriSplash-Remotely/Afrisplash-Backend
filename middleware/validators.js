@@ -11,7 +11,13 @@ const inviteAdminSchema = Joi.object({
 
 const loginAdminSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(3).max(10).required()
+  password: Joi.string()
+    .required()
+    .min(8)
+    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])'))
+    .message(
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)'
+    )
 });
 
 const jobStatus = Joi.object({

@@ -25,7 +25,7 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     if (error) return res.status(400).send(error.details);
 
     const { email, permissions } = value;
-    const password = '1234@splash';
+    const password = 'Afr!splash@1';
 
     // create the admin user
     const adminUser = new Admin({
