@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const permissions = require('../config/permissions.string');
 
 const validator = (schema) => (payload) =>
   schema.validate(payload, { abortEarly: false });
@@ -6,7 +7,10 @@ const validator = (schema) => (payload) =>
 const inviteAdminSchema = Joi.object({
   email: Joi.string().email().required(),
   // password: Joi.string().min(3).max(10).required(),
-  permissions: Joi.array().items(Joi.string()).min(1).required()
+  permissions: Joi.array()
+    .items(Joi.string().valid(...permissions))
+    .min(1)
+    .required()
 });
 
 const loginAdminSchema = Joi.object({

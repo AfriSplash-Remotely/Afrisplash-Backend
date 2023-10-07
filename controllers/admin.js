@@ -49,8 +49,8 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
 
     // Send Invitation Email
     const email_view = 'invite-admin';
-    const sender_email = process.env.NO_REPLY_EMAIL;
-    const sender_pass = process.env.NO_REPLY_PASS;
+    const sender_email = process.env.HELLO_EMAIL;
+    const sender_pass = process.env.HELLO_PASS;
     const from = `Afrisplash Admin <${sender_email}>`;
     const subject = 'Invitation to Afrisplash Dashboard';
     const permissionString = permissions.join(', ');
@@ -66,11 +66,12 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
       subject,
       body
     );
-    if (!send_email) {
-      // log: create mechanism to automatically retry sending email OR
-      // notify Super Admin user to probably send it manually
-      console.log(send_email);
-    }
+    console.log(send_email);
+    // if (!send_email) {
+    //   // log: create mechanism to automatically retry sending email OR
+    //   // notify Super Admin user to probably send it manually
+    //   console.log(send_email);
+    // }
     return res.status(201).json(adminUser);
   } catch (error) {
     if (error.code === 11000)
