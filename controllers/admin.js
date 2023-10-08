@@ -9,6 +9,7 @@ const {
   validateSendEmail
 } = require('../middleware/validators');
 const emailSender = require('../mail/emailSender');
+const generateRandomPassword = require('../utils/randomPasswordGen');
 
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
@@ -25,7 +26,7 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     if (error) return res.status(400).send(error.details);
 
     const { email, permissions } = value;
-    const password = 'Afr!splash@1';
+    const password = generateRandomPassword();
 
     // create the admin user
     const adminUser = new Admin({
@@ -52,9 +53,11 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     const sender_email = process.env.HELLO_EMAIL;
     const sender_pass = process.env.HELLO_PASS;
     const from = `Afrisplash Admin <${sender_email}>`;
-    const subject = 'Invitation to Afrisplash Dashboard';
+    const subject = 'Invitation to Afrisplash Admin Dashboard';
     const permissionString = permissions.join(', ');
-    const body = `You have been invited to Afrisplash dashboard as an admin user with the following permissions ${permissionString}. Kindly proceed to login on the dashboard with the credentials: Email-${email} Password-${password}, and verify your account by updating your password to a more secure password.`;
+    const body = `You have been invited to Afrisplash dashboard as an admin user with the following permission(s): ${permissionString}. 
+    Kindly proceed to login on the dashboard with the credentials: Email-${email} Password-${password}, 
+    and verify your account by updating your password to a more secure password.`;
 
     // execute email sender service
     const send_email = await emailSender(
@@ -66,12 +69,12 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
       subject,
       body
     );
-    console.log(send_email);
-    // if (!send_email) {
-    //   // log: create mechanism to automatically retry sending email OR
-    //   // notify Super Admin user to probably send it manually
-    //   console.log(send_email);
-    // }
+
+    if (!send_email.status) {
+      // log: create mechanism to automatically retry sending email OR
+      // notify Super Admin user to send it manually
+      console.log(send_email);
+    }
     return res.status(201).json(adminUser);
   } catch (error) {
     if (error.code === 11000)
