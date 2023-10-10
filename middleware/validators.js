@@ -6,6 +6,7 @@ const validator = (schema) => (payload) =>
 
 const inviteAdminSchema = Joi.object({
   email: Joi.string().email().required(),
+  admin_type: Joi.string().valid('admin', 'super-admin').required(),
   // password: Joi.string().min(3).max(10).required(),
   permissions: Joi.array()
     .items(Joi.string().valid(...permissions))

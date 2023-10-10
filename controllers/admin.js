@@ -10,6 +10,8 @@ const {
 } = require('../middleware/validators');
 const emailSender = require('../mail/emailSender');
 const generateRandomPassword = require('../utils/randomPasswordGen');
+const { default: mongoose } = require('mongoose');
+const auth = require('../model/auth');
 
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
@@ -19,20 +21,51 @@ const generateRandomPassword = require('../utils/randomPasswordGen');
  * @type POST
  */
 exports.inviteAdmin = asyncHandler(async (req, res, next) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     // Validate the request body
     const { error, value } = validateAdminInvite(req.body);
-
     if (error) return res.status(400).send(error.details);
+    // retrieve request body
+    const { email, permissions, admin_type } = value;
 
-    const { email, permissions } = value;
+    // check if account exist
+    const checkAccount = await auth
+      .findOne({ email: email, adminID: { $exists: true } })
+      .populate('adminID', 'admin_type');
+
+    if (checkAccount) {
+      return next(
+        new ErrorResponse(
+          `Account already exist as a ${checkAccount.adminID.admin_type}`,
+          409
+        )
+      );
+    }
+
     const password = generateRandomPassword();
+    console.log(password);
+
+    // create an authentication profile
+    const authProfile = await auth.create(
+      [{ email: email, password: password }],
+      { session, new: true }
+    );
+    await authProfile[0].save();
 
     // create the admin user
-    const adminUser = new Admin({
-      email,
-      password
-    });
+    const adminUser = await Admin.create(
+      [
+        {
+          auth_id: authProfile[0]._id,
+          admin_type: admin_type,
+          email: email,
+          permissions: []
+        }
+      ],
+      { session: session, new: true }
+    );
 
     // retrieve permission documents
     for (let i = 0; i < permissions.length; i++) {
@@ -42,11 +75,24 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
       });
 
       // add the permission to the admin user
-      if (permissionAccess) adminUser.permissions.push(permissionAccess);
+      // if (permissionAccess) adminUser[0].permissions.push(permissionAccess);
+      if (permissionAccess) {
+        adminUser[0].permissions.push(permissionAccess._id);
+      }
     }
 
     // save the admin user
-    await adminUser.save();
+    await adminUser[0].save();
+
+    // Update Auth profile with the Admin ID
+    await auth.findByIdAndUpdate(
+      authProfile[0]._id,
+      { adminID: adminUser[0]._id },
+      { new: true, session: session, runValidators: true }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
 
     // Send Invitation Email
     const email_view = 'invite-admin';
@@ -56,8 +102,8 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     const subject = 'Invitation to Afrisplash Admin Dashboard';
     const permissionString = permissions.join(', ');
     const body = `You have been invited to Afrisplash dashboard as an admin user with the following permission(s): ${permissionString}. 
-    Kindly proceed to login on the dashboard with the credentials: Email-${email} Password-${password}, 
-    and verify your account by updating your password to a more secure password.`;
+        Kindly proceed to login on the dashboard with the credentials: Email: ${email} Password: ${password}, 
+        and verify your account by updating your password to a more secure password.`;
 
     // execute email sender service
     const send_email = await emailSender(
@@ -77,9 +123,8 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     }
     return res.status(201).json(adminUser);
   } catch (error) {
-    if (error.code === 11000)
-      return next(new ErrorResponse('Email user already invited', 409));
-
+    console.log(error);
+    session.endSession();
     return next(new ErrorResponse('An error occured.', 500));
   }
 });
@@ -100,17 +145,23 @@ exports.login = asyncHandler(async (req, res, next) => {
 
     const { email, password } = value;
 
-    // find the admin user
-    const admin = await Admin.findOne({ email }).populate('permissions');
+    // check if account exist
+    const authProfile = await auth
+      .findOne({ email: email, adminID: { $exists: true } })
+      .populate('adminID', 'admin_type');
 
-    // if user does not exist
-    if (!admin) return next(new ErrorResponse('User does not exist', 404));
+    if (!authProfile) {
+      return next(new ErrorResponse('Account does not exist', 404));
+    }
 
     // check if password matches
-    const isMatch = await bcrypt.compare(password, admin.password);
+    const isMatch = await authProfile.matchPassword(password);
 
     // if password no match
     if (!isMatch) return next(new ErrorResponse('Password incorrect', 401));
+
+    // find the admin user
+    const admin = await Admin.findOne({ email }).populate('permissions');
 
     // create JWT
     const token = admin.getSignedJwtToken();
@@ -130,6 +181,25 @@ exports.login = asyncHandler(async (req, res, next) => {
   } catch (error) {
     return next(new ErrorResponse('An error occurred', 500));
   }
+});
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Logout
+ * @route `/api/v1/admins/logout`
+ * @access Public
+ * @type GET
+ */
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true
+  });
+
+  res.status(200).json({
+    success: true,
+    data: {}
+  });
 });
 
 /**
@@ -224,3 +294,12 @@ exports.sendEmail = asyncHandler(async (req, res, next) => {
     data: send_email
   });
 });
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Update password
+ * @route `/api/v1/admins/update-password
+ * @access Private
+ * @type PATCH
+ */
+exports.updatePassword = (req, res) => {};
