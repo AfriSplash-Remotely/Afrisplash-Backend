@@ -3,6 +3,19 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const adminSchema = new mongoose.Schema({
+  auth_id: {
+    type: mongoose.SchemaTypes.ObjectId,
+    required: [
+      true,
+      'an Admin user can not be created without an authentication handler'
+    ],
+    ref: 'auth'
+  },
+  admin_type: {
+    type: String,
+    required: true,
+    enum: ['admin', 'super-admin']
+  },
   email: {
     type: String,
     required: [true, 'Please enter Email address'],
@@ -14,44 +27,13 @@ const adminSchema = new mongoose.Schema({
       'Please enter a valid Email address'
     ]
   },
-  password: {
-    type: String,
-    required: true
-  },
   permissions: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Permission',
       required: true
     }
-  ],
-  account_verify: {
-    type: Boolean,
-    required: true,
-    default: false
-  }
-});
-
-// Hook function to encrypt the password
-adminSchema.pre('save', async function (next) {
-  try {
-    // check if the password field is modified
-    if (!this.isModified('password')) return next();
-
-    // Generate salt
-    const salt = await bcrypt.genSalt(10);
-
-    // hash the password with the salt
-    const hashedPassword = await bcrypt.hash(this.password, salt);
-
-    // set the hashed password to the model
-    this.password = hashedPassword;
-
-    // proceed to save the model
-    next();
-  } catch (error) {
-    next(error);
-  }
+  ]
 });
 
 // sign jwt

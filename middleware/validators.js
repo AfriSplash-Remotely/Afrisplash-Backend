@@ -1,17 +1,28 @@
 const Joi = require('joi');
+const permissions = require('../config/permissions.string');
 
 const validator = (schema) => (payload) =>
   schema.validate(payload, { abortEarly: false });
 
 const inviteAdminSchema = Joi.object({
   email: Joi.string().email().required(),
+  admin_type: Joi.string().valid('admin', 'super-admin').required(),
   // password: Joi.string().min(3).max(10).required(),
-  permissions: Joi.array().items(Joi.string()).min(1).required()
+  permissions: Joi.array()
+    .items(Joi.string().valid(...permissions))
+    .min(1)
+    .required()
 });
 
 const loginAdminSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(3).max(10).required()
+  password: Joi.string()
+    .required()
+    .min(8)
+    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])'))
+    .message(
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)'
+    )
 });
 
 const jobStatus = Joi.object({
@@ -38,12 +49,23 @@ const createReportSchema = Joi.object({
     .required()
 });
 
+const passwordSchema = Joi.object({
+  password: Joi.string()
+    .required()
+    .min(8)
+    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])'))
+    .message(
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)'
+    )
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
 const validateJobTimeRange = validator(jobTimeRange);
 const validateSendEmail = validator(sendEmailSchema);
 const validateReportSchema = validator(createReportSchema);
+const validatePasswordSchema = validator(passwordSchema);
 
 module.exports = {
   validateAdminInvite,
@@ -51,6 +73,6 @@ module.exports = {
   validateJobStatus,
   validateJobTimeRange,
   validateSendEmail,
-  validateReportSchema
+  validateReportSchema,
+  validatePasswordSchema
 };
-// exports.validateAdminInvite = validator(inviteAdminSchema);

@@ -6,7 +6,6 @@ const _ = require('lodash');
 const joi = require('joi');
 const Auth = require('../model/auth');
 const User = require('../model/user');
-const google_auth_library = require('google-auth-library');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -26,13 +25,21 @@ exports.register = asyncHandler(async (req, res, next) => {
       ? req.body.email.toLowerCase()
       : '';
     const opts = { session, new: true };
-    const checkAccount = await Auth.findOne({
-      email: email
-    });
 
-    if (!_.isEmpty(checkAccount)) {
-      return next(new ErrorResponse('Email Address already exist', 400));
+    const checkAccount = await Auth.findOne({
+      email: email,
+      userID: { $exists: true }
+    }).populate('userID', 'user_type');
+
+    if (checkAccount) {
+      return next(
+        new ErrorResponse(
+          `Account already exist as a ${checkAccount.userID.user_type}`,
+          409
+        )
+      );
     }
+
     // Create an Authication Profile
     const authProfile = await Auth.create(
       [
@@ -76,6 +83,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     session.endSession();
     sendTokenResponse(user, 200, res);
   } catch (error) {
+    console.log(error);
     session.endSession();
     next(error);
   }
@@ -97,10 +105,13 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 
   // Check for user
-  const auth = await Auth.findOne({ email }).select('+password');
+  const auth = await Auth.findOne({
+    email: email,
+    userID: { $exists: true }
+  }).populate('userID', 'user_type');
 
   if (!auth) {
-    return next(new ErrorResponse('Invalid credentials', 401));
+    return next(new ErrorResponse('User does not exist!', 404));
   }
 
   // Check if password matches
@@ -143,7 +154,10 @@ exports.logout = asyncHandler(async (req, res, next) => {
  */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const { generateOTP } = require('../utils/otpGen');
-  const user = await Auth.findOne({ email: req.body.email.toLowerCase() });
+  const user = await Auth.findOne({
+    email: req.body.email.toLowerCase(),
+    userID: { $exists: true }
+  });
 
   if (!user) {
     return next(new ErrorResponse('There is no user with that email', 404));
@@ -217,7 +231,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     options.secure = true;
   }
 
-  res
+  return res
     .status(statusCode)
     .cookie('token', token, options)
     .json({

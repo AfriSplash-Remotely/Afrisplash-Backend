@@ -41,7 +41,7 @@
  *              description: Registered successfully
  *              content:
  *                  application/json:
- *                      schema: 
+ *                      schema:
  *                          type: object
  *                          $ref: '#/components/schemas/User'
  *          500:
@@ -73,8 +73,8 @@
  *              description: Logged In successfully
  *              content:
  *                  application/json:
- *                      schema: 
- *                          type: object 
+ *                      schema:
+ *                          type: object
  *                          $ref: '#/components/schemas/User'
  *          400:
  *              description: Please provide an email and password
@@ -92,11 +92,11 @@
  *      summary: Logout
  *      responses:
  *          200:
- *              description: Logged In successfully
+ *              description: Logged out successfully
  *              content:
  *                  application/json:
- *                      schema: 
- *                          type: object 
+ *                      schema:
+ *                          type: object
  *                          properties:
  *                              success:
  *                                  example: true
@@ -158,8 +158,8 @@
  *              description: Password reset successfully
  *              content:
  *                  application/json:
- *                      schema: 
- *                          type: object 
+ *                      schema:
+ *                          type: object
  *                          properties:
  *                              success:
  *                                  example: true

@@ -3,6 +3,7 @@ const asyncHandler = require('./async');
 const ErrorResponse = require('../utils/errorResponse');
 const User = require('../model/user');
 const _ = require('lodash');
+const Admin = require('../model/admin');
 
 //TODO: Review This
 /**Route Gaurd For `All User` -- *MIDDLEWARE* */
@@ -180,3 +181,37 @@ exports.authorize = (...roles) => {
     next();
   };
 };
+
+/**Route Gaurd For `All Admins` -- *MIDDLEWARE* */
+exports.Admin_protect = asyncHandler(async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    // Set token from Bearer token in header
+    token = req.headers.authorization.split(' ')[1];
+    // Set token from cookie
+  } else if (req.cookies.token) {
+    token = req.cookies.token;
+  }
+
+  // Make sure token exists
+  if (!token) {
+    return next(new ErrorResponse('Not authorized to access this route', 401));
+  }
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await Admin.findById(decoded.id);
+    if (req.user) {
+      next();
+    } else {
+      return next(new ErrorResponse('User Data Is Not Valid', 400));
+    }
+  } catch (err) {
+    return next(new ErrorResponse('Not authorized to access this route', 401));
+  }
+});
