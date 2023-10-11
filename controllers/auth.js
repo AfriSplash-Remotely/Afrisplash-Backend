@@ -154,7 +154,10 @@ exports.logout = asyncHandler(async (req, res, next) => {
  */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const { generateOTP } = require('../utils/otpGen');
-  const user = await Auth.findOne({ email: req.body.email.toLowerCase() });
+  const user = await Auth.findOne({
+    email: req.body.email.toLowerCase(),
+    userID: { $exists: true }
+  });
 
   if (!user) {
     return next(new ErrorResponse('There is no user with that email', 404));

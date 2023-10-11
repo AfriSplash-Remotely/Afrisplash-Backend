@@ -981,3 +981,39 @@
  *                  last_name:
  *                      type: string
  */
+
+// *************************INVITE ADMIN SCHEMA******************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Admin:
+ *       type: object
+ *       properties:
+ *         auth_id:
+ *           type: string
+ *           description: The ID of the authentication handler associated with the admin user.
+ *           example: 605c5f051f33da1654726f34
+ *         admin_type:
+ *           type: string
+ *           enum:
+ *             - admin
+ *             - super-admin
+ *           description: The type of admin user (either 'admin' or 'super-admin').
+ *           example: admin
+ *         email:
+ *           type: string
+ *           description: The email address of the admin user.
+ *           example: admin@example.com
+ *         permissions:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: The IDs of permissions associated with the admin user.
+ *             example: ['605c5f051f33da1654726f34']
+ *             enum:
+ *               - blog_access
+ *               - job_access
+ *               - deals_access
+ *               - forum_access
+ */

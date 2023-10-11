@@ -6,7 +6,8 @@ const ErrorResponse = require('../utils/errorResponse');
 const {
   validateAdminInvite,
   validateAdminLogin,
-  validateSendEmail
+  validateSendEmail,
+  validatePasswordSchema
 } = require('../middleware/validators');
 const emailSender = require('../mail/emailSender');
 const generateRandomPassword = require('../utils/randomPasswordGen');
@@ -45,7 +46,6 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     }
 
     const password = generateRandomPassword();
-    console.log(password);
 
     // create an authentication profile
     const authProfile = await auth.create(
@@ -204,6 +204,41 @@ exports.logout = asyncHandler(async (req, res, next) => {
 
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Update password
+ * @route `/api/v1/admins/update-password
+ * @access Private
+ * @type PATCH
+ */
+exports.updatePassword = async (req, res) => {
+  try {
+    const { error, value } = validatePasswordSchema(req.body);
+    if (error) return res.status(400).send(error.details);
+    const { password } = value;
+
+    const doc = await auth.findOne({
+      email: req.user.email,
+      adminID: { $exists: true }
+    });
+
+    if (doc) {
+      doc.password = password;
+      doc.account_setup_completed = true;
+      await doc.save();
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Password updated successfully'
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: 'Unable to update password' });
+  }
+};
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
  * @description Get all admin users
  * @route `/api/v1/admins
  * @access Public
@@ -294,12 +329,3 @@ exports.sendEmail = asyncHandler(async (req, res, next) => {
     data: send_email
   });
 });
-
-/**
- * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
- * @description Update password
- * @route `/api/v1/admins/update-password
- * @access Private
- * @type PATCH
- */
-exports.updatePassword = (req, res) => {};

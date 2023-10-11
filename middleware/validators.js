@@ -49,12 +49,23 @@ const createReportSchema = Joi.object({
     .required()
 });
 
+const passwordSchema = Joi.object({
+  password: Joi.string()
+    .required()
+    .min(8)
+    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])'))
+    .message(
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)'
+    )
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
 const validateJobTimeRange = validator(jobTimeRange);
 const validateSendEmail = validator(sendEmailSchema);
 const validateReportSchema = validator(createReportSchema);
+const validatePasswordSchema = validator(passwordSchema);
 
 module.exports = {
   validateAdminInvite,
@@ -62,6 +73,6 @@ module.exports = {
   validateJobStatus,
   validateJobTimeRange,
   validateSendEmail,
-  validateReportSchema
+  validateReportSchema,
+  validatePasswordSchema
 };
-// exports.validateAdminInvite = validator(inviteAdminSchema);
