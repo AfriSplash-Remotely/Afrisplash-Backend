@@ -47,8 +47,9 @@ const operations = async (req, res, next, name, message) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.token) {
-    token = req.cookies.token;
+  } else if (req.headers.cookie && req.headers.cookie.startsWith('token')) {
+    // set token from cookie
+    token = req.headers.cookie.split('token=')[1];
   }
 
   if (!token)

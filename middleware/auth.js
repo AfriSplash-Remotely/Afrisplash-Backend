@@ -16,9 +16,9 @@ exports.protect = asyncHandler(async (req, res, next) => {
   ) {
     // Set token from Bearer token in header
     token = req.headers.authorization.split(' ')[1];
-    // Set token from cookie
-  } else if (req.cookies.token) {
-    token = req.cookies.token;
+  } else if (req.headers.cookie && req.headers.cookie.startsWith('token')) {
+    // set token from cookie
+    token = req.headers.cookie.split('token=')[1];
   }
 
   // Make sure token exists
@@ -50,9 +50,9 @@ exports.C_protect = asyncHandler(async (req, res, next) => {
   ) {
     // Set token from Bearer token in header
     token = req.headers.authorization.split(' ')[1];
-    // Set token from cookie
-  } else if (req.cookies.token) {
-    token = req.cookies.token;
+  } else if (req.headers.cookie && req.headers.cookie.startsWith('token')) {
+    // set token from cookie
+    token = req.headers.cookie.split('token=')[1];
   }
 
   // Make sure token exists
@@ -102,9 +102,9 @@ exports.R_protect = asyncHandler(async (req, res, next) => {
   ) {
     // Set token from Bearer token in header
     token = req.headers.authorization.split(' ')[1];
-    // Set token from cookie
-  } else if (req.cookies.token) {
-    token = req.cookies.token;
+  } else if (req.headers.cookie && req.headers.cookie.startsWith('token')) {
+    // set token from cookie
+    token = req.headers.cookie.split('token=')[1];
   }
 
   // Make sure token exists
@@ -192,9 +192,9 @@ exports.Admin_protect = asyncHandler(async (req, res, next) => {
   ) {
     // Set token from Bearer token in header
     token = req.headers.authorization.split(' ')[1];
-    // Set token from cookie
-  } else if (req.cookies.token) {
-    token = req.cookies.token;
+  } else if (req.headers.cookie && req.headers.cookie.startsWith('token')) {
+    // set token from cookie
+    token = req.headers.cookie.split('token=')[1];
   }
 
   // Make sure token exists
