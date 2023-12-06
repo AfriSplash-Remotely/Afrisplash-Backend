@@ -587,12 +587,16 @@ exports.jobsByCompany = asyncHandler(async (req, res, next) => {
   try {
     const { company } = req.params;
 
+    // Use a case-insensitive regular expression for the search
+    const regex = new RegExp(company, 'i');
+
     // get company
     const companyId = await Company.findOne({
-      name: company
+      name: regex
     }).select({
       id: 1
     });
+    console.log('Company ID found', companyId);
 
     let jobs = [];
 
