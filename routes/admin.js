@@ -25,4 +25,8 @@ router.patch('/update-password', Admin_protect, updatePassword);
 // TODO: protect with Admin Guard
 router.post('/email', sendEmail);
 
+router.get('/test', Admin_protect, (req, res) => {
+  return res.status(200).send('Hello Admin');
+});
+
 module.exports = router;

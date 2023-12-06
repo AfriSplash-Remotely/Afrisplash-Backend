@@ -434,7 +434,6 @@
  *         - private
  *         - promoted
  *         - publish
- *         - expiry
  *       properties:
  *         _id:
  *           type: string
