@@ -22,7 +22,6 @@ const jobRouter = require('./routes/jobs');
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
 const reportRouter = require('./routes/report');
-
 dotenv.config({ path: './.env/config.env' });
 const PORT = process.env.PORT;
 var app = express();
@@ -59,7 +58,7 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reports', reportRouter);
 
 // server Swagger documentation
-swaggerDocs(app, PORT)
+swaggerDocs(app, PORT);
 
 app.use(errorHandler);
 
@@ -85,6 +84,5 @@ app.use(function (err, req, res, next) {
 
 // start job expiry cronjob
 jobExpiryCron.start();
-
 
 module.exports = app;

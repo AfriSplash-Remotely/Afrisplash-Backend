@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const _ = require('lodash');
 const joi = require('joi');
+const redisClient = require('redis');
 const Auth = require('../model/auth');
 const User = require('../model/user');
 
@@ -154,37 +155,31 @@ exports.logout = asyncHandler(async (req, res, next) => {
  */
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const { generateOTP } = require('../utils/otpGen');
+  const { email } = req.body;
+
   const user = await Auth.findOne({
-    email: req.body.email.toLowerCase(),
+    email: email.toLowerCase(),
     userID: { $exists: true }
   });
 
-  if (!user) {
+  if (!user)
     return next(new ErrorResponse('There is no user with that email', 404));
-  }
-
-  // Get reset token
   const resetToken = generateOTP(6);
-  user.resetPasswordToken = resetToken;
-  await user.save({ validateBeforeSave: false });
 
-  console.log(resetToken);
+  redisClient.set(email, 3600, resetToken);
 
   try {
-    //TODO Send email
-
+    // TODO: Send email with the resetToken
+    // For example, you can send a link with the resetToken as a query parameter
+    // like: /reset-password?token=resetToken
+    console.log(resetToken);
     res.status(200).json({ success: true, data: 'Email sent successfully' });
   } catch (err) {
     console.log(`email error `, err);
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
-
-    await user.save({ validateBeforeSave: false });
-
+    redisClient.del(email);
     return next(new ErrorResponse('Email could not be sent', 500));
   }
 });
-
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
  * @description Reset Password
@@ -192,25 +187,30 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
  * @access Public
  * @type POST
  */
+
 exports.resetPassword = asyncHandler(async (req, res, next) => {
   const { email, new_password } = req.body;
-  const user = await User.findOne({
-    email: email
+
+  redisClient.get(email, async (err, storedToken) => {
+    if (!storedToken) {
+      return next(new ErrorResponse('Invalid or expired reset token.', 400));
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(
+        new ErrorResponse(`User with this email ${email} does not exist`, 400)
+      );
+    }
+
+    user.password = new_password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    redisClient.del(email);
+    sendTokenResponse(user, 200, res);
   });
-
-  if (!user) {
-    return next(
-      new ErrorResponse(`User with this email ${email} does not exist`, 400)
-    );
-  }
-
-  // Set new password
-  user.password = new_password;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpire = undefined;
-  await user.save();
-
-  sendTokenResponse(user, 200, res);
 });
 
 // Get token from model, create cookie and send response
