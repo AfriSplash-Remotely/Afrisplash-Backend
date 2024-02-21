@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise;
 
 const tlsCAFile = path.join(__dirname, './global-bundle.pem');
 const USERNAME = process.env.MONGO_USERNAME;
-const PASSWORD = process.env.MONGO_PASSWORD;
+// const PASSWORD = process.env.MONGO_PASSWORD;
 
 const connect = mongoose.connection;
 
@@ -27,15 +27,15 @@ const connectDB = async () => {
 
     setTimeout(() => {
       mongoose.connect(process.env.MONGO_URI, {
-        tlsCAFile: tlsCAFile,
+        tlsCAFile: require('fs').readFileSync(tlsCAFile),
         tls: process.env.MONGO_REPLSET ? true : false,
         replicaSet: process.env.MONGO_REPLSET,
         readPreference: process.env.MONGO_READ_PREFERENCE,
         retryWrites: false,
 
         //required for the certificate shit
-        authMechanism: 'MONGODB-X509',
-        auth: { username: USERNAME, password: PASSWORD },
+        // authMechanism: 'MONGODB-X509',
+        // auth: { USERNAME },
 
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -56,14 +56,14 @@ const connectDB = async () => {
 
   try {
     await mongoose.connect(process.env.MONGO_URI, {
-      tlsCAFile: tlsCAFile,
+      tlsCAFile: require('fs').readFileSync(tlsCAFile),
       tls: process.env.MONGO_REPLSET ? true : false,
       replicaSet: process.env.MONGO_REPLSET,
       readPreference: process.env.MONGO_READ_PREFERENCE,
       retryWrites: false,
       //required for the certificate shit
-      authMechanism: 'MONGODB-X509',
-      auth: { username: USERNAME, password: PASSWORD },
+      // authMechanism: 'MONGODB-X509',
+      // auth: { USERNAME },
 
       useNewUrlParser: true,
       useUnifiedTopology: true
