@@ -28,7 +28,7 @@ const connectDB = async () => {
         tls: process.env.MONGO_REPLSET ? true : false,
         replicaSet: process.env.MONGO_REPLSET,
         readPreference: process.env.MONGO_READ_PREFERENCE,
-        retryWrites: false,
+        retryWrites: true,
         authMechanism: 'MONGODB-X509',
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -53,7 +53,7 @@ const connectDB = async () => {
       tls: process.env.MONGO_REPLSET ? true : false,
       replicaSet: process.env.MONGO_REPLSET,
       readPreference: process.env.MONGO_READ_PREFERENCE,
-      retryWrites: false,
+      retryWrites: true,
       authMechanism: 'MONGODB-X509',
       useNewUrlParser: true,
       useUnifiedTopology: true
