@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
+const path = require('path');
 const createPermissions = require('../utils/createPermissions');
 mongoose.Promise = global.Promise;
 
+// let tscFile = path.dirname('./global-bundle.pem');
+let tlsCAFile = path.join(__dirname, './global-bundle.pem');
+
+// MONGO_URI = process.env.MONGO_URI + tlsCAFile
 const connect = mongoose.connection;
 const connectDB = async () => {
   connect.on('connected', async () => {
@@ -21,6 +26,7 @@ const connectDB = async () => {
 
     setTimeout(() => {
       mongoose.connect(process.env.MONGO_URI, {
+        sslCA: require('fs').readFileSync(tlsCAFile),
         useNewUrlParser: true,
         useUnifiedTopology: true,
         keepAlive: true,
@@ -39,6 +45,7 @@ const connectDB = async () => {
 
   await mongoose
     .connect(process.env.MONGO_URI, {
+      sslCA: require('fs').readFileSync(tlsCAFile),
       useNewUrlParser: true,
       useUnifiedTopology: true
     })

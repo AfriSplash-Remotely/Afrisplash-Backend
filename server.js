@@ -64,7 +64,7 @@ swaggerDocs(app, PORT)
 app.use(errorHandler);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (req, res, next) {config
   res.status(404).json({
     success: false,
     status: 'Resource Not Found',
