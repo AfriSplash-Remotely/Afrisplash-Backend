@@ -26,7 +26,7 @@ const connectDB = async () => {
 
     setTimeout(() => {
       mongoose.connect(process.env.MONGO_URI, {
-        sslCA: require('fs').readFileSync(tlsCAFile),
+        tlsCAFile: require('fs').readFileSync(tlsCAFile),
         useNewUrlParser: true,
         useUnifiedTopology: true,
         keepAlive: true,
@@ -45,7 +45,7 @@ const connectDB = async () => {
 
   await mongoose
     .connect(process.env.MONGO_URI, {
-      sslCA: require('fs').readFileSync(tlsCAFile),
+      tlsCAFile: require('fs').readFileSync(tlsCAFile),
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
