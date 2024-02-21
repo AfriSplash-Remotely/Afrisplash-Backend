@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise;
 
 const tlsCAFile = path.join(__dirname, './global-bundle.pem');
 const connect = mongoose.connection;
-const USERNAME = process.env.USERNAME;
+const USERNAME = process.env.MONGO_USERNAME;
 const HOST = process.env.MONGO_HOST;
 const MONGO_URI = `mongodb://${encodeURIComponent(
   USERNAME
