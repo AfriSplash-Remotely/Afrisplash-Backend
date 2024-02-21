@@ -59,7 +59,7 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reports', reportRouter);
 
 // server Swagger documentation
-swaggerDocs(app, PORT)
+swaggerDocs(app, PORT);
 
 app.use(errorHandler);
 
@@ -85,6 +85,5 @@ app.use(function (err, req, res, next) {
 
 // start job expiry cronjob
 jobExpiryCron.start();
-
 
 module.exports = app;
