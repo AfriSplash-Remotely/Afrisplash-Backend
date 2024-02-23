@@ -22,7 +22,6 @@ const jobRouter = require('./routes/jobs');
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
 const reportRouter = require('./routes/report');
-
 dotenv.config({ path: './.env/config.env' });
 const PORT = process.env.PORT;
 var app = express();

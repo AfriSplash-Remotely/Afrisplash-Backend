@@ -1,12 +1,18 @@
+const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const createPermissions = require('../utils/createPermissions');
 mongoose.Promise = global.Promise;
+const connectToRedis = require('./redis');
+
+dotenv.config({ path: './env/config.env' });
 
 const connect = mongoose.connection;
 const connectDB = async () => {
   connect.on('connected', async () => {
     console.log('MongoDB Connection Established');
 
+    // Redis
+    connectToRedis();
     // Call the function to create Admin Permissions
     createPermissions();
   });
