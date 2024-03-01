@@ -58,14 +58,39 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    salaryType: {
+      type: String,
+      enum: ['fixed', 'range'], // Enum for salary type (fixed or range)
+      required: true
+    },
     salary: {
-      type: Object,
-      required: true,
-      default: {
-        amount: null,
-        currency: null,
-        period: null
-      }
+      type: {
+        amount: {
+          type: Number,
+          required: function() {
+            return this.salaryType === 'fixed';
+          }
+        },
+        min: {
+          type: Number,
+          required: function() {
+            return this.salaryType === 'range';
+          }
+        },
+        max: {
+          type: Number,
+          required: function() {
+            return this.salaryType === 'range';
+          },
+          validate: function(value) {
+            return value > this.min;
+          },
+          message: 'Max salary must be greater than min salary'
+        },
+        currency: String,
+        period: String
+      },
+      required: true
     },
     redirect: {
       type: Boolean,
