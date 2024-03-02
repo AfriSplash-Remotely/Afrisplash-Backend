@@ -70,7 +70,7 @@ const jobSchema = Joi.object({
     .required(),
   type: Joi.string().valid('Remote', 'Onsite', 'Hybrid').required(),
   status: Joi.string().valid('Active', 'Expired', 'Archived').required(),
-  location: Joi.string().required(),
+  // location: Joi.string().required(),
   salaryType: Joi.string().valid('fixed', 'range').required(),
   salary: Joi.object()
     .when('salaryType', {
@@ -91,14 +91,13 @@ const jobSchema = Joi.object({
       })
     })
     .required(),
-  expiry: Joi.number().optional(),
-  external_data: Joi.object({
-    image: Joi.string().uri().required(),
-    url: Joi.string().uri().required(),
-    date: Joi.date().iso().required()
-  }).required()
-}).options({ allowUnknown: true });;
-
+  expiry: Joi.number().optional()
+  // external_data: Joi.object({
+  //   image: Joi.string().uri().required(),
+  //   url: Joi.string().uri().required(),
+  //   date: Joi.date().iso().required()
+  // }).required()
+}).options({ allowUnknown: true });
 
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);

@@ -56,7 +56,7 @@ const jobSchema = new mongoose.Schema(
     },
     location: {
       type: String,
-      required: true
+      required: false
     },
     salaryType: {
       type: String,
@@ -67,22 +67,22 @@ const jobSchema = new mongoose.Schema(
       type: {
         amount: {
           type: Number,
-          required: function() {
+          required: function () {
             return this.salaryType === 'fixed';
           }
         },
         min: {
           type: Number,
-          required: function() {
+          required: function () {
             return this.salaryType === 'range';
           }
         },
         max: {
           type: Number,
-          required: function() {
+          required: function () {
             return this.salaryType === 'range';
           },
-          validate: function(value) {
+          validate: function (value) {
             return value > this.min;
           },
           message: 'Max salary must be greater than min salary'
