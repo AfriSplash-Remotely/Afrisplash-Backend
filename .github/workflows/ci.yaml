@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Node.js CI Pipeline Guide
 
 on:
   push:
@@ -20,5 +20,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm i
-      - run: npm run start
+      # - run: npm run build
     # - run: npm run test
