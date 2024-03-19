@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "live": "NODE_ENV=production && node ./bin/www"
+    "live": "NODE_ENV=production && node ./bin/www",
+    "test": "npm test.js"
   },
   "dependencies": {
     "axios": "^0.27.2",
