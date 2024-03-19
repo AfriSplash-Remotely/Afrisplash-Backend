@@ -92,13 +92,13 @@ const userSchema = new mongoose.Schema({
     default: null
   },
 
-  availability: {
+  work_type: {
     type: Array,
     required: [
       true,
       'Please enter Time Avaliable (Time OnJob), Type of Work Location'
     ],
-    default: ['Full-time, Remote']
+    default: ['Remote', 'Onsite', 'Hybrid']
   },
 
   badge: {
