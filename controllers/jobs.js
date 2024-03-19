@@ -12,6 +12,7 @@ const {
   validateCreateJob,
   joiErrorMessage
 } = require('../middleware/validators');
+const { UserJobType } = require('../utils/enum');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -504,13 +505,16 @@ exports.getApplicants = asyncHandler(async (req, res, next) => {
  * @type GET
  */
 exports.applyJob = asyncHandler(async (req, res, next) => {
+  const isExist = await Jobs.exists({ _id: req.params.id });
+  if (!isExist) return res.status(404).json({ success: false, data: null });
   // Check if user hasnt applied before
-
-  if (req.user.jobs.some((j) => j._job.toString() === req.params.id)) {
+  const job = req.user.jobs.find((job) => job._job.toString() === req.params.id);
+  if (job && job.type === UserJobType.APPLIED ) {
     return next(
       new ErrorResponse('User Has Applied For This Job Already', 409)
     );
   }
+
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -531,27 +535,48 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
       { new: true, runValidators: true, session: session }
     );
 
-    // add data to user
-    await User.findOneAndUpdate(
-      { _id: req.user._id },
-      {
-        $push: {
-          jobs: {
-            _job: req.params.id,
-            date: Date.now(),
-            state: 'pending'
+    //check if user has saved the job, then change to apply
+    if (job && job.type === UserJobType.SAVED) {
+  
+      await User.findOneAndUpdate(
+        { _id: req.user._id, 'jobs._job': req.params.id },
+        {
+          $set: {
+            jobs: {
+              _job: req.params.id,
+              type: UserJobType.APPLIED,
+              date: Date.now()
+            }
           }
-        }
-      },
-      { new: true, runValidators: true, session: session }
-    );
+        },
+        { new: true, runValidators: true, session: session }
+      );
+    }else{
+
+      // add data to user
+      await User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          $push: {
+            jobs: {
+              _job: req.params.id,
+              date: Date.now(),
+              type: UserJobType.APPLIED,
+              state: 'pending'
+            }
+          }
+        },
+        { new: true, runValidators: true, session: session }
+      );
+    }
 
     await session.commitTransaction();
     session.endSession();
     //TODO: SEND NOTIFICATION
     res.status(200).json({
       success: true,
-      status: 'success'
+      status: 'success',
+      message:'Job Applied'
     });
   } catch (error) {
     session.endSession();

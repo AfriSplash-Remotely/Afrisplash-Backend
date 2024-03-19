@@ -21,6 +21,7 @@ const {
   updateUserBio,
   updateUserContact,
   getJobs,
+  getMyJobs,
   saveAJob,
   unSaveAJob
 } = require('../controllers/candidate');
@@ -43,6 +44,7 @@ router.put('/edit/user/', protect, updateUserPI);
 router.get('/notifications', protect, getNotifications);
 router.post('/gifts', protect, getGifts);
 router.get('/jobs/', protect, getJobs);
+router.get('/jobs/save-apply', protect, getMyJobs);
 router.patch('/job/save/:id', protect, saveAJob);
 router.delete('/job/unsave/:id/', protect, unSaveAJob);
 
