@@ -8,7 +8,9 @@ const User = require('../model/user');
 const _ = require('lodash');
 const {
   validateJobStatus,
-  validateJobTimeRange
+  validateJobTimeRange,
+  validateCreateJob,
+  joiErrorMessage
 } = require('../middleware/validators');
 
 /**
@@ -35,6 +37,7 @@ exports.ping = asyncHandler(async (req, res, next) => {
 exports.create = asyncHandler(async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+
   try {
     const opts = { session, new: true };
     const input = req.body;
@@ -42,9 +45,11 @@ exports.create = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse('Company Is Required', 400));
     }
 
-    let expiry = 30; // default expiry days
-    if (input.expiry) expiry = input.expiry; // set expiry day from user if provided
+    const { error, value } = validateCreateJob(input);
+    console.log('Error:', error);
+    if (error) return res.status(400).send(errorMessage);
 
+    let expiry = input.expiry ? input.expiry : 30; // default expiry days
     // calculate expiry date
     const currentDate = new Date();
     const expiryDate = new Date();
@@ -52,6 +57,19 @@ exports.create = asyncHandler(async (req, res, next) => {
 
     // set expiry date
     input.expiry = expiryDate;
+
+    if (input.salary && input.salary.min && input.salary.max) {
+      const minSalary = input.salary.min > 0 ? input.salary.min : 0;
+      const maxSalary = input.salary.max > 0 ? input.salary.max : 0;
+      if (input.minSalary >= input.maxSalary) {
+        return next(
+          new ErrorResponse(
+            `Minimum salary should be less than maximum salary`,
+            400
+          )
+        );
+      }
+    }
 
     input._company = req.user._company;
     input._author = req.user._id;

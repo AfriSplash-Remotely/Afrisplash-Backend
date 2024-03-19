@@ -474,12 +474,22 @@
  *         location:
  *           type: string
  *           example: New York, USA
+ *         salaryType:
+ *           type: string
+ *           enum: ['fixed', 'range']
+ *           example: range
  *         salary:
  *           type: object
  *           properties:
  *             amount:
  *               type: number
  *               example: 70000
+ *             min:
+ *               type: number
+ *               example: 70000
+ *             max:
+ *               type: number
+ *               example: 100000
  *             currency:
  *               type: string
  *               example: USD
@@ -505,9 +515,8 @@
  *           type: boolean
  *           example: true
  *         expiry:
- *           type: string
- *           format: date-time
- *           example: 2023-12-31T23:59:59.999Z
+ *           type: number
+ *           example: 40
  *         external_data:
  *           type: object
  *           properties:

@@ -17,7 +17,7 @@ const authSchema = new mongoose.Schema({
   password: {
     type: String
   },
-  account_verify: {
+  email_verified: {
     type: Boolean,
     required: true,
     default: false

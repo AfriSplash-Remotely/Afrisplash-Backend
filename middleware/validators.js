@@ -59,6 +59,46 @@ const passwordSchema = Joi.object({
     )
 });
 
+const jobSchema = Joi.object({
+  title: Joi.string().required(),
+  industry: Joi.string().required(),
+  description: Joi.string().required(),
+  requirement: Joi.string().required(),
+  benefit: Joi.string().required(),
+  experience: Joi.string()
+    .valid('Intermediate', 'Beginner', 'Senior', 'Junior', 'All')
+    .required(),
+  type: Joi.string().valid('Remote', 'Onsite', 'Hybrid').required(),
+  status: Joi.string().valid('Active', 'Expired', 'Archived').required(),
+  // location: Joi.string().required(),
+  salaryType: Joi.string().valid('fixed', 'range').required(),
+  salary: Joi.object()
+    .when('salaryType', {
+      is: 'fixed',
+      then: Joi.object({
+        amount: Joi.number().required(),
+        min: Joi.forbidden(),
+        max: Joi.forbidden(),
+        currency: Joi.string().required(),
+        period: Joi.string().required()
+      }),
+      otherwise: Joi.object({
+        amount: Joi.forbidden(),
+        min: Joi.number().required(),
+        max: Joi.number().required(),
+        currency: Joi.string().required(),
+        period: Joi.string().required()
+      })
+    })
+    .required(),
+  expiry: Joi.number().optional()
+  // external_data: Joi.object({
+  //   image: Joi.string().uri().required(),
+  //   url: Joi.string().uri().required(),
+  //   date: Joi.date().iso().required()
+  // }).required()
+}).options({ allowUnknown: true });
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
@@ -66,13 +106,24 @@ const validateJobTimeRange = validator(jobTimeRange);
 const validateSendEmail = validator(sendEmailSchema);
 const validateReportSchema = validator(createReportSchema);
 const validatePasswordSchema = validator(passwordSchema);
+const validateCreateJob = validator(jobSchema);
 
+const joiErrorMessage = (error) => {
+  return error.details.map((detail) => {
+    return {
+      path: detail.path.join('.'),
+      message: detail.message.replace(/"/g, '')
+    };
+  });
+};
 module.exports = {
+  joiErrorMessage,
   validateAdminInvite,
   validateAdminLogin,
   validateJobStatus,
   validateJobTimeRange,
   validateSendEmail,
   validateReportSchema,
-  validatePasswordSchema
+  validatePasswordSchema,
+  validateCreateJob
 };

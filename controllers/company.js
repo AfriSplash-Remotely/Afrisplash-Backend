@@ -36,7 +36,7 @@ exports.create = asyncHandler(async (req, res, next) => {
     name = name.toLowerCase();
     email = email.toLowerCase();
     //added user ID
-    input.created_by = req.user._id;
+    input.created_by = req.user.auth_id;
 
     const checkName = await Company.findOne({
       email: req.body.company_email,
