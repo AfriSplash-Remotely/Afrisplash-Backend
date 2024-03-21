@@ -596,7 +596,7 @@
  *                                  $ref: '#/components/schemas/Gift'
  */
 
-// *************************GET JOBS******************************
+// *************************GET JOBS WITH DETAILS******************************
 /**
  * @openapi
  * /candidate/jobs:
@@ -605,7 +605,7 @@
  *      - Candidate
  *      security:
  *          - BearerAuth: []
- *      summary: Get my jobs
+ *      summary: Get my jobs with details
  *      responses:
  *          200:
  *              description: Retrieved jobs successfully
@@ -620,6 +620,39 @@
  *                                  type:
  *                                  $ref: '#/components/schemas/Job'
  */
+
+// *************************GET MY JOBS******************************
+/**
+ * @openapi
+ * /candidate/jobs/save-apply:
+ *  get:
+ *      tags:
+ *      - Candidate
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get jobs i saved/applied to
+ *      parameters:
+ *        - in: query
+ *          name: jobType
+ *          schema:
+ *            type: string
+ *          description: Filter jobs by type (saved/applied). Optional.
+ *      responses:
+ *          200:
+ *              description: Retrieved jobs successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Job'
+ * 
+ */
+
 
 // *************************SAVE A JOB******************************
 /**
@@ -664,6 +697,50 @@
  *                                  type:
  *                                  $ref: '#/components/schemas/User'
  */
+
+// *************************APPLY FOR A JOB******************************
+/**
+ * @openapi
+ * /jobs/a/{id}:
+ *  post:
+ *      tags:
+ *      - Job
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Candidate apply for a job
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *              required: true
+ *      responses:
+ *          409:
+ *              description: User has applied for this job already
+ *          404:
+ *              description: Job not found
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: false
+ *                              data:
+ *                                  example: null
+ *          200:
+ *              description: Job application successfull
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ */
+
 
 // *************************UNSAVE A JOB******************************
 /**

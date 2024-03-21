@@ -7,6 +7,8 @@ const User = require('../model/user');
 const notification = require('../model/notification');
 const gifts = require('../model/gifts');
 const jobs = require('../model/jobs');
+const { UserJobType } = require('../utils/enum');
+const ObjectId = require('mongodb').ObjectId;
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -25,6 +27,7 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
       new ErrorResponse('Account Has Been Onboarded Already \n Cant Post', 400)
     );
   }
+  console.log('user', req.body.user_type);
 
   const data = req.body;
   delete data.auth_id;
@@ -496,12 +499,96 @@ exports.updateUserPI = asyncHandler(async (req, res, next) => {
  * @type GET
  */
 exports.getJobs = asyncHandler(async (req, res, next) => {
-  const data = await Jobs.find({ _id: { $in: req.user.jobs } });
+  // Extract _job values from req.user.jobs
+  const jobIds = req.user.jobs.map((job) => job._job);
+  const data = await jobs.find({ _id: { $in: jobIds } });
+
   res.status(200).json({
     success: true,
     data: data
   });
 });
+
+/**
+ * @author R. O. Olatunji <larexx40@gmail.com>
+ * @description Get User Saved/Applied Jobs `Candidate Account Only`
+ * @route `/api/v1/candidate/jobs`
+ * @access Private
+ * @type GET
+ */
+exports.getMyJobs = asyncHandler(async (req, res, next) => {
+  let { page, limit, jobType } = req.query;
+  page = page ? parseInt(page) : 1;
+  limit = limit ? parseInt(limit) : 10;
+
+  const skip = (page - 1) * limit;
+
+  // Pipeline for aggregation
+  const pipeline = [
+    {
+      $match: { _id: mongoose.Types.ObjectId(req.user._id) }
+    },
+    {
+      $unwind: '$jobs'
+    },
+    {
+      $lookup: {
+        from: 'jobs',
+        localField: 'jobs._job',
+        foreignField: '_id',
+        as: 'jobDetails'
+      }
+    },
+    {
+      $addFields: {
+        'jobs.jobDetails': { $arrayElemAt: ['$jobDetails', 0] }
+      }
+    },
+    {
+      $replaceRoot: {
+        newRoot: '$jobs'
+      }
+    },
+    {
+      $project: {
+        'jobDetails.title': 1,
+        'jobDetails.industry': 1,
+        'jobDetails.description': 1,
+        'jobDetails.requirement': 1,
+        'jobDetails.location': 1,
+        'jobDetails.salary': 1,
+        'jobDetails.type': 1,
+        'jobDetails.salaryType': 1,
+        'jobDetails.status': 1,
+        'jobDetails.promoted': 1,
+        'jobDetails.expiry': 1,
+        'jobDetails.createdAt': 1,
+        state: 1,
+        type: 1
+      }
+    },
+    {
+      $skip: skip
+    },
+    {
+      $limit: limit
+    }
+  ];
+
+  // If jobType is provided, add a $match stage to filter by jobType
+  if (jobType) {
+    pipeline.splice(2, 0, { $match: { 'jobs.type': jobType } });
+  }
+
+  // Execute aggregation
+  const data = await User.aggregate(pipeline).exec();
+
+  res.status(200).json({
+    success: true,
+    data: data
+  });
+});
+
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -511,9 +598,11 @@ exports.getJobs = asyncHandler(async (req, res, next) => {
  * @type DELETE
  */
 exports.unSaveAJob = asyncHandler(async (req, res, next) => {
+  console.log(req.params.id);
   const data = await User.findByIdAndUpdate(
     req.user._id,
-    { $pop: { jobs: req.params.id } },
+    // { $pop: { jobs: {_job: req.params.id} } },
+    { $pull: { jobs: { _job: req.params.id, type: UserJobType.SAVED } } },
     {
       new: true,
       runValidators: true
@@ -537,14 +626,27 @@ exports.unSaveAJob = asyncHandler(async (req, res, next) => {
  */
 exports.saveAJob = asyncHandler(async (req, res, next) => {
   //TODO  JOI VALIDATOR
-  const job = await jobs.exists({_id: req.params.id});
+  const job = await jobs.exists({ _id: req.params.id });
 
-  if(!job) return res.status(404).json({success: false, data: null});
+  if (!job) return res.status(404).json({ success: false, data: null });
+
+  //check if it has already been saved
+  const jobSaved = req.user.jobs.find(
+    (job) => job._job.toString() === req.params.id
+  );
+  if (jobSaved && jobSaved.type === UserJobType.SAVED ) {
+    return next(new ErrorResponse('User Has Saved This Job Already', 409));
+  }
+
+  if (jobSaved && jobSaved.type === UserJobType.APPLIED) {
+    return next(new ErrorResponse('User Has Applied For This Job Already', 409));
+  }
 
   const save_job = {
     _job: req.params.id,
-    date: new Date()
-  }
+    date: new Date(),
+    type: UserJobType.SAVED
+  };
 
   const data = await User.findByIdAndUpdate(
     req.user._id,

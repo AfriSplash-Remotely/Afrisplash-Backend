@@ -175,6 +175,8 @@
  *  get:
  *      tags:
  *      - Job
+ *      security:
+ *          - BearerAuth: []
  *      summary: Get all jobs private only to company members
  *      responses:
  *          200:

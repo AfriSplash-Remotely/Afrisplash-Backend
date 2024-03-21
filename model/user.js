@@ -148,9 +148,15 @@ const userSchema = new mongoose.Schema({
       _job: {
         type: mongoose.SchemaTypes.ObjectId,
         required: false,
-        ref: 'user'
+        ref: 'job' // Reference to the job schema
       },
       date: String,
+      type: {
+        type: String,
+        required: true,
+        enum: ['saved', 'applied'],
+        default: 'saved'
+      },
       state: {
         type: String,
         required: true,
