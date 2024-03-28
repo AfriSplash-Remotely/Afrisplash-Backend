@@ -557,3 +557,40 @@
  *                                  type:
  *                                  $ref: '#/components/schemas/Job'
  */
+
+// *************************SEARCH JOBS BY SALARY**********************************
+/**
+ * @openapi
+ * /jobs/search/s/{salary}:
+ *  get:
+ *      tags:
+ *      - Job
+ *      summary: Search jobs by salary
+ *      parameters:
+ *          - in: path
+ *            name: salary
+ *            schema:
+ *              type: string
+ *              required: true
+ *      responses:
+ *          200:
+ *              description: All jobs with the salary
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              total:
+ *                                  type: number
+ *                              count:
+ *                                  type: number
+ *                              pagination:
+ *                                  type: number
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/Job'
+ */

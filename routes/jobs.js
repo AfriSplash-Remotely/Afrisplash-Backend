@@ -20,7 +20,8 @@ const {
   jobsByCompany,
   jobsByType,
   jobsByLocation,
-  jobsByDate
+  jobsByDate,
+  jobsBySalary
 } = require('../controllers/jobs');
 
 //Jobs --Jobs In Company --Jobs Created --Manage Jobs --Applicant --Public Access other stuff
@@ -69,5 +70,8 @@ router.get('/search/l/:location', jobsByLocation);
 
 // Search jobs by Date
 router.get('/search/d', jobsByDate);
+
+// Search jobs by salary
+router.get('/search/s/:salary', jobsBySalary);
 
 module.exports = router;

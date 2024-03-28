@@ -875,3 +875,122 @@ exports.jobsByDate = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 });
+
+/**
+ * @author R. O. Olatunji <larexx40@gmail.com>
+ * @description Search jobs by salary
+ * @route /api/v1/jobs/search/s/:salary
+ * @access Public
+ * @type GET
+ */
+exports.jobsBySalary = asyncHandler(async (req, res, next) => {
+  try {
+    const { salary } = req.params;
+    const { page, limit } = req.query;
+
+    // Parse salary to integer or range object
+    let salaryFilter;
+    let query;
+    // if (salary.includes('-')) {
+    //   const [min, max] = salary.split('-').map((s) => parseInt(s));
+    //   salaryFilter = { min, max };
+    // } else {
+    //   salaryFilter = parseInt(salary);
+    // }
+    if (isNaN(salaryFilter)) {
+      return res.status(400).json({
+        success: false,
+        status: 'validation error',
+        message: 'Pass in valid salary amount/range'
+      });
+    }
+
+    query = {
+      $or: [
+        { 'salary.amount': salaryFilter }, // For fixed salary
+        {
+          $and: [
+            // For salary range
+            { 'salary.min': { $lte: salaryFilter } },
+            { 'salary.max': { $gte: salaryFilter } }
+          ]
+        }
+      ],
+      status: 'Active' // Only active jobs
+    };
+
+    // // Construct query based on salary filter
+    // if(typeof salaryFilter === 'object' && salaryFilter !== null ){
+    //   console.log('salary:', salaryFilter);
+    //   if(isNaN(salaryFilter.min) || isNaN(salaryFilter.max) ){
+    //     return res.status(400).json({
+    //       success: false,
+    //       status: 'validation error',
+    //       message: 'Pass in valid salary range e.g 2000-4000'
+    //     });
+    //   }
+
+    //   if(!(salaryFilter.max > salaryFilter.min)){
+    //     return res.status(400).json({
+    //       success: false,
+    //       status: 'validation error',
+    //       message:
+    //         'Please provide a valid salary range. The maximum value should be greater than the minimum value.'
+    //     });
+    //   }
+
+    //   query = {
+    //     $or: [
+    //       { 'salary.amount': {$lte: salaryFilter.max,$gte: salaryFilter.min } }, // For fixed salary
+    //       {
+    //         $and: [
+    //           // For salary range
+    //           { 'salary.min': { $lte: salaryFilter.min } },
+    //           { 'salary.max': { $gte: salaryFilter.max } }
+    //         ]
+    //       }
+    //     ],
+    //     status: 'Active' // Only active jobs
+    //   };
+    // }
+    
+
+    // Find jobs
+    const jobs = await Jobs.find(query);
+
+    // Pagination
+    const pageInt = parseInt(page, 10) || 1;
+    const limitInt = parseInt(limit, 10) || 30;
+    const startIndex = (pageInt - 1) * limitInt;
+    const endIndex = pageInt * limitInt;
+    const total = jobs.length;
+
+    const queryResult = jobs.slice(startIndex, endIndex);
+
+    const pagination = {};
+
+    if (endIndex < total)
+      pagination.next = {
+        page: pageInt + 1,
+        limit: limitInt
+      };
+
+    if (startIndex > 0)
+      pagination.prev = {
+        page: pageInt - 1,
+        limit: limitInt
+      };
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      total,
+      count: queryResult.length,
+      pagination,
+      data: queryResult
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
