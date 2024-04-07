@@ -330,7 +330,7 @@ exports.getJobs = asyncHandler(async (req, res, next) => {
     };
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     status: 'success',
     total: total,
@@ -505,13 +505,14 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
   const isExist = await Jobs.exists({ _id: req.params.id });
   if (!isExist) return res.status(404).json({ success: false, data: null });
   // Check if user hasnt applied before
-  const job = req.user.jobs.find((job) => job._job.toString() === req.params.id);
-  if (job && job.type === UserJobType.APPLIED ) {
+  const job = req.user.jobs.find(
+    (job) => job._job.toString() === req.params.id
+  );
+  if (job && job.type === UserJobType.APPLIED) {
     return next(
       new ErrorResponse('User Has Applied For This Job Already', 409)
     );
   }
-
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -534,7 +535,6 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
 
     //check if user has saved the job, then change to apply
     if (job && job.type === UserJobType.SAVED) {
-  
       await User.findOneAndUpdate(
         { _id: req.user._id, 'jobs._job': req.params.id },
         {
@@ -548,8 +548,7 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
         },
         { new: true, runValidators: true, session: session }
       );
-    }else{
-
+    } else {
       // add data to user
       await User.findOneAndUpdate(
         { _id: req.user._id },
@@ -573,7 +572,7 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
     res.status(200).json({
       success: true,
       status: 'success',
-      message:'Job Applied'
+      message: 'Job Applied'
     });
   } catch (error) {
     session.endSession();
@@ -953,7 +952,6 @@ exports.jobsBySalary = asyncHandler(async (req, res, next) => {
     //     status: 'Active' // Only active jobs
     //   };
     // }
-    
 
     // Find jobs
     const jobs = await Jobs.find(query);
@@ -993,4 +991,3 @@ exports.jobsBySalary = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 });
-

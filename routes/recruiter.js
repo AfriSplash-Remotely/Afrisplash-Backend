@@ -23,7 +23,8 @@ const {
   getJobs,
   saveAJob,
   unSaveAJob,
-  updateprivateMode
+  updateprivateMode,
+  getDashboard
 } = require('../controllers/recruiter');
 
 router.post('/onboarding', protect, onboarding);
@@ -46,5 +47,6 @@ router.get('/gifts', protect, getGifts);
 router.get('/job/save/:id', protect, saveAJob);
 router.get('/job/unsave/:id/', protect, unSaveAJob);
 router.get('/jobs/', protect, getJobs);
+router.get('/dashboard', protect, getDashboard);
 
 module.exports = router;

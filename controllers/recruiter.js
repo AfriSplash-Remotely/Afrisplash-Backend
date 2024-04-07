@@ -572,3 +572,40 @@ exports.test = asyncHandler(async (req, res, next) => {
     data: 'Helo from Recuiter'
   });
 });
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Get recruiter dashboard
+ * @route `/api/v1/recruiter/dashboard
+ * @access Private
+ * @type GET
+ */
+exports.getDashboard = asyncHandler(async (req, res, next) => {
+  try {
+    let [totalJobs, totalApplicants] = [0, 0];
+    const jobs = await Jobs.find({
+      _author: req.user._id
+    }).select({
+      applicants: 1
+    });
+
+    totalJobs = jobs.length;
+
+    if (jobs.length > 0) {
+      jobs.forEach((job) => {
+        totalApplicants = job.applicants.length;
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      status: 'success',
+      data: {
+        totalJobs: totalJobs,
+        totalApplicants: totalApplicants
+      }
+    });
+  } catch (error) {
+    return next(new ErrorResponse('An error occurred', 500));
+  }
+});

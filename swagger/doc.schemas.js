@@ -990,6 +990,27 @@
  *                      type: string
  */
 
+// *************************USER DETAILS SCHEMA******************************
+/**
+ * @openapi
+ * components:
+ *      schemas:
+ *          RecruiterDashboard:
+ *              type: object
+ *              properties:
+ *                  success:
+ *                      type: boolean
+ *                  status:
+ *                      type: string
+ *                  data:
+ *                      type: object
+ *                      properties:
+ *                          totalJobs:
+ *                              type: number
+ *                          totalApplicants:
+ *                              type: number
+ */
+
 // *************************INVITE ADMIN SCHEMA******************************
 /**
  * @openapi

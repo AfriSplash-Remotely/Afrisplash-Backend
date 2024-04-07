@@ -655,3 +655,28 @@
  *                                  type:
  *                                  $ref: '#/components/schemas/User'
  */
+
+// *************************GET DASHBOARD STATISTICS******************************
+/**
+ * @openapi
+ * /recruiter/dashboard:
+ *  get:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Get dashboard statistics
+ *      responses:
+ *          200:
+ *              description: Retrieved dashboard statistics successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              data:
+ *                                  type:
+ *                                  $ref: '#/components/schemas/RecruiterDashboard'
+ */
