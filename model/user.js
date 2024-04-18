@@ -249,4 +249,6 @@ userSchema.methods.getSignedJwtToken = function () {
   );
 };
 
+userSchema.index({ user_type: 1 });
+
 module.exports = mongoose.model('user', userSchema);

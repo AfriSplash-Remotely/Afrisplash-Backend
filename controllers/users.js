@@ -13,7 +13,7 @@ exports.getAllCandidates = asyncHandler(async (req, res, next) => {
   try {
     const candidates = await User.find({
       user_type: 'candidate',
-      // account_setup_completed: true,
+      account_setup_completed: true,
       private_mode: false
     }).select({
       _id: 1,

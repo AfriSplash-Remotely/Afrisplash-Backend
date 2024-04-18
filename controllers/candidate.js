@@ -27,7 +27,6 @@ exports.onboarding = asyncHandler(async (req, res, next) => {
       new ErrorResponse('Account Has Been Onboarded Already \n Cant Post', 400)
     );
   }
-  console.log('user', req.body.user_type);
 
   const data = req.body;
   delete data.auth_id;
@@ -589,7 +588,6 @@ exports.getMyJobs = asyncHandler(async (req, res, next) => {
   });
 });
 
-
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
  * @description Remove a Jobs `Candidate Account Only`
@@ -634,12 +632,14 @@ exports.saveAJob = asyncHandler(async (req, res, next) => {
   const jobSaved = req.user.jobs.find(
     (job) => job._job.toString() === req.params.id
   );
-  if (jobSaved && jobSaved.type === UserJobType.SAVED ) {
+  if (jobSaved && jobSaved.type === UserJobType.SAVED) {
     return next(new ErrorResponse('User Has Saved This Job Already', 409));
   }
 
   if (jobSaved && jobSaved.type === UserJobType.APPLIED) {
-    return next(new ErrorResponse('User Has Applied For This Job Already', 409));
+    return next(
+      new ErrorResponse('User Has Applied For This Job Already', 409)
+    );
   }
 
   const save_job = {

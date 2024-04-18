@@ -636,7 +636,8 @@
  *          name: jobType
  *          schema:
  *            type: string
- *          description: Filter jobs by type (saved/applied). Optional.
+ *          description: Filter jobs by type (saved/applied)
+ *          required: false
  *      responses:
  *          200:
  *              description: Retrieved jobs successfully
@@ -650,9 +651,8 @@
  *                              data:
  *                                  type:
  *                                  $ref: '#/components/schemas/Job'
- * 
+ *
  */
-
 
 // *************************SAVE A JOB******************************
 /**
@@ -740,7 +740,6 @@
  *                              status:
  *                                  example: success
  */
-
 
 // *************************UNSAVE A JOB******************************
 /**
