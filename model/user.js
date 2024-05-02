@@ -245,7 +245,8 @@ userSchema.methods.getSignedJwtToken = function () {
     {
       user_id: this._id
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
+    { expiresIn: '30 days' }
   );
 };
 
