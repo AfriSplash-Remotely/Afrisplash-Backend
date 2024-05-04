@@ -15,6 +15,8 @@ const {
   closeJob,
   openJob,
   applyJob,
+  formJobApply,
+  formJobApplicants,
   getApplicants,
   updateStatus,
   jobsByCompany,
@@ -40,6 +42,8 @@ router.get('/p/', R_protect, getMyJobs);
 
 // Apply For A job
 router.post('/a/:id', C_protect, applyJob);
+router.post('/form-apply/:jobId', formJobApply);
+router.get('/form-applicants/:jobId', R_protect, formJobApplicants);
 
 // Veiw all applicants
 router.get('/applicants/:id', R_protect, getApplicants);

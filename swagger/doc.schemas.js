@@ -1046,3 +1046,34 @@
  *               - deals_access
  *               - forum_access
  */
+
+// *************JOB APPLICATION FORM SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     JobForm:
+ *       type: object
+ *       required:
+ *         - firstName
+ *         - lastName
+ *         - email
+ *         - country
+ *         - phoneNumber
+ *         - resumeURL
+ *       properties:
+ *         firstName:
+ *           type: string
+ *         lastName:
+ *           type: string
+ *         email:
+ *           type: string
+ *         jobTitle:
+ *           type: string
+ *         country:
+ *           type: string
+ *         phoneNumber:
+ *           type: string
+ *         resumeURL:
+ *           type: string
+ */

@@ -139,6 +139,36 @@
  *                                  $ref: '#/components/schemas/Job'
  */
 
+// *************************UPDATE JOB DETAILS******************************
+/**
+ * @openapi
+ * /jobs/form-apply/{jobId}:
+ *  post:
+ *      tags:
+ *      - Job
+ *      summary: Apply to job through form submission
+ *      parameters:
+ *          - in: path
+ *            name: jobId
+ *            schema:
+ *              type: string
+ *              required: true
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type:
+ *                      $ref: '#/components/schemas/JobForm'
+ *      responses:
+ *          404:
+ *              description: Job no longer exists
+ *          200:
+ *              description: Application sent successfully
+ *          409:
+ *              description: User already applied for this job
+ */
+
 // *************************VIEW JOBS PRIVATE ONLY TO COMPANY MEMBERS******************************
 /**
  * @openapi
@@ -236,6 +266,38 @@
  *      parameters:
  *          - in: path
  *            name: id
+ *            schema:
+ *              type: string
+ *              required: true
+ *      responses:
+ *          401:
+ *              description: Not Authorized
+ *          200:
+ *              description: All job's applicants
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              success:
+ *                                  example: true
+ *                              status:
+ *                                  example: success
+ *                              data:
+ *                                  type: array
+ */
+
+// *************************VIEW ALL FORM APPLICANTS FOR A JOB**********************
+/**
+ * @openapi
+ * /jobs/form-applicants/{jobId}:
+ *  get:
+ *      tags:
+ *      - Job
+ *      summary: Get all form applicants for a job
+ *      parameters:
+ *          - in: path
+ *            name: jobId
  *            schema:
  *              type: string
  *              required: true

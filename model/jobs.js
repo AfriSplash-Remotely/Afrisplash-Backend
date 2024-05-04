@@ -146,7 +146,8 @@ const jobSchema = new mongoose.Schema(
         rejected: Boolean,
         accepted: Boolean
       }
-    ]
+    ],
+    external_applicants: []
   },
   {
     timestamps: true

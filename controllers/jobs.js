@@ -10,7 +10,8 @@ const {
   validateJobStatus,
   validateJobTimeRange,
   validateCreateJob,
-  joiErrorMessage
+  joiErrorMessage,
+  validateApplyJobSchema
 } = require('../middleware/validators');
 const { UserJobType } = require('../utils/enum');
 
@@ -499,7 +500,7 @@ exports.getApplicants = asyncHandler(async (req, res, next) => {
  * @description Applied For A New Job `Candidate Account Only`
  * @route `/api/v1/job/a/:id`
  * @access Private
- * @type GET
+ * @type POST
  */
 exports.applyJob = asyncHandler(async (req, res, next) => {
   const isExist = await Jobs.exists({ _id: req.params.id });
@@ -526,7 +527,7 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
             _user: req.user._id,
             date: Date.now(),
             rejected: false,
-            accpected: false
+            accepted: false
           }
         }
       },
@@ -581,6 +582,89 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
 
   res.end();
 });
+
+/**
+ * @author Timothy <adeyeyetimothy33@gmail.com>
+ * @description Applied For A Job through form`
+ * @route `/api/v1/job/form-apply/:id`
+ * @access Public
+ * @type POST
+ */
+exports.formJobApply = async (req, res) => {
+  try {
+    const { error, value } = validateApplyJobSchema(req.body);
+    if (error) return res.status(400).send(errorMessage);
+
+    const jobId = req.params.jobId;
+    const job = await Jobs.findById(jobId).select({
+      external_applicants: 1
+    });
+    if (!job)
+      return res
+        .status(404)
+        .json({ status: 'fail', message: 'Job no longer exists' });
+
+    const applicants = job.external_applicants;
+    // check if appliant already exists
+    applicants.forEach((applicant) => {
+      if (applicant.email === req.body.email) {
+        return res.status(409).json({
+          status: 'false',
+          message: 'User already applied for this job'
+        });
+      }
+    });
+
+    // apply for job
+    await Jobs.findOneAndUpdate(
+      { _id: jobId },
+      {
+        $push: {
+          external_applicants: { ...value }
+        }
+      }
+    );
+
+    // TODO: Send email notification
+    return res
+      .status(200)
+      .json({ status: 'success', message: 'Application sent successfully' });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Unable to send application',
+      error: error
+    });
+  }
+};
+
+/**
+ * @author Timothy <adeyeyetimothy33@gmail.com>
+ * @description Get applicants that applied through form`
+ * @route `/api/v1/job/form-applicants/:id`
+ * @access Private
+ * @type GET
+ */
+exports.formJobApplicants = async (req, res) => {
+  try {
+    const jobId = req.params.jobId;
+    const applicants = await Jobs.findById(jobId).select({
+      external_applicants: 1
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Job form applicants retrieved successfully',
+      data: applicants
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'An error occurred while retrieving applicants',
+      error: error
+    });
+  }
+};
 
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
