@@ -294,6 +294,8 @@
  *  get:
  *      tags:
  *      - Job
+ *      security:
+ *          - BearerAuth: []
  *      summary: Get all form applicants for a job
  *      parameters:
  *          - in: path

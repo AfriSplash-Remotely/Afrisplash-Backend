@@ -649,6 +649,7 @@ exports.formJobApplicants = async (req, res) => {
   try {
     const jobId = req.params.jobId;
     const applicants = await Jobs.findById(jobId).select({
+      _id: 0,
       external_applicants: 1
     });
 
