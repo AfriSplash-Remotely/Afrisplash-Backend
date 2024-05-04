@@ -653,6 +653,9 @@ exports.formJobApplicants = async (req, res) => {
       external_applicants: 1
     });
 
+    if (!null)
+      return res.status(400).json({ status: 'fail', message: 'Job not found' });
+
     return res.status(200).json({
       status: 'success',
       message: 'Job form applicants retrieved successfully',
