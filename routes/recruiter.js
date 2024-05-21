@@ -24,7 +24,8 @@ const {
   saveAJob,
   unSaveAJob,
   updateprivateMode,
-  getDashboard
+  getDashboard,
+  sendEmail
 } = require('../controllers/recruiter');
 
 router.post('/onboarding', protect, onboarding);
@@ -48,5 +49,6 @@ router.get('/job/save/:id', protect, saveAJob);
 router.get('/job/unsave/:id/', protect, unSaveAJob);
 router.get('/jobs/', protect, getJobs);
 router.get('/dashboard', protect, getDashboard);
+router.post('/send-email', protect, sendEmail);
 
 module.exports = router;

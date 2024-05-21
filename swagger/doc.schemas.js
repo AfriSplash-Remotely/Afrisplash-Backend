@@ -1077,3 +1077,23 @@
  *         resumeURL:
  *           type: string
  */
+
+// *************SEND EMAIL SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     SendEmail:
+ *       type: object
+ *       required:
+ *         - email
+ *         - subject
+ *         - body
+ *       properties:
+ *         email:
+ *           type: string
+ *         subject:
+ *           type: string
+ *         body:
+ *           type: string
+ */

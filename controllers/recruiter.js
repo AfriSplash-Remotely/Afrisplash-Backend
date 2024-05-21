@@ -7,6 +7,8 @@ const User = require('../model/user');
 const notification = require('../model/notification');
 const gifts = require('../model/gifts');
 const Jobs = require('../model/jobs');
+const { validateSendEmail } = require('../middleware/validators');
+const emailSender = require('../mail/emailSender');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -609,3 +611,46 @@ exports.getDashboard = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('An error occurred', 500));
   }
 });
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Send email message
+ * @route `/api/v1/recruiter/send-email
+ * @access Private
+ * @type POST
+ */
+exports.sendEmail = async (req, res) => {
+  try {
+    // Validate the request body
+    const { error, value } = validateSendEmail(req.body);
+    if (error) return res.status(400).send(error.details);
+
+    const email_view = 'blank';
+    const sender_email = process.env.HELLO_EMAIL;
+    const sender_pass = process.env.HELLO_PASS;
+    const from = `Afrisplash <${sender_email}>`;
+    const recipient = value.email;
+    const subject = value.subject;
+    const body = value.body;
+
+    await emailSender(
+      email_view,
+      sender_email,
+      sender_pass,
+      from,
+      recipient,
+      subject,
+      body
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Email sent successfully'
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: error.message || 'Error sending email'
+    });
+  }
+};

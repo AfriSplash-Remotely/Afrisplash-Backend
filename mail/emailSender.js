@@ -27,26 +27,31 @@ const emailSender = async (
     // }
   });
 
-  const handlebarsOptions = {
-    viewEngine: {
-      extName: '.hbs',
-      // partialsDir: path.resolve('./views'),
-      defaultLayout: false
-    },
-    viewPath: path.resolve('./mail/views'),
-    extName: '.hbs'
-  };
-
-  transport.use('compile', hbs(handlebarsOptions));
-
-  const mailOptions = {
+  let mailOptions = {
     from: from,
     to: recipient,
     subject: subject,
-    text: body,
-    template: email_view,
-    context: { body }
+    html: body
+    // template: email_view,
+    // context: { body, recipient, subject, username }
   };
+
+  if (email_view != 'blank') {
+    const handlebarsOptions = {
+      viewEngine: {
+        extName: '.hbs',
+        partialsDir: path.resolve('./views'),
+        defaultLayout: false
+      },
+      viewPath: path.resolve('./mail/views'),
+      extName: '.hbs'
+    };
+
+    transport.use('compile', hbs(handlebarsOptions));
+
+    mailOptions['template'] = email_view;
+    mailOptions['context'] = { body, recipient, subject };
+  }
 
   try {
     await transport.sendMail(mailOptions);

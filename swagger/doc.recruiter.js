@@ -680,3 +680,28 @@
  *                                  type:
  *                                  $ref: '#/components/schemas/RecruiterDashboard'
  */
+
+// *************************SEND EMAIL******************************
+/**
+ * @openapi
+ * /recruiter/send-email:
+ *  post:
+ *      tags:
+ *      - Recruiter
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Send email
+ *      requestBody:
+ *          description: Send email
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type:
+ *                      $ref: '#/components/schemas/SendEmail'
+ *      responses:
+ *          200:
+ *              description: Email sent successfully
+ *          500:
+ *              description: Error sending email
+ */
