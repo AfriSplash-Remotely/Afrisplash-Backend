@@ -500,18 +500,31 @@ exports.updateUserPI = asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @author Cyril ogoh <cyrilogoh@gmail.com>
- * @description Get User Saved Jobs `Candidate Account Only`
- * @route `/api/v1/candidate/jobs`
+ * @author Timothy <adeyeyetimothy33@gmail.com>
+ * @description Get all jobs by a recruiter`
+ * @route `/api/v1/rcruiter/jobs'
  * @access Private
  * @type GET
  */
 exports.getJobs = asyncHandler(async (req, res, next) => {
-  const data = await Jobs.find({ _id: { $in: req.user.jobs } });
-  res.status(200).json({
-    success: true,
-    data: data
-  });
+  try {
+    const userId = req.user.id;
+    const jobs = await Jobs.find({
+      _author: userId
+    });
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Jobs retrieved successfully',
+      data: jobs
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Unable to retrieve jobs',
+      error: error
+    });
+  }
 });
 
 /**

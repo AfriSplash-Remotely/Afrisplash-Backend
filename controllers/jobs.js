@@ -88,13 +88,17 @@ exports.create = asyncHandler(async (req, res, next) => {
 
     await session.commitTransaction();
     session.endSession();
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: data
     });
   } catch (error) {
     session.endSession();
-    next(error);
+    return res.status(500).json({
+      status: 'error',
+      message: 'Unable to create job',
+      error: error
+    });
   }
 });
 
