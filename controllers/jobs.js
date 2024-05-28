@@ -48,8 +48,7 @@ exports.create = asyncHandler(async (req, res, next) => {
     }
 
     const { error, value } = validateCreateJob(input);
-    console.log('Error:', error);
-    if (error) return res.status(400).send(errorMessage);
+    if (error) return res.status(400).send(error);
 
     let expiry = input.expiry ? input.expiry : 30; // default expiry days
     // calculate expiry date
@@ -593,7 +592,7 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
 exports.formJobApply = async (req, res) => {
   try {
     const { error, value } = validateApplyJobSchema(req.body);
-    if (error) return res.status(400).send(errorMessage);
+    if (error) return res.status(400).send(error);
 
     const jobId = req.params.jobId;
     const job = await Jobs.findById(jobId).select({
