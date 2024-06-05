@@ -109,6 +109,17 @@ const applyJobSchema = Joi.object({
   resumeURL: Joi.string().required()
 });
 
+const changePasswordSchema = Joi.object({
+  currentPassword: Joi.string().required(),
+  newPassword: Joi.string()
+    .required()
+    .min(8)
+    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])'))
+    .message(
+      'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)'
+    )
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
@@ -118,6 +129,7 @@ const validateReportSchema = validator(createReportSchema);
 const validatePasswordSchema = validator(passwordSchema);
 const validateCreateJob = validator(jobSchema);
 const validateApplyJobSchema = validator(applyJobSchema);
+const validateChangePasswordSchema = validator(changePasswordSchema);
 
 const joiErrorMessage = (error) => {
   return error.details.map((detail) => {
@@ -127,6 +139,7 @@ const joiErrorMessage = (error) => {
     };
   });
 };
+
 module.exports = {
   joiErrorMessage,
   validateAdminInvite,
@@ -137,5 +150,6 @@ module.exports = {
   validateReportSchema,
   validatePasswordSchema,
   validateCreateJob,
-  validateApplyJobSchema
+  validateApplyJobSchema,
+  validateChangePasswordSchema
 };

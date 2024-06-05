@@ -169,3 +169,33 @@
  *                                  type:
  *                                  $ref: '#/components/schemas/User'
  */
+
+// *************************CHANGE PASSWORD******************************
+/**
+ * @openapi
+ * /auth/change-password:
+ *  put:
+ *      tags:
+ *      - Auth
+ *      security:
+ *          - BearerAuth: []
+ *      summary: Change Password
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          currentPassword:
+ *                              type: string
+ *                          newPassword:
+ *                              type: string
+ *      responses:
+ *          400:
+ *              description: There is no user with that email
+ *          200:
+ *              description: Password changed successfully
+ *          500:
+ *              description: Internal server error
+ */

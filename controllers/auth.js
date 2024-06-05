@@ -6,6 +6,8 @@ const _ = require('lodash');
 const joi = require('joi');
 const Auth = require('../model/auth');
 const User = require('../model/user');
+const { validateChangePasswordSchema } = require('../middleware/validators');
+const auth = require('../model/auth');
 
 /**
  * @author Cyril ogoh <cyrilogoh@gmail.com>
@@ -241,4 +243,67 @@ const sendTokenResponse = (user, statusCode, res) => {
         user: Array.isArray(user) ? user[0] : user
       })
   );
+};
+
+/**
+ * @author Timothy <adeyeyetimothy33@gmail.com>
+ * @description Change Password
+ * @route `/api/v1/auth/change-password`
+ * @access Private
+ * @type PUT
+ */
+exports.changePassword = async (req, res) => {
+  try {
+    // Validate the request body
+    const { error, value } = validateChangePasswordSchema(req.body);
+    if (error) return res.status(400).send(error.details);
+    // retrieve request body
+    const { currentPassword, newPassword } = value;
+
+    const authDoc = await auth.findOne({
+      _id: req.user.auth_id
+    });
+
+    if (!authDoc) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found'
+      });
+    }
+
+    // check if password is match
+    const isMatch = await authDoc.matchPassword(currentPassword);
+
+    // if password no match
+    if (!isMatch) {
+      return res.status(401).json({
+        status: 'fail',
+        messsage: 'The current password does not match'
+      });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+
+    // change password
+    await auth.findOneAndUpdate(
+      {
+        _id: req.user.auth_id
+      },
+      {
+        password: hashPassword
+      }
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Password updated successfully'
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Unable to update password',
+      error: error
+    });
+  }
 };
