@@ -22,6 +22,8 @@ const jobRouter = require('./routes/jobs');
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
 const reportRouter = require('./routes/report');
+const himalayas = require('./jobsfeed/himalayas');
+const empllo = require('./jobsfeed/empllo');
 
 dotenv.config({ path: './.env/config.env' });
 const PORT = process.env.PORT;
@@ -54,7 +56,7 @@ app.use('/api/v1/recruiter', recruiterRouter);
 app.use('/api/v1/blog', blogRouter);
 app.use('/api/v1/company', companyRouter);
 app.use('/api/v1/jobs', jobRouter);
-app.use('/api/v1/admins', adminRouter);                                                                                                                                                                                                                                                                       
+app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reports', reportRouter);
 
@@ -64,7 +66,7 @@ swaggerDocs(app, PORT);
 app.use(errorHandler);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+app.use(function (req, res, next) {
   res.status(404).json({
     success: false,
     status: 'Resource Not Found',
@@ -85,5 +87,8 @@ app.use(function (err, req, res, next) {
 
 // start job expiry cronjob
 jobExpiryCron.start();
+
+// himalayas();
+// empllo();
 
 module.exports = app;
