@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const xjobSchema = new mongoose.Schema({
   title: {
@@ -52,8 +53,14 @@ const xjobSchema = new mongoose.Schema({
   workModel: {
     type: String,
     required: false
+  },
+  source: {
+    type: String,
+    required: false
   }
 });
+
+xjobSchema.plugin(mongoosePaginate);
 
 const Xjob = mongoose.model('Xjob', xjobSchema);
 

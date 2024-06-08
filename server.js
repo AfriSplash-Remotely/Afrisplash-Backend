@@ -22,6 +22,7 @@ const jobRouter = require('./routes/jobs');
 const adminRouter = require('./routes/admin');
 const usersRouter = require('./routes/users');
 const reportRouter = require('./routes/report');
+const xjobRouter = require('./routes/xjobs');
 const himalayas = require('./jobsfeed/himalayas');
 const empllo = require('./jobsfeed/empllo');
 
@@ -59,6 +60,7 @@ app.use('/api/v1/jobs', jobRouter);
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/reports', reportRouter);
+app.use('/api/v1/xjobs', xjobRouter);
 
 // server Swagger documentation
 swaggerDocs(app, PORT);

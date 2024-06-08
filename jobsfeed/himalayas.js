@@ -10,12 +10,19 @@ const himalayas = async () => {
     let LAST_HIMALAYAS_API_UPDATE = null;
     let sameDay = false;
 
-    const settingDoc = await settings.findOne({ name: 'Settings' });
+    const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
     if (settingDoc) {
       LAST_HIMALAYAS_API_UPDATE = settingDoc.himalayas_api_update;
     }
 
-    const pingAPI = await axios.get(`${API_URL}?limit=1`);
+    const pingAPI = await axios.get(`${API_URL}?limit=1`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent':
+          'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
+      }
+    });
+
     const get_last_update_at = new Date(pingAPI.data.updated_at * 1000);
 
     if (LAST_HIMALAYAS_API_UPDATE != null) {
@@ -25,15 +32,20 @@ const himalayas = async () => {
         name: 'Settings',
         himalayas_api_update: get_last_update_at
       });
-      await newSetting.save();
+      await newSetting[0].save();
     }
 
     if (sameDay === false) {
-      console.log('RUNNING......');
       // Fetch jobs
-      const query = await axios.get(`${API_URL}`).data;
-      const total_count = query.total_count;
-      const jobs = query.jobs;
+      const query = await axios.get(`${API_URL}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent':
+            'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
+        }
+      });
+      const total_count = query.data.total_count;
+      const jobs = query.data.jobs;
 
       jobs.forEach(async (job) => {
         // check if job has expired

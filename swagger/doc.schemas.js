@@ -1097,3 +1097,40 @@
  *         body:
  *           type: string
  */
+
+// *************EXTERNAL JOB SCHEMA***********************************
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     XJob:
+ *       properties:
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         companyName:
+ *           type: string
+ *         companyLogo:
+ *           type: string
+ *         minSalary:
+ *           type: number
+ *         maxSalary:
+ *           type: number
+ *         seniority:
+ *           type: array
+ *         categories:
+ *           type: array
+ *         publishedDate:
+ *           type: string
+ *         expiryDate:
+ *           type: string
+ *         applicationLink:
+ *           type: string
+ *         jobType:
+ *           type: string
+ *         workModel:
+ *           type: string
+ *         source:
+ *           type: string
+ */

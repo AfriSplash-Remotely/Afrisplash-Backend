@@ -10,7 +10,7 @@ const empllo = async () => {
     let LAST_EMPLLO_API_UPDATE = null;
     let sameDay = false;
 
-    const settingDoc = await settings.findOne({ name: 'Settings' });
+    const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
     if (settingDoc) {
       LAST_EMPLLO_API_UPDATE = settingDoc.empllo_api_update;
     }
