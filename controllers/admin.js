@@ -22,8 +22,6 @@ const auth = require('../model/auth');
  * @type POST
  */
 exports.inviteAdmin = asyncHandler(async (req, res, next) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
     // Validate the request body
     const { error, value } = validateAdminInvite(req.body);
@@ -48,24 +46,20 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     const password = generateRandomPassword();
 
     // create an authentication profile
-    const authProfile = await auth.create(
-      [{ email: email, password: password }],
-      { session, new: true }
-    );
+    const authProfile = await auth.create([
+      { email: email, password: password }
+    ]);
     await authProfile[0].save();
 
     // create the admin user
-    const adminUser = await Admin.create(
-      [
-        {
-          auth_id: authProfile[0]._id,
-          admin_type: admin_type,
-          email: email,
-          permissions: []
-        }
-      ],
-      { session: session, new: true }
-    );
+    const adminUser = await Admin.create([
+      {
+        auth_id: authProfile[0]._id,
+        admin_type: admin_type,
+        email: email,
+        permissions: []
+      }
+    ]);
 
     // retrieve permission documents
     for (let i = 0; i < permissions.length; i++) {
@@ -88,11 +82,8 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     await auth.findByIdAndUpdate(
       authProfile[0]._id,
       { adminID: adminUser[0]._id },
-      { new: true, session: session, runValidators: true }
+      { new: true, runValidators: true }
     );
-
-    await session.commitTransaction();
-    session.endSession();
 
     // Send Invitation Email
     const email_view = 'invite-admin';
@@ -124,7 +115,6 @@ exports.inviteAdmin = asyncHandler(async (req, res, next) => {
     return res.status(201).json(adminUser);
   } catch (error) {
     console.log(error);
-    session.endSession();
     return next(new ErrorResponse('An error occured.', 500));
   }
 });

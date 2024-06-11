@@ -17,8 +17,6 @@ const auth = require('../model/auth');
  * @type POST
  */
 exports.register = asyncHandler(async (req, res, next) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
     if (!req.body.email) {
       return next(new ErrorResponse('Email Address Is Required', 403));
@@ -26,7 +24,6 @@ exports.register = asyncHandler(async (req, res, next) => {
     const email = req.body.email.toLowerCase()
       ? req.body.email.toLowerCase()
       : '';
-    const opts = { session, new: true };
 
     const checkAccount = await Auth.findOne({
       email: email,
@@ -50,7 +47,7 @@ exports.register = asyncHandler(async (req, res, next) => {
           password: req.body.password
         }
       ],
-      opts
+      { new: true }
     );
 
     await authProfile[0].save();
@@ -67,7 +64,7 @@ exports.register = asyncHandler(async (req, res, next) => {
           gender: req.body.gender
         }
       ],
-      opts
+      { new: true }
     );
 
     // update Auth With Th User Data
@@ -76,17 +73,14 @@ exports.register = asyncHandler(async (req, res, next) => {
       {
         userID: user[0]._id
       },
-      { new: true, runValidators: true, session: session }
+      { new: true, runValidators: true }
     );
 
     // TODO Send Verification Mail  -- Maybe
     // TODO Send Welcome Mail
-    await session.commitTransaction();
-    session.endSession();
     sendTokenResponse(user, 200, res);
   } catch (error) {
     console.log(error);
-    session.endSession();
     next(error);
   }
 });

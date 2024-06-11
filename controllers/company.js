@@ -14,10 +14,7 @@ const Jobs = require('../model/jobs');
  * @type POST
  */
 exports.create = asyncHandler(async (req, res, next) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
-    const opts = { session, new: true };
     const input = req.body;
     let name = req.body.name;
     let role = req.body.role;
@@ -52,7 +49,7 @@ exports.create = asyncHandler(async (req, res, next) => {
       );
     }
     // TODO Validator
-    const data = await Company.create([input], opts);
+    const data = await Company.create([input], { new: true });
     await data[0].save();
     await User.findOneAndUpdate(
       { _id: req.user._id },
@@ -60,16 +57,13 @@ exports.create = asyncHandler(async (req, res, next) => {
         _company: data[0]._id,
         company_role: input.role // gotten from inputs
       },
-      { new: true, runValidators: true, session: session }
+      { new: true, runValidators: true }
     );
-    await session.commitTransaction();
-    session.endSession();
     res.status(201).json({
       success: true,
       data: data
     });
   } catch (error) {
-    session.endSession();
     next(error);
   }
 });

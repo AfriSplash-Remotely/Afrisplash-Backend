@@ -37,11 +37,7 @@ exports.ping = asyncHandler(async (req, res, next) => {
  * @type POST
  */
 exports.create = asyncHandler(async (req, res, next) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
-    const opts = { session, new: true };
     const input = req.body;
     if (!req.user._company) {
       return next(new ErrorResponse('Company Is Required', 400));
@@ -76,24 +72,21 @@ exports.create = asyncHandler(async (req, res, next) => {
     input._author = req.user._id;
     input.verify = true;
     // save to db
-    const data = await Jobs.create([input], opts);
+    const data = await Jobs.create([input], { new: true });
     await data[0].save();
 
     //Add Job to Company Schema
     await Company.findOneAndUpdate(
       { _id: req.user._company },
       { $push: { jobs: data[0]._id } },
-      { new: true, runValidators: true, session: session }
+      { new: true, runValidators: true }
     );
 
-    await session.commitTransaction();
-    session.endSession();
     return res.status(201).json({
       success: true,
       data: data
     });
   } catch (error) {
-    session.endSession();
     return res.status(500).json({
       status: 'error',
       message: 'Unable to create job',
@@ -518,8 +511,6 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
     );
   }
 
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
     // Add data to job
     await Jobs.findOneAndUpdate(
@@ -534,7 +525,7 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
           }
         }
       },
-      { new: true, runValidators: true, session: session }
+      { new: true, runValidators: true }
     );
 
     //check if user has saved the job, then change to apply
@@ -550,7 +541,7 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
             }
           }
         },
-        { new: true, runValidators: true, session: session }
+        { new: true, runValidators: true }
       );
     } else {
       // add data to user
@@ -566,12 +557,10 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
             }
           }
         },
-        { new: true, runValidators: true, session: session }
+        { new: true, runValidators: true }
       );
     }
 
-    await session.commitTransaction();
-    session.endSession();
     //TODO: SEND NOTIFICATION
     res.status(200).json({
       success: true,
@@ -579,7 +568,6 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
       message: 'Job Applied'
     });
   } catch (error) {
-    session.endSession();
     return next(error);
   }
 
