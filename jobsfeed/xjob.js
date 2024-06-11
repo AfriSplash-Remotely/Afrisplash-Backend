@@ -10,7 +10,6 @@ const Xjob = require('../model/xjobs');
 exports.getXjobs = async (req, res) => {
   try {
     let { page, limit } = req.query;
-    console.log(req.query);
 
     page = page ? +page : 0;
     limit = limit ? +limit : 25;
