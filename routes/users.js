@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-const { getAllCandidates, getUser } = require('../controllers/users');
+const {
+  getAllCandidates,
+  getUser,
+  getUserByEmail
+} = require('../controllers/users');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -10,6 +14,9 @@ router.get('/', function (req, res, next) {
 
 // Get all candidates
 router.get('/candidates', getAllCandidates);
+
+// GEt a user by email
+router.get('/email/:email', getUserByEmail);
 
 /**
  * Add Admin Protect

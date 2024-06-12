@@ -43,3 +43,30 @@
  *                                      type: object
  *                                      $ref: '#/components/schemas/User'
  */
+
+// *************************GET USERS BY EMAIL******************************
+/**
+ * @openapi
+ * /users/email/{email}:
+ *  get:
+ *      tags:
+ *      - Users
+ *      summary: Get a user by email
+ *      parameters:
+ *        - in: path
+ *          name: email
+ *          schema:
+ *            type: string
+ *          description: Email of the user
+ *          required: true
+ *      responses:
+ *          200:
+ *              description: User retrieved successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *          404:
+ *              description: Not found
+ *          500:
+ *              description: Internal server error
+ */

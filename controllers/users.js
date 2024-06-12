@@ -89,3 +89,57 @@ exports.getUser = asyncHandler(async (req, res) => {
     data: user
   });
 });
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Get User by email
+ * @route `/api/v1/users/email/:email
+ * @access Public
+ * @type GET
+ */
+exports.getUserByEmail = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const user = await User.findOne({
+      email: email
+    }).select({
+      user_type: 1,
+      first_name: 1,
+      last_name: 1,
+      gender: 1,
+      email: 1,
+      bio: 1,
+      profile_image: 1,
+      thumbnail: 1,
+      language: 1,
+      location: 1,
+      role: 1,
+      work_type: 1,
+      phone_number: 1,
+      skills: 1,
+      experience: 1,
+      education: 1,
+      ready_to_interview: 1,
+      work_history: 1
+    });
+
+    if (user === null) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'User not found'
+      });
+    }
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'User details retrieved successfully',
+      data: user
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'An error occurred',
+      erorr: error.message
+    });
+  }
+};
