@@ -17,9 +17,9 @@ const himalayas = async () => {
 
     const pingAPI = await axios.get(`${API_URL}?limit=1`, {
       headers: {
-        'Content-Type': 'application/json',
-        'User-Agent':
-          'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
+        'Content-Type': 'application/json'
+        // 'User-Agent':
+        //   'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
       }
     });
 

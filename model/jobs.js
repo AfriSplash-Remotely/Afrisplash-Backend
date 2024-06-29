@@ -137,9 +137,9 @@ const jobSchema = new mongoose.Schema(
     applicants: [
       {
         _user: {
-          type: mongoose.SchemaTypes.ObjectId,
+          type: Object,
           required: false,
-          ref: 'user',
+          // ref: 'user',
           default: null
         },
         date: String,
