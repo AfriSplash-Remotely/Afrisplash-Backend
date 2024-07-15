@@ -1,6 +1,9 @@
 const asyncHandler = require('../middleware/async');
 const User = require('../model/user');
 const ErrorResponse = require('../utils/errorResponse');
+const firebase = require('../firebase');
+const path = require('path');
+const fs = require('fs');
 
 /**
  * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
@@ -140,6 +143,52 @@ exports.getUserByEmail = async (req, res) => {
       status: 'error',
       message: 'An error occurred',
       erorr: error.message
+    });
+  }
+};
+
+/**
+ * @author Timothy Adeyeye <adeyeyetimothy33@gmail.com>
+ * @description Upload image file to storage
+ * @route `/api/v1/users/upload
+ * @access Public
+ * @type GET
+ */
+exports.uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file'
+      });
+    }
+
+    const buffer = req.file.buffer;
+    const destination = `Afrisplash/${req.file.originalname}`;
+    const bucket = firebase.storage().bucket('mylangcoach-1e26a.appspot.com');
+
+    // Upload to firebase storage
+    const file = bucket.file(destination);
+    await file.save(buffer, {
+      metadata: {
+        contentType: req.file.mimetype
+      }
+    });
+
+    const [url] = await file.getSignedUrl({
+      action: 'read',
+      expires: '01-01-2070'
+    });
+
+    return res.status(200).json({
+      success: true,
+      url: url
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to upload image',
+      error: error.message
     });
   }
 };
