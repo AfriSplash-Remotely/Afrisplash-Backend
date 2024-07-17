@@ -31,6 +31,7 @@ router.get('/email/:email', getUserByEmail);
  */
 router.get('/:id', getUser);
 
+// UPload file
 router.post('/upload', upload.single('image'), uploadImage);
 
 module.exports = router;
