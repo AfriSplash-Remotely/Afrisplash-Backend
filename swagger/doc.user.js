@@ -70,3 +70,31 @@
  *          500:
  *              description: Internal server error
  */
+
+// *************************UPLOAD IMAGE******************************
+/**
+ * @openapi
+ * /users/upload:
+ *  post:
+ *      tags:
+ *      - Users
+ *      summary: Upload image file
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              multipart/form-data:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          image:
+ *                              type: string
+ *                              format: binary
+ *      responses:
+ *          200:
+ *              description: Image uploaded successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *          500:
+ *              description: Internal server error
+ */
