@@ -5,7 +5,7 @@ const serviceConfigs = {
   type: 'service_account',
   project_id: 'mylangcoach-1e26a',
   private_key_id: process.env.SERVICE_ACCOUNT_PRIVATE_KEY_ID,
-  private_key: process.env.SERVICE_ACCOUNT_PRIVATE_KEY,
+  private_key: process.env.SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n'),
   client_email:
     'firebase-adminsdk-f2hq1@mylangcoach-1e26a.iam.gserviceaccount.com',
   client_id: '104229233184731093568',
