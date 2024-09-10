@@ -120,6 +120,14 @@ const changePasswordSchema = Joi.object({
     )
 });
 
+const contactUsSchema = Joi.object({
+  first_name: Joi.string().required(),
+  last_name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  message: Joi.string().required(),
+  additional_details: Joi.string().optional()
+});
+
 const validateAdminInvite = validator(inviteAdminSchema);
 const validateAdminLogin = validator(loginAdminSchema);
 const validateJobStatus = validator(jobStatus);
@@ -130,6 +138,7 @@ const validatePasswordSchema = validator(passwordSchema);
 const validateCreateJob = validator(jobSchema);
 const validateApplyJobSchema = validator(applyJobSchema);
 const validateChangePasswordSchema = validator(changePasswordSchema);
+const validateContactUsSchema = validator(contactUsSchema);
 
 const joiErrorMessage = (error) => {
   return error.details.map((detail) => {
@@ -151,5 +160,6 @@ module.exports = {
   validatePasswordSchema,
   validateCreateJob,
   validateApplyJobSchema,
-  validateChangePasswordSchema
+  validateChangePasswordSchema,
+  validateContactUsSchema
 };
