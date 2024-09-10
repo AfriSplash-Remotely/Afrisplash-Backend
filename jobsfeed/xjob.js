@@ -1,4 +1,5 @@
 const Xjob = require('../model/xjobs');
+const himalayas = require('./himalayas');
 
 /**
  * @author Timothy-py <adeyeyetimothy33@gmail.com>
@@ -77,6 +78,23 @@ exports.searchJobs = async (req, res) => {
       status: 'success',
       message: 'Search jobs successfully',
       data: result
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      status: 'error',
+      message: 'An error occurred',
+      error: error
+    });
+  }
+};
+
+exports.runJobs = async (req, res) => {
+  try {
+    himalayas();
+    return res.status(200).json({
+      status: 'success',
+      message: 'Job run successfully'
     });
   } catch (error) {
     console.log(error);

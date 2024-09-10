@@ -10,16 +10,16 @@ const himalayas = async () => {
     let LAST_HIMALAYAS_API_UPDATE = null;
     let sameDay = false;
 
-    const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
-    if (settingDoc) {
-      LAST_HIMALAYAS_API_UPDATE = settingDoc.himalayas_api_update;
-    }
+    // const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
+    // if (settingDoc) {
+    //   LAST_HIMALAYAS_API_UPDATE = settingDoc.himalayas_api_update;
+    // }
 
     const pingAPI = await axios.get(`${API_URL}?limit=1`, {
       headers: {
-        'Content-Type': 'application/json'
-        // 'User-Agent':
-        //   'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
+        'Content-Type': 'application/json',
+        'User-Agent':
+          'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0'
       }
     });
 
@@ -112,4 +112,5 @@ const himalayas = async () => {
   }
 };
 
+// himalayas();
 module.exports = himalayas;
