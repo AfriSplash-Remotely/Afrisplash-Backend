@@ -518,7 +518,7 @@ exports.applyJob = asyncHandler(async (req, res, next) => {
       {
         $push: {
           applicants: {
-            _user: req.user._id,
+            _user: req.user,
             date: Date.now(),
             rejected: false,
             accepted: false

@@ -10,10 +10,10 @@ const empllo = async () => {
     let LAST_EMPLLO_API_UPDATE = null;
     let sameDay = false;
 
-    const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
-    if (settingDoc) {
-      LAST_EMPLLO_API_UPDATE = settingDoc.empllo_api_update;
-    }
+    // const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
+    // if (settingDoc) {
+    //   LAST_EMPLLO_API_UPDATE = settingDoc.empllo_api_update;
+    // }
 
     const pingAPI = await axios.get(`${API_URL}?limit=1`, {
       headers: {

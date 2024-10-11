@@ -10,10 +10,10 @@ const himalayas = async () => {
     let LAST_HIMALAYAS_API_UPDATE = null;
     let sameDay = false;
 
-    const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
-    if (settingDoc) {
-      LAST_HIMALAYAS_API_UPDATE = settingDoc.himalayas_api_update;
-    }
+    // const settingDoc = await settings.findOne({ name: 'Settings' }).exec();
+    // if (settingDoc) {
+    //   LAST_HIMALAYAS_API_UPDATE = settingDoc.himalayas_api_update;
+    // }
 
     const pingAPI = await axios.get(`${API_URL}?limit=1`, {
       headers: {
@@ -112,4 +112,5 @@ const himalayas = async () => {
   }
 };
 
+// himalayas();
 module.exports = himalayas;

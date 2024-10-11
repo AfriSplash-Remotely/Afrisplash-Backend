@@ -43,3 +43,58 @@
  *                                      type: object
  *                                      $ref: '#/components/schemas/User'
  */
+
+// *************************GET USERS BY EMAIL******************************
+/**
+ * @openapi
+ * /users/email/{email}:
+ *  get:
+ *      tags:
+ *      - Users
+ *      summary: Get a user by email
+ *      parameters:
+ *        - in: path
+ *          name: email
+ *          schema:
+ *            type: string
+ *          description: Email of the user
+ *          required: true
+ *      responses:
+ *          200:
+ *              description: User retrieved successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *          404:
+ *              description: Not found
+ *          500:
+ *              description: Internal server error
+ */
+
+// *************************UPLOAD IMAGE******************************
+/**
+ * @openapi
+ * /users/upload:
+ *  post:
+ *      tags:
+ *      - Users
+ *      summary: Upload image file
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              multipart/form-data:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          image:
+ *                              type: string
+ *                              format: binary
+ *      responses:
+ *          200:
+ *              description: Image uploaded successfully
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *          500:
+ *              description: Internal server error
+ */
