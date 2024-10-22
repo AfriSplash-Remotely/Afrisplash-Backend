@@ -4,7 +4,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 
 dotenv.config({
   path: '../.env/config.env'
-})
+});
 const PORT = process.env.PORT;
 
 const options = {
@@ -22,12 +22,16 @@ const options = {
     },
     servers: [
       {
+        url: 'https://afrisplash-backend.onrender.com/api/v1',
+        description: 'Production server on Render'
+      },
+      {
         url: 'https://afrisplash-473196ceadbb.herokuapp.com/api/v1',
-        description: 'Production server'
+        description: 'Development server on Heroku'
       },
       {
         url: `http://localhost:5000/api/v1`,
-        description: 'Development server'
+        description: 'Local server'
       }
     ]
   },
@@ -43,8 +47,12 @@ function swaggerDocs(app, port) {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpecs);
   });
-  console.log(`Dev: Swagger Docs available at http://localhost:${port}/api-docs`);
-  console.log('Prod: Swager Docs available at https://afrisplash-473196ceadbb.herokuapp.com/api-docs')
+  console.log(
+    `Dev: Swagger Docs available at http://localhost:${port}/api-docs`
+  );
+  console.log(
+    'Prod: Swager Docs available at https://afrisplash-473196ceadbb.herokuapp.com/api-docs'
+  );
   return;
 }
 
