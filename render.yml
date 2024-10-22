@@ -1,0 +1,15 @@
+services:
+  type: web
+  runtime: node
+  name: afrisplash-api
+  repo: https://github.com/AfriSplash-Remotely/Afrisplash-Backend
+  branch: staging
+  plan: free
+  # domains:
+  #     - afrisplash.com
+  buildCommand: npm install
+  startCommand: npm run start
+  region: oregon
+  # healthCheckPath:
+  envVars:
+    - fromGroup: afrisplash-env
