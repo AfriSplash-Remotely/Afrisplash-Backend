@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const upload = async (buffer, mimetype) => {
   try {
     const destination = `Afrisplash/${uuidv4()}`;
-    const bucket = firebase.storage().bucket('mylangcoach-1e26a.appspot.com');
+    const bucket = firebase.storage().bucket('afrisplash-b5e65.appspot.com');
 
     // Upload to firebase storage
     const file = bucket.file(destination);
