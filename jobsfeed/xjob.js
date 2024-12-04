@@ -14,15 +14,15 @@ exports.getXjobs = async (req, res) => {
 
     page = page ? +page : 0;
     limit = limit ? +limit : 40;
-    // console.log(page, limit);
 
     const data = await Xjob.paginate(
       {},
       {
         page: page,
-        limit: limit
+        limit: limit,
+        sort: { createdAt: -1 }
       }
-    ).sort({ createdAt: -1 });
+    );
 
     const jobs = data.docs;
 
@@ -42,6 +42,7 @@ exports.getXjobs = async (req, res) => {
       nextPage: data.nextPage
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: 'error',
       message: 'An error occurred',
