@@ -1,64 +1,69 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
-const xjobSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: false
+const xjobSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: false
+    },
+    description: {
+      type: String,
+      required: false
+    },
+    companyName: {
+      type: String,
+      required: false
+    },
+    companyLogo: {
+      type: String,
+      required: false
+    },
+    minSalary: {
+      type: Number,
+      required: false
+    },
+    maxSalary: {
+      type: Number,
+      required: false
+    },
+    seniority: {
+      type: Array,
+      required: false
+    },
+    categories: {
+      type: Array,
+      required: false
+    },
+    publishedDate: {
+      type: String,
+      required: false
+    },
+    expiryDate: {
+      type: String,
+      required: false
+    },
+    applicationLink: {
+      type: String,
+      required: false
+    },
+    jobType: {
+      type: String,
+      required: false
+    },
+    workModel: {
+      type: String,
+      required: false
+    },
+    source: {
+      type: String,
+      required: false
+    }
   },
-  description: {
-    type: String,
-    required: false
-  },
-  companyName: {
-    type: String,
-    required: false
-  },
-  companyLogo: {
-    type: String,
-    required: false
-  },
-  minSalary: {
-    type: Number,
-    required: false
-  },
-  maxSalary: {
-    type: Number,
-    required: false
-  },
-  seniority: {
-    type: Array,
-    required: false
-  },
-  categories: {
-    type: Array,
-    required: false
-  },
-  publishedDate: {
-    type: String,
-    required: false
-  },
-  expiryDate: {
-    type: String,
-    required: false
-  },
-  applicationLink: {
-    type: String,
-    required: false
-  },
-  jobType: {
-    type: String,
-    required: false
-  },
-  workModel: {
-    type: String,
-    required: false
-  },
-  source: {
-    type: String,
-    required: false
+  {
+    timestamps: true
   }
-});
+);
 
 xjobSchema.plugin(mongoosePaginate);
 
