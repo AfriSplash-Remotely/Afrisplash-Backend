@@ -13,7 +13,7 @@ exports.getXjobs = async (req, res) => {
     let { page, limit } = req.query;
 
     page = page ? +page : 0;
-    limit = limit ? +limit : 25;
+    limit = limit ? +limit : 40;
     // console.log(page, limit);
 
     const data = await Xjob.paginate(
@@ -22,7 +22,7 @@ exports.getXjobs = async (req, res) => {
         page: page,
         limit: limit
       }
-    );
+    ).sort({ createdAt: -1 });
 
     const jobs = data.docs;
 
@@ -69,10 +69,17 @@ exports.searchJobs = async (req, res) => {
       });
     }
 
-    const result = await Xjob.find(
-      { $text: { $search: q } },
-      { score: { $meta: 'textScore' } }
-    ).sort({ score: { $meta: 'textScore' } });
+    const result = await Xjob.aggregate([
+      {
+        $search: {
+          index: 'title_search',
+          text: {
+            query: q,
+            path: 'title'
+          }
+        }
+      }
+    ]);
 
     return res.status(200).json({
       status: 'success',
